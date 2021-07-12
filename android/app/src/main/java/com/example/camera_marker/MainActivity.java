@@ -80,9 +80,9 @@ public class MainActivity extends FlutterActivity {
                                     Scalar s = new Scalar(255, 0, 0);
                                     int [][] pointsValue = new int [][] {
                                             {0, 0, 100, 100, 1},
-                                            {max_width - 200, 0, 100, 100, 2},
+                                            {max_width - 100, 0, 100, 100, 2},
                                             {0, max_height - 100, 100, 100, 3},
-                                            {max_width - 200, max_height - 100, 100, 100, 4}
+                                            {max_width - 100, max_height - 100, 100, 100, 4}
                                     };
 
                                     mRgba.release();
