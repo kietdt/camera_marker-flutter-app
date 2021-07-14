@@ -31,8 +31,10 @@ class _YuvTransformScreenState extends State<YuvTransformScreen>
       const MethodChannel('tomer.blecher.yuv_transform/yuv');
 
   late List<dynamic> recognitions = [];
-  int imageHeight = 0;
-  int imageWidth = 0;
+  double imageHeight = 0;
+  double imageWidth = 0;
+
+  double get pixelRatio => MediaQuery.of(context).devicePixelRatio;
 
   @override
   void initState() {
@@ -76,11 +78,8 @@ class _YuvTransformScreenState extends State<YuvTransformScreen>
     if (controller != null) {
       await controller?.dispose();
     }
-    controller = CameraController(
-      cameraDescription,
-      ResolutionPreset.medium,
-      enableAudio: false,
-    );
+    controller = CameraController(cameraDescription, ResolutionPreset.medium,
+        enableAudio: false, imageFormatGroup: ImageFormatGroup.yuv420);
 
     // If the controller is updated then update the UI.
     controller!.addListener(() {
@@ -128,7 +127,8 @@ class _YuvTransformScreenState extends State<YuvTransformScreen>
                 "confidenceInClass": rng.nextInt(100),
               });
             }
-            setRecognitions(recognitions, image.height, image.width);
+            setRecognitions(
+                recognitions, image.height.toDouble(), image.width.toDouble());
             _isProcessing = false;
           });
         });
@@ -153,7 +153,7 @@ class _YuvTransformScreenState extends State<YuvTransformScreen>
   The set recognitions function assigns the values of recognitions, imageHeight and width to the variables defined here as callback
   */
   void setRecognitions(
-      List<dynamic> recognitions, int imageHeight, int imageWidth) {
+      List<dynamic> recognitions, double imageHeight, double imageWidth) {
     this.recognitions = recognitions;
     this.imageHeight = imageHeight;
     this.imageWidth = imageWidth;
