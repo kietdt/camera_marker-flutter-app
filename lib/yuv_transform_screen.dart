@@ -111,7 +111,14 @@ class _YuvTransformScreenState extends State<YuvTransformScreen>
             'width': image.width,
             'strides': strides
           }).then((value) {
-            final parsedList = jsonDecode(value);
+            print("mmmmmmmmmmmmmmm111111" + value);
+            // value
+            final data = jsonDecode(value);
+            final width = data.width;
+            final height = data.height;
+            print("mmmmmmmmmmmmmmm111111" + width + " - " + height);
+            final parsedList = data.points;
+
             final recognitions = [];
             for (var points in parsedList) {
               var rng = math.Random();
