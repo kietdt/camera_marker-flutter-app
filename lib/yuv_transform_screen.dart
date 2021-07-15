@@ -114,7 +114,7 @@ class _YuvTransformScreenState extends State<YuvTransformScreen>
             final parsedList = jsonDecode(value);
             final recognitions = [];
             for (var points in parsedList) {
-              var rng = math.Random(); // lung lay chut xiu cho vui
+              var rng = math.Random();
               print(points);
               recognitions.add({
                 "rect": {
