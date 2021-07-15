@@ -17,8 +17,6 @@ class CameraScreenWidget extends StatefulWidget {
 }
 
 class _CameraScreenState extends State<CameraScreenWidget> {
-  double get ratioDevice => MediaQuery.of(context).size.aspectRatio;
-
   @override
   Widget build(BuildContext context) {
     if (widget.controller == null || !widget.controller!.value.isInitialized) {

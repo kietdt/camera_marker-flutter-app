@@ -13,6 +13,7 @@ import 'package:flutter/services.dart';
 
 import 'bounding_box.dart';
 import 'camera_screen.dart';
+import 'model/draw_info.dart';
 
 // typedef void Callback(List<dynamic> list, int h, int w);
 
@@ -113,26 +114,28 @@ class _YuvTransformScreenState extends State<YuvTransformScreen>
           }).then((value) {
             print("mmmmmmmmmmmmmmm111111" + value);
             // value
-            final data = jsonDecode(value);
-            final width = data.width;
-            final height = data.height;
-            print("mmmmmmmmmmmmmmm111111" + width + " - " + height);
+            DrawInfo data = DrawInfo.fromJson(json.decode(value));
+            double? width = data.width;
+            double? height = data.height;
+            // print("mmmmmmmmmmmmmmm111111" + width + " - " + height);
             final parsedList = data.points;
 
             final recognitions = [];
-            for (var points in parsedList) {
-              var rng = math.Random();
-              print(points);
-              recognitions.add({
-                "rect": {
-                  "x": points[0],
-                  "y": points[1],
-                  "w": points[2],
-                  "h": points[3],
-                },
-                "detectedClass": "${points[4]}",
-                "confidenceInClass": rng.nextInt(100),
-              });
+            if (parsedList != null) {
+              for (var points in parsedList) {
+                var rng = math.Random();
+                print(points);
+                recognitions.add({
+                  "rect": {
+                    "x": points[0],
+                    "y": points[1],
+                    "w": points[2],
+                    "h": points[3],
+                  },
+                  "detectedClass": "${points[4]}",
+                  "confidenceInClass": rng.nextInt(100),
+                });
+              }
             }
             setRecognitions(
                 recognitions, image.height.toDouble(), image.width.toDouble());
@@ -172,6 +175,7 @@ class _YuvTransformScreenState extends State<YuvTransformScreen>
   @override
   Widget build(BuildContext context) {
     Size screen = MediaQuery.of(context).size;
+    double statusBar = MediaQuery.of(context).padding.top;
 
     return SafeArea(
       child: Scaffold(
@@ -188,9 +192,9 @@ class _YuvTransformScreenState extends State<YuvTransformScreen>
             ),
             BoundingBox(
               this.recognitions,
-              math.max(this.imageHeight, this.imageWidth),
-              math.min(this.imageHeight, this.imageWidth),
-              screen.height,
+              this.imageHeight,
+              this.imageWidth,
+              screen.height - statusBar,
               screen.width,
             ),
           ],
