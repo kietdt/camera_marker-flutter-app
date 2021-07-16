@@ -176,6 +176,7 @@ class _YuvTransformScreenState extends State<YuvTransformScreen>
   Widget build(BuildContext context) {
     Size screen = MediaQuery.of(context).size;
     double statusBar = MediaQuery.of(context).padding.top;
+    double navigateBar = MediaQuery.of(context).padding.bottom;
 
     return SafeArea(
       child: Scaffold(
@@ -194,7 +195,7 @@ class _YuvTransformScreenState extends State<YuvTransformScreen>
               this.recognitions,
               this.imageHeight,
               this.imageWidth,
-              screen.height - statusBar,
+              screen.height - (statusBar + navigateBar),
               screen.width,
             ),
           ],
