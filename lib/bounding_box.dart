@@ -36,8 +36,8 @@ class BoundingBox extends StatelessWidget {
         print(
             "$x $y $w $h - ${re["detectedClass"]} ${(re["confidenceInClass"] * 100).toStringAsFixed(0)}%");
         return Positioned(
-          left: math.max(0, x),
-          top: math.max(0, y),
+          left: x,
+          top: y,
           width: w,
           height: h,
           child: Container(
