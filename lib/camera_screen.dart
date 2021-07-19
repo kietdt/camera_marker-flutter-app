@@ -32,9 +32,10 @@ class _CameraScreenState extends State<CameraScreenWidget> {
         ],
       ));
     } else {
-      return AspectRatio(
-          aspectRatio: widget.controller!.value.aspectRatio,
-          child: CameraPreview(widget.controller!));
+      return CameraPreview(widget.controller!);
+      // return AspectRatio(
+      //     aspectRatio: widget.controller!.value.aspectRatio,
+      //     child: CameraPreview(widget.controller!));
     }
   }
 }
