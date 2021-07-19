@@ -1,8 +1,9 @@
 import 'dart:async';
 import 'dart:convert';
-import 'dart:math' as math;
+import 'dart:math';
 
 import 'package:camera/camera.dart';
+import 'package:camera_marker/mix/rotate_mix.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:camera_marker/camera_handler.dart';
@@ -23,7 +24,7 @@ class YuvTransformScreen extends StatefulWidget {
 }
 
 class _YuvTransformScreenState extends State<YuvTransformScreen>
-    with CameraHandler, WidgetsBindingObserver {
+    with CameraHandler, WidgetsBindingObserver, RotateMix {
   List<StreamSubscription> _subscription = [];
   late ImageResultProcessorService _imageResultProcessorService;
   bool _isProcessing = false;
@@ -32,8 +33,8 @@ class _YuvTransformScreenState extends State<YuvTransformScreen>
       const MethodChannel('tomer.blecher.yuv_transform/yuv');
 
   late List<dynamic> recognitions = [];
-  double imageHeight = 0;
-  double imageWidth = 0;
+  double originHeight = 0;
+  double originWidth = 0;
 
   double get pixelRatio => MediaQuery.of(context).devicePixelRatio;
 
@@ -106,39 +107,14 @@ class _YuvTransformScreenState extends State<YuvTransformScreen>
             index++;
             return plane.bytes;
           }).toList();
+
           platform.invokeMethod('yuv_transform', {
             'platforms': data,
             'height': image.height,
             'width': image.width,
             'strides': strides
           }).then((value) {
-            print("mmmmmmmmmmmmmmm111111" + value);
-            // value
-            DrawInfo data = DrawInfo.fromJson(json.decode(value));
-            double? width = data.width;
-            double? height = data.height;
-            // print("mmmmmmmmmmmmmmm111111" + width + " - " + height);
-            final parsedList = data.points;
-
-            final recognitions = [];
-            if (parsedList != null) {
-              for (var points in parsedList) {
-                var rng = math.Random();
-                print(points);
-                recognitions.add({
-                  "rect": {
-                    "x": points[0],
-                    "y": points[1],
-                    "w": points[2],
-                    "h": points[3],
-                  },
-                  "detectedClass": "${points[4]}",
-                  "confidenceInClass": rng.nextInt(100),
-                });
-              }
-            }
-            setRecognitions(
-                recognitions, image.height.toDouble(), image.width.toDouble());
+            onResult(value, image);
             _isProcessing = false;
           });
         });
@@ -150,6 +126,59 @@ class _YuvTransformScreenState extends State<YuvTransformScreen>
     if (mounted) {
       setState(() {});
     }
+  }
+
+  void onResult(dynamic value, CameraImage image) {
+    DrawInfo data = DrawInfo.fromJson(json.decode(value));
+    // chiều dài của ảnh khi xử lý ở native
+    double rotateWidth = data.width!;
+    // chiều cao của ảnh khi xử lý ở native
+    double rotateHeight = data.height!;
+    // góc xoay ảnh ở native
+    num radians = (3 * pi / 2);
+
+    final parsedList = data.points;
+
+    // khởi tạo ma trận affine
+    initMatrix(radians);
+
+    final recognitions = [];
+    if (parsedList != null) {
+      for (var points in parsedList) {
+        var rng = Random();
+        // dời gốc tọa độ vào trọng tâm của hình để sử dụng affine rotate
+        // vì hệ tọa độ đang xử lý có y hướng xuống
+        // nên phải đổi point[1] => -point[1]
+        // để sử dụng thuật toán affine
+        Offset pointShift = shiftPoint(Offset(points[0], -points[1]),
+            Offset(rotateWidth / 2, -rotateHeight / 2));
+        // tìm tọa độ góc trái trên của rectangle sau khi xoay
+        List<double> rectangle =
+            topLeftRotate(pointShift, Size(points[2], points[3]));
+        // xoay tọa độ bằng cách nhân tọa độ với ma trận affine
+        pointShift = Offset(rectangle[0], rectangle[1]);
+        // xoay cạnh của ảnh
+        Size rectSize = Size(rectangle[2], rectangle[3]);
+        // dời lại gốc tọa độ lên góc trái trên để vẽ ô vuông
+        // sử dụng chiều dại và chiều rộng của ảnh sau khi đã rotate, tức là chiều dài của ảnh trước khi gửi qua native
+        pointShift =
+            shiftPoint(pointShift, Offset(-originWidth / 2, originHeight / 2));
+        pointShift = Offset(pointShift.dx, -pointShift.dy);
+
+        recognitions.add({
+          "rect": {
+            "x": pointShift.dx,
+            "y": pointShift.dy,
+            "w": rectSize.width,
+            "h": rectSize.height,
+          },
+          "detectedClass": "${points[4]}",
+          "confidenceInClass": rng.nextInt(100),
+        });
+      }
+    }
+    setRecognitions(
+        recognitions, image.height.toDouble(), image.width.toDouble());
   }
 
   void _processCameraImage(CameraImage image) async {
@@ -165,8 +194,8 @@ class _YuvTransformScreenState extends State<YuvTransformScreen>
   void setRecognitions(
       List<dynamic> recognitions, double imageHeight, double imageWidth) {
     this.recognitions = recognitions;
-    this.imageHeight = imageHeight;
-    this.imageWidth = imageWidth;
+    this.originHeight = imageHeight;
+    this.originWidth = imageWidth;
     if (mounted) {
       setState(() {});
     }
@@ -193,8 +222,8 @@ class _YuvTransformScreenState extends State<YuvTransformScreen>
             ),
             BoundingBox(
               this.recognitions,
-              this.imageHeight,
-              this.imageWidth,
+              this.originHeight,
+              this.originWidth,
               screen.height - (statusBar + navigateBar),
               screen.width,
             ),
