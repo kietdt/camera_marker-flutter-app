@@ -1,6 +1,7 @@
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:get/get.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:camera_marker/camera_handler.dart';
 import 'package:camera_marker/yuv_transform_screen.dart';
@@ -26,7 +27,7 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return GetMaterialApp(
       title: 'YUV Transformation',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
@@ -36,6 +37,10 @@ class MyApp extends StatelessWidget {
         textTheme: TextTheme(bodyText2: TextStyle(color: Colors.white)),
       ),
       home: YuvTransformScreen(),
+      getPages: [
+        GetPage(name: 'dash_board', page: () => YuvTransformScreen()),
+        // GetPage(name: '/second', page: () => Second()),
+      ],
     );
   }
 }
