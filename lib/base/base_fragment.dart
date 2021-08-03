@@ -5,25 +5,56 @@ import 'package:get/get_state_manager/get_state_manager.dart';
 
 import 'base_controller.dart';
 
+//created by Kietdt 28/07/2021
 abstract class BaseFragment<S extends StatefulWidget, C extends BaseController>
-    extends State<S> with AutomaticKeepAliveClientMixin<S> {
-  BaseController? _controller;
+    extends State<S>
+    with AutomaticKeepAliveClientMixin<S>, WidgetsBindingObserver {
+  C? _controller;
 
-  BaseController? get controller => _controller;
+  C? get controller => _controller;
 
-  BaseController initController();
+  C initController();
+
+  //screen argument
+  Size get screen => MediaQuery.of(context).size;
+  double get statusBar => MediaQuery.of(context).padding.top;
+  double get navigateBar => MediaQuery.of(context).padding.bottom;
 
   @override
   void initState() {
-    this._controller = Get.put(initController());
+    this._controller = initController();
+    WidgetsBinding.instance?.addObserver(this);
     super.initState();
   }
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) async {
+    switch (state) {
+      case AppLifecycleState.inactive:
+        await inactive();
+        break;
+      case AppLifecycleState.resumed:
+        await resumed();
+        break;
+      case AppLifecycleState.paused:
+        await paused();
+        break;
+      case AppLifecycleState.detached:
+        await detached();
+        break;
+    }
+  }
+
+  Future inactive() async {}
+  Future resumed() async {}
+  Future paused() async {}
+  Future detached() async {}
 
   @override
   Widget build(BuildContext context) {
     super.build(context);
     return Stack(
-      children: [Obx(() => body()), buildLoading()],
+      children: [body(), buildLoading()],
     );
   }
 
@@ -31,14 +62,12 @@ abstract class BaseFragment<S extends StatefulWidget, C extends BaseController>
 
   Widget buildLoading() {
     return Obx(() => Visibility(
-        visible: _controller?.loading.value ?? false,
+        visible: _controller!.loading.value,
         child: Container(
             alignment: Alignment.center,
             color: Colors.black.withOpacity(0.1),
-            child: SpinKitWanderingCubes(
-                size: 52,
-                color:
-                    Colors.blue.shade200)))); // tạm thời để build loading rỗng
+            child:
+                SpinKitWanderingCubes(size: 52, color: Colors.blue.shade200))));
   }
 
   @override
@@ -46,7 +75,8 @@ abstract class BaseFragment<S extends StatefulWidget, C extends BaseController>
 
   @override
   void dispose() {
-    controller?.onDispose();
+    controller!.onDispose();
+    WidgetsBinding.instance!.removeObserver(this);
     super.dispose();
   }
 }

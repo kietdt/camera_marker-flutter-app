@@ -9,7 +9,7 @@ const DELAY_TIME = 3000;
 mixin CameraHandler {
   /// Camera index in [cameras]. 0 would properly be the back camera of the device.
   int cameraType = 0;
-  CameraController? controller;
+  CameraController? cameraCtr;
 
   void showCameraException(CameraException e) {
     logError(e.code, e.description!);

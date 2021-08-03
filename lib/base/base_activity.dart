@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 
 import 'base_controller.dart';
 
+//created by Kietdt 28/07/2021
 abstract class BaseActivity<S extends StatefulWidget, C extends BaseController>
     extends BaseFragment<S, C> {
   final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
@@ -13,17 +14,15 @@ abstract class BaseActivity<S extends StatefulWidget, C extends BaseController>
   @override
   Widget build(BuildContext context) {
     super.build(context);
-    return Obx(
-      () => Stack(children: [
-        buildBackground(),
-        GestureDetector(
-          child: _buildScaffold(),
-          onTap: controller?.hideKeyboard,
-        ),
-        buildFrontground(),
-        buildLoading(),
-      ]),
-    );
+    return Stack(children: [
+      buildBackground(),
+      GestureDetector(
+        child: _buildScaffold(),
+        onTap: controller?.hideKeyboard,
+      ),
+      buildFrontground(),
+      buildLoading(),
+    ]);
   }
 
   PreferredSizeWidget? buildAppbar() => null;

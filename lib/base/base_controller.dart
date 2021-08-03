@@ -1,25 +1,26 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-abstract class BaseController<S extends State> extends GetxController {
-  State? _state;
+//created by Kietdt 28/07/2021
+abstract class BaseController<S extends State> {
+  S? _state;
 
-  State? get state => _state;
+  S? get state => _state;
 
   //UI
   RxBool _loading = false.obs;
   RxBool get loading => _loading;
 
-  BaseController(State state) {
+  BaseController(S state) {
     this._state = state;
   }
 
   void showLoading() {
-    _loading = true.obs;
+    _loading.value = true;
   }
 
   void hideLoading() {
-    _loading = false.obs;
+    _loading.value = false;
   }
 
   void onDispose() {}

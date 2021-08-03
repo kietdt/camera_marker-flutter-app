@@ -1,25 +1,16 @@
-import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
-import 'package:permission_handler/permission_handler.dart';
-import 'package:camera_marker/camera_handler.dart';
-import 'package:camera_marker/yuv_transform_screen.dart';
+import 'package:camera_marker/screen/camera_transform/yuv_transform_screen.dart';
 
 Future<void> main() async {
   // Required for observing the lifecycle state from the widgets layer.
   WidgetsFlutterBinding.ensureInitialized();
-  //Request permission for camera
-  PermissionStatus status = await Permission.camera.status;
-  while (!status.isGranted) status = await Permission.camera.request();
-  // Fetch all available cameras.
-  cameras = await availableCameras();
   // Keep rotation at portrait mode.
   SystemChrome.setPreferredOrientations([
     DeviceOrientation.portraitUp,
     DeviceOrientation.portraitDown,
   ]);
-
   runApp(MyApp());
 }
 

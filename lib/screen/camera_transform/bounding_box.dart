@@ -1,8 +1,8 @@
+import 'package:camera_marker/model/recognition.dart';
 import 'package:flutter/material.dart';
-import 'dart:math' as math;
 
 class BoundingBox extends StatelessWidget {
-  final List<dynamic> results;
+  final List<Recognition> results;
   final double? previewH;
   final double? previewW;
   final double? screenH;
@@ -23,10 +23,11 @@ class BoundingBox extends StatelessWidget {
   Widget build(BuildContext context) {
     List<Widget> _renderBox() {
       return results.map((re) {
-        var _x = re["rect"]["x"];
-        var _w = re["rect"]["w"];
-        var _y = re["rect"]["y"];
-        var _h = re["rect"]["h"];
+        var _x = re.offset?.dx ?? 0.0;
+        var _w = re.size?.width ?? 0.0;
+        var _y = re.offset?.dy ?? 0.0;
+        var _h = re.size?.height ?? 0.0;
+
         var _scaleW, _scaleH, x, y, w, h;
 
         x = _x.toDouble() / scaleW;
@@ -34,7 +35,7 @@ class BoundingBox extends StatelessWidget {
         w = _w.toDouble() / scaleW;
         h = _h.toDouble() / scaleH;
         print(
-            "$x $y $w $h - ${re["detectedClass"]} ${(re["confidenceInClass"] * 100).toStringAsFixed(0)}%");
+            "$x $y $w $h - ${re.detectedClass} ${((re.confidenceInClass ?? 0.0) * 100).toStringAsFixed(0)}%");
         return Positioned(
           left: x,
           top: y,
@@ -49,7 +50,7 @@ class BoundingBox extends StatelessWidget {
               ),
             ),
             child: Text(
-              "${re["detectedClass"]} ${(re["confidenceInClass"] * 100).toStringAsFixed(0)}%",
+              "${re.detectedClass} ${((re.confidenceInClass ?? 0.0) * 100).toStringAsFixed(0)}%",
               style: TextStyle(
                 color: Color.fromRGBO(37, 213, 253, 1.0),
                 fontSize: 14.0,
