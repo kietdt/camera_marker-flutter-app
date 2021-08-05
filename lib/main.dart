@@ -1,7 +1,9 @@
+import 'package:camera_marker/manager/route_manager.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
-import 'package:camera_marker/screen/camera_transform/yuv_transform_screen.dart';
+
+import 'manager/resource_manager.dart';
 
 Future<void> main() async {
   // Required for observing the lifecycle state from the widgets layer.
@@ -11,6 +13,11 @@ Future<void> main() async {
     DeviceOrientation.portraitUp,
     DeviceOrientation.portraitDown,
   ]);
+
+  //initRessource
+  ResourceManager().init();
+  RouteManager().init();
+
   runApp(MyApp());
 }
 
@@ -27,11 +34,9 @@ class MyApp extends StatelessWidget {
         scaffoldBackgroundColor: Color.fromARGB(245, 31, 31, 31),
         textTheme: TextTheme(bodyText2: TextStyle(color: Colors.white)),
       ),
-      home: YuvTransformScreen(),
-      getPages: [
-        GetPage(name: 'dash_board', page: () => YuvTransformScreen()),
-        // GetPage(name: '/second', page: () => Second()),
-      ],
+      initialRoute: RouteManager().initialRoute,
+      // getPages: RouteManager().getPages,
+      routes: RouteManager().routes!,
     );
   }
 }

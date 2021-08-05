@@ -1,6 +1,6 @@
 import 'package:camera_marker/base/base_fragment.dart';
+import 'package:camera_marker/manager/resource_manager.dart';
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 
 import 'base_controller.dart';
 
@@ -17,21 +17,25 @@ abstract class BaseActivity<S extends StatefulWidget, C extends BaseController>
     return Stack(children: [
       buildBackground(),
       GestureDetector(
-        child: _buildScaffold(),
+        child: _scaffold(),
         onTap: controller?.hideKeyboard,
       ),
-      buildFrontground(),
       buildLoading(),
     ]);
   }
 
   PreferredSizeWidget? buildAppbar() => null;
-  Widget buildBackground() => Container(color: Colors.black12);
-  Widget buildFrontground() => SizedBox();
 
-  _buildScaffold() {
+  Widget buildBackground() =>
+      Container(color: ResourceManager().color!.background);
+
+  _scaffold() {
     return Scaffold(
-        key: scaffoldKey, appBar: buildAppbar() ?? appBar, body: body());
+      key: scaffoldKey,
+      appBar: buildAppbar() ?? appBar,
+      body: body(),
+      backgroundColor: Colors.transparent,
+    );
   }
 
   Widget body();

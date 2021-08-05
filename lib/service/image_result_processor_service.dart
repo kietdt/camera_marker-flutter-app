@@ -2,10 +2,11 @@ import 'dart:typed_data';
 
 import 'package:camera/camera.dart';
 import 'package:rxdart/subjects.dart';
-import 'package:camera_marker/method_channelling/yuv_chanelling.dart';
 // import 'package:opencv/opencv.dart';
 import 'dart:async';
 import 'dart:io';
+
+import 'method_channelling/yuv_chanelling.dart';
 
 class ImageResultProcessorService {
   YuvChannelling _yuvChannelling = YuvChannelling();

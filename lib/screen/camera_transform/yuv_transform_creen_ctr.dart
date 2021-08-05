@@ -5,13 +5,13 @@ import 'dart:typed_data';
 
 import 'package:camera/camera.dart';
 import 'package:camera_marker/base/base_controller.dart';
-import 'package:camera_marker/method_channelling/yuv_chanelling.dart';
 import 'package:camera_marker/mix/camera_handler.dart';
 import 'package:camera_marker/mix/permission_mix.dart';
 import 'package:camera_marker/mix/rotate_mix.dart';
 import 'package:camera_marker/model/draw_info.dart';
 import 'package:camera_marker/model/recognition.dart';
 import 'package:camera_marker/service/image_result_processor_service.dart';
+import 'package:camera_marker/service/method_channelling/yuv_chanelling.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';

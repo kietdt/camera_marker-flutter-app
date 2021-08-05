@@ -1,3 +1,4 @@
+import 'package:camera_marker/manager/resource_manager.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:get/get.dart';
@@ -66,8 +67,8 @@ abstract class BaseFragment<S extends StatefulWidget, C extends BaseController>
         child: Container(
             alignment: Alignment.center,
             color: Colors.black.withOpacity(0.1),
-            child:
-                SpinKitWanderingCubes(size: 52, color: Colors.blue.shade200))));
+            child: SpinKitWanderingCubes(
+                size: 52, color: ResourceManager().color!.primary))));
   }
 
   @override
