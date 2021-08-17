@@ -5,11 +5,13 @@ import 'package:flutter/material.dart';
 import 'base_controller.dart';
 
 //created by Kietdt 28/07/2021
+//contact email: dotuankiet1403@gmail.com
 abstract class BaseActivity<S extends StatefulWidget, C extends BaseController>
     extends BaseFragment<S, C> {
   final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
 
   PreferredSizeWidget? appBar;
+  Widget? floatingActionButton() => null;
 
   @override
   Widget build(BuildContext context) {
@@ -35,6 +37,7 @@ abstract class BaseActivity<S extends StatefulWidget, C extends BaseController>
       appBar: buildAppbar() ?? appBar,
       body: body(),
       backgroundColor: Colors.transparent,
+      floatingActionButton: floatingActionButton(),
     );
   }
 

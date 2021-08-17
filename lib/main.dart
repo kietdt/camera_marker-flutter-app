@@ -26,17 +26,16 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GetMaterialApp(
-      title: 'YUV Transformation',
+      title: 'For Teacher',
       debugShowCheckedModeBanner: false,
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-        visualDensity: VisualDensity.adaptivePlatformDensity,
-        scaffoldBackgroundColor: Color.fromARGB(245, 31, 31, 31),
-        textTheme: TextTheme(bodyText2: TextStyle(color: Colors.white)),
-      ),
+      // theme: ThemeData(
+      //   primarySwatch: Colors.blue,
+      //   visualDensity: VisualDensity.adaptivePlatformDensity,
+      //   scaffoldBackgroundColor: Color.fromARGB(245, 31, 31, 31),
+      //   textTheme: TextTheme(bodyText2: TextStyle(color: Colors.white)),
+      // ),
       initialRoute: RouteManager().initialRoute,
-      // getPages: RouteManager().getPages,
-      routes: RouteManager().routes!,
+      onGenerateRoute: RouteManager().onGenerateRoute,
     );
   }
 }

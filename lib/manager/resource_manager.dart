@@ -1,6 +1,8 @@
 import 'package:camera_marker/resource/color.dart';
 import 'package:camera_marker/resource/text_style.dart';
 
+//created by kietdt 08/08/2021
+//contact email: dotuankiet1403@gmail.com
 class ResourceManager {
   static ResourceManager? _internal;
   ResourceManager._();

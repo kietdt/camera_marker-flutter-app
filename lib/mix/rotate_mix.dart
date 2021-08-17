@@ -3,6 +3,7 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 
 //created by Kietdt 28/07/2021
+//contact email: dotuankiet1403@gmail.com
 class RotateMix {
   List<List<double>>? matix;
 

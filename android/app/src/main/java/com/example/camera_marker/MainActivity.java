@@ -1,4 +1,4 @@
-package com.example.camera_marker;
+package uit.kltn.cttt2015.camera_marker;
 
 import java.io.*;
 import java.util.*;

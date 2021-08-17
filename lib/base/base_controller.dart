@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 //created by Kietdt 28/07/2021
+//contact email: dotuankiet1403@gmail.com
 abstract class BaseController<S extends State> {
   S? _state;
 

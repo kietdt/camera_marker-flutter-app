@@ -7,6 +7,7 @@ import 'package:get/get_state_manager/get_state_manager.dart';
 import 'base_controller.dart';
 
 //created by Kietdt 28/07/2021
+//contact email: dotuankiet1403@gmail.com
 abstract class BaseFragment<S extends StatefulWidget, C extends BaseController>
     extends State<S>
     with AutomaticKeepAliveClientMixin<S>, WidgetsBindingObserver {

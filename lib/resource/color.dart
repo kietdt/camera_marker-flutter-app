@@ -5,4 +5,5 @@ class BaseColor {
   Color primary = Color(0xff3A6DB2);
   Color card = Color(0xffffffff);
   Color des = Colors.black;
+  Color white = Colors.white;
 }
