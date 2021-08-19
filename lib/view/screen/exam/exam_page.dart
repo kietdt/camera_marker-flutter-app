@@ -37,6 +37,15 @@ class ExamPageState extends BaseActivity<ExamPage, ExamPageCtr> {
         margin: EdgeInsets.only(right: 30, bottom: 30),
         decoration: BoxDecoration(
             shape: BoxShape.circle,
+            boxShadow: [
+              BoxShadow(
+                color: ResourceManager().color!.primary.withOpacity(0.3),
+                spreadRadius: 3,
+                blurRadius: 7,
+                offset: Offset(0, 1), // changes position of shadow
+              )
+            ],
+            color: ResourceManager().color!.white,
             border:
                 Border.all(color: ResourceManager().color!.primary, width: 2)),
         child: InkWell(

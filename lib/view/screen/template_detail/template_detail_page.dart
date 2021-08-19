@@ -63,9 +63,9 @@ class TemplateDetailState
             boxShadow: [
               BoxShadow(
                 color: Colors.grey.withOpacity(0.5),
-                spreadRadius: 5,
-                blurRadius: 7,
-                offset: Offset(0, 1),
+                spreadRadius: 3,
+                blurRadius: 5,
+                offset: Offset(0, 1), // changes position of shadow
               )
             ],
             color: ResourceManager().color!.white,
