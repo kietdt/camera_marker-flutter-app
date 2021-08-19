@@ -48,7 +48,8 @@ class Template {
   String? title;
   String? desc;
   int? question;
-  List<String>? type;
+  String? type;
+  String? typeDecs;
   String? thumbnail;
   String? originalImage;
   String? createAt;
@@ -70,7 +71,8 @@ class Template {
     title = json['title'];
     desc = json['desc'];
     question = json['question'];
-    type = json['type'].cast<String>();
+    type = json['type'];
+    typeDecs = json['type_desc'];
     thumbnail = json['thumbnail'];
     originalImage = json['original_image'];
     createAt = json['create_at'];
@@ -84,6 +86,7 @@ class Template {
     data['desc'] = this.desc;
     data['question'] = this.question;
     data['type'] = this.type;
+    data['type_desc'] = this.typeDecs;
     data['thumbnail'] = this.thumbnail;
     data['original_image'] = this.originalImage;
     data['create_at'] = this.createAt;

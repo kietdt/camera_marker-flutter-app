@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 
+import 'database/database_ctr.dart';
 import 'manager/resource_manager.dart';
 
 Future<void> main() async {
@@ -17,6 +18,8 @@ Future<void> main() async {
   //initRessource
   ResourceManager().init();
   RouteManager().init();
+  //init database
+  await DataBaseCtr().init();
 
   runApp(MyApp());
 }

@@ -2,6 +2,8 @@ import 'package:camera_marker/resource/route_name.dart';
 import 'package:camera_marker/view/screen/camera_transform/yuv_transform_screen.dart';
 import 'package:camera_marker/view/screen/dash_board/dash_board_page.dart';
 import 'package:camera_marker/view/screen/exam/exam_page.dart';
+import 'package:camera_marker/view/screen/template_detail/template_detail_page.dart';
+import 'package:camera_marker/view/screen/template_list/template_list_page.dart';
 import 'package:flutter/material.dart';
 import 'package:get/route_manager.dart';
 
@@ -39,6 +41,8 @@ class RouteManager {
       routeName.dashBoard: (payload) => DashBoardPage(),
       routeName.cameraScan: (payload) => YuvTransformScreen(),
       routeName.exam: (payload) => ExamPage(),
+      routeName.templateList: (payload) => TemplateList(),
+      routeName.tempPlateDetail: (payload) => TemplateDetail(payload: payload),
     };
   }
 }

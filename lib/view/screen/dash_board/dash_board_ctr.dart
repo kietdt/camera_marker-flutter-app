@@ -1,4 +1,6 @@
 import 'package:camera_marker/base/base_controller.dart';
+import 'package:camera_marker/base/utils.dart';
+import 'package:camera_marker/database/database_ctr.dart';
 import 'package:camera_marker/manager/http_manager.dart';
 import 'package:camera_marker/manager/route_manager.dart';
 import 'package:camera_marker/model/config.dart';
@@ -19,6 +21,10 @@ class DashBoardCtr extends BaseController<DashBoardState> {
     Get.toNamed(RouteManager().routeName.exam);
   }
 
+  void onTemplatePressed() {
+    Get.toNamed(RouteManager().routeName.templateList);
+  }
+
   void getConfig() async {
     showLoading();
     var json = await HttpManager().getConfig();
@@ -26,7 +32,12 @@ class DashBoardCtr extends BaseController<DashBoardState> {
 
     if (json != null) {
       configRespo = ConfigRespo.fromJson(json["data"]);
-      print("GET========CONFIG=========>SUCCESS");
+      Utils.statusPrint("GET", "CONFIG", success: true);
+      DataBaseCtr().tbTemplate.setList(configRespo?.template ?? []);
+      Utils.statusPrint("SET", "TEMPLATE",
+          success: true,
+          customMes:
+              "thumbnail: ${DataBaseCtr().tbTemplate.entities.first.thumbnail}");
     }
   }
 }

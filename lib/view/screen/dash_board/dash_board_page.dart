@@ -1,4 +1,5 @@
 import 'package:camera_marker/base/base_activity.dart';
+import 'package:camera_marker/base/base_image_view.dart';
 import 'package:camera_marker/manager/resource_manager.dart';
 import 'package:flutter/material.dart';
 
@@ -44,7 +45,7 @@ class DashBoardState extends BaseActivity<DashBoardPage, DashBoardCtr> {
             child: _item(
                 asset: "lib/asset/ic_template.png",
                 text: "Mẫu đề thi",
-                onTap: controller!.onExamPressed,
+                onTap: controller!.onTemplatePressed,
                 bgColor: Color(0xff6691cd)),
           ),
         ]));
@@ -75,7 +76,7 @@ class DashBoardState extends BaseActivity<DashBoardPage, DashBoardCtr> {
                                   border: Border.all(
                                       color: ResourceManager().color!.white,
                                       width: 6)),
-                              child: Image.asset(asset,
+                              child: CustomImageView(asset,
                                   width: size,
                                   height: size,
                                   color: ResourceManager().color!.white)))),
