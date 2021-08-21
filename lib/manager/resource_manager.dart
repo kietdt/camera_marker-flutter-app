@@ -10,6 +10,8 @@ class ResourceManager {
   BaseColor? color;
   BaseTextStyle? text;
 
+  String appName = "For Teacher";
+
   factory ResourceManager() {
     if (_internal == null) _internal = ResourceManager._();
     return _internal!;

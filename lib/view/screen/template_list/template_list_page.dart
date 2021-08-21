@@ -49,8 +49,8 @@ class TemplateListState extends BaseActivity<TemplateList, TemplateListCtr> {
           decoration: BoxDecoration(
               boxShadow: [
                 BoxShadow(
-                  color: Colors.grey.withOpacity(0.5),
-                  spreadRadius: 3,
+                  color: Colors.grey.withOpacity(0.2),
+                  spreadRadius: 2,
                   blurRadius: 5,
                   offset: Offset(0, 1), // changes position of shadow
                 )
@@ -91,6 +91,6 @@ class TemplateListState extends BaseActivity<TemplateList, TemplateListCtr> {
   Widget next() {
     return Container(
         child: Icon(Icons.navigate_next,
-            color: ResourceManager().color!.black, size: 40));
+            color: ResourceManager().color!.black, size: 25));
   }
 }

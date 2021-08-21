@@ -5,6 +5,6 @@ class BasePath {
   static const String ROOT_DATABASE = "$ROOT/batabase";
 
   //database
-  static const String DATABASE_CLASS = "$ROOT_DATABASE/class";
+  static const String CLASS = "$ROOT_DATABASE/class";
   static const String TEMPLATE = "$ROOT_DATABASE/template";
 }

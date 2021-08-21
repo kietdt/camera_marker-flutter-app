@@ -37,7 +37,7 @@ class DashBoardState extends BaseActivity<DashBoardPage, DashBoardCtr> {
             child: _item(
                 asset: "lib/asset/ic_class.png",
                 text: "Lớp",
-                onTap: controller!.onExamPressed,
+                onTap: controller!.onClassPressed,
                 bgColor: Color(0xff5285cd)),
           ),
           line(),
@@ -46,7 +46,7 @@ class DashBoardState extends BaseActivity<DashBoardPage, DashBoardCtr> {
                 asset: "lib/asset/ic_template.png",
                 text: "Mẫu đề thi",
                 onTap: controller!.onTemplatePressed,
-                bgColor: Color(0xff6691cd)),
+                bgColor: ResourceManager().color!.lightBlue),
           ),
         ]));
   }

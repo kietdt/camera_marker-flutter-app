@@ -1,5 +1,6 @@
 import 'package:camera_marker/resource/route_name.dart';
 import 'package:camera_marker/view/screen/camera_transform/yuv_transform_screen.dart';
+import 'package:camera_marker/view/screen/class/class_list_page.dart';
 import 'package:camera_marker/view/screen/dash_board/dash_board_page.dart';
 import 'package:camera_marker/view/screen/exam/exam_page.dart';
 import 'package:camera_marker/view/screen/template_detail/template_detail_page.dart';
@@ -43,6 +44,7 @@ class RouteManager {
       routeName.exam: (payload) => ExamPage(),
       routeName.templateList: (payload) => TemplateList(),
       routeName.tempPlateDetail: (payload) => TemplateDetail(payload: payload),
+      routeName.classList: (payload) => ClassListPage(),
     };
   }
 }

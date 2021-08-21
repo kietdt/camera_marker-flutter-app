@@ -52,6 +52,7 @@ class Template {
   String? typeDecs;
   String? thumbnail;
   String? originalImage;
+  String? downloadLink;
   String? createAt;
   String? updateAt;
 
@@ -66,7 +67,7 @@ class Template {
       this.createAt,
       this.updateAt});
 
-  Template.fromJson(Map<String, dynamic> json) {
+  Template.fromJson(Map json) {
     id = json['id'];
     title = json['title'];
     desc = json['desc'];
@@ -75,6 +76,7 @@ class Template {
     typeDecs = json['type_desc'];
     thumbnail = json['thumbnail'];
     originalImage = json['original_image'];
+    downloadLink = json['download_link'];
     createAt = json['create_at'];
     updateAt = json['update_at'];
   }
@@ -89,6 +91,7 @@ class Template {
     data['type_desc'] = this.typeDecs;
     data['thumbnail'] = this.thumbnail;
     data['original_image'] = this.originalImage;
+    data['download_link'] = this.downloadLink;
     data['create_at'] = this.createAt;
     data['update_at'] = this.updateAt;
     return data;

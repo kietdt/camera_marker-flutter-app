@@ -29,7 +29,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GetMaterialApp(
-      title: 'For Teacher',
+      title: ResourceManager().appName,
       debugShowCheckedModeBanner: false,
       // theme: ThemeData(
       //   primarySwatch: Colors.blue,

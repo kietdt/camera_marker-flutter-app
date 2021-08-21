@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:uuid/uuid.dart';
 
 abstract class BaseTable<T> {
   late String path;
@@ -9,13 +10,13 @@ abstract class BaseTable<T> {
   List<T> get entities => _entities;
   set entities(List<T> value) => this._entities = value;
 
-  List<T> fromJson(List<Map<String, dynamic>> jsons);
+  List<T> fromJson(List jsons);
   List<Map<String, dynamic>> toJson(List<T> entries);
 
   Future<void> loadTable() async {
     var _pref = await SharedPreferences.getInstance();
-    List<dynamic> _jsons = json.decode(_pref.getString(path) ?? "[]");
-    if (_jsons is List<Map<String, dynamic>>) {
+    List _jsons = json.decode(_pref.getString(path) ?? "[]");
+    if (_jsons is List) {
       entities = fromJson(_jsons);
     } else {
       entities = [];
@@ -38,10 +39,9 @@ abstract class BaseTable<T> {
     await storeTable();
   }
 
-  Future<bool> set(T entity) async {
-    int index = getIndex(entity);
+  Future<bool> set(int index) async {
     if (index >= 0) {
-      entities[index] = entity;
+      entities[index] = entities[index];
       await storeTable();
       return true;
     }
@@ -54,8 +54,7 @@ abstract class BaseTable<T> {
     return false;
   }
 
-  Future<bool> delete(T entity) async {
-    int index = getIndex(entity);
+  Future<bool> delete(int index) async {
     if (index >= 0) {
       entities.removeAt(index);
       await storeTable();
@@ -67,5 +66,9 @@ abstract class BaseTable<T> {
   int getIndex(T entity) {
     int index = entities.indexWhere((element) => element == entity);
     return index;
+  }
+
+  String newId() {
+    return Uuid().v4();
   }
 }

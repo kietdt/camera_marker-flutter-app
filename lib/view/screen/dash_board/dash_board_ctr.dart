@@ -21,6 +21,10 @@ class DashBoardCtr extends BaseController<DashBoardState> {
     Get.toNamed(RouteManager().routeName.exam);
   }
 
+  void onClassPressed() {
+    Get.toNamed(RouteManager().routeName.classList);
+  }
+
   void onTemplatePressed() {
     Get.toNamed(RouteManager().routeName.templateList);
   }

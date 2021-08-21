@@ -8,7 +8,7 @@ class TbTemplate extends BaseTable<Template> {
   String get path => BasePath.TEMPLATE;
 
   @override
-  List<Template> fromJson(List<Map<String, dynamic>> json) {
+  List<Template> fromJson(List json) {
     List<Template> temp =
         List<Template>.from(json.map((e) => (Template.fromJson(e))));
     return temp;
