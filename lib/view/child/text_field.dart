@@ -9,6 +9,9 @@ class TextFieldView extends StatelessWidget {
   final EdgeInsets? contentPadding;
   final TextInputType? keyboardType;
   final FocusNode? focusNode;
+  final bool? enable;
+  final bool? readOnly;
+  final Function()? onTap;
 
   const TextFieldView(
       {Key? key,
@@ -18,28 +21,29 @@ class TextFieldView extends StatelessWidget {
       this.hintStyle,
       this.contentPadding,
       this.keyboardType,
-      this.focusNode})
+      this.focusNode,
+      this.onTap,
+      this.readOnly,
+      this.enable})
       : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      padding: EdgeInsets.symmetric(horizontal: 7),
-      decoration: BoxDecoration(
-          borderRadius: BorderRadius.all(Radius.circular(7)),
-          border: Border.all(color: ResourceManager().color!.des)),
-      child: TextFormField(
-        controller: controller,
-        style: style,
-        keyboardType: keyboardType,
-        cursorColor: ResourceManager().color!.primary,
-        focusNode: focusNode,
-        decoration: InputDecoration(
-            hintStyle: hintStyle,
-            hintText: hint,
-            border: InputBorder.none,
-            contentPadding: EdgeInsets.zero),
-      ),
+    return TextFormField(
+      controller: controller,
+      style: style,
+      keyboardType: keyboardType,
+      cursorColor: ResourceManager().color!.primary,
+      focusNode: focusNode,
+      onTap: onTap,
+      readOnly: readOnly ?? false,
+      enabled: enable,
+      decoration: InputDecoration(
+          border: OutlineInputBorder(borderRadius: BorderRadius.circular(7)),
+          hintStyle: hintStyle,
+          hintText: hint,
+          contentPadding: contentPadding ??
+              EdgeInsets.symmetric(horizontal: 7, vertical: 5)),
     );
   }
 }

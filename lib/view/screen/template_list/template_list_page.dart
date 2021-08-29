@@ -15,7 +15,7 @@ class TemplateList extends StatefulWidget {
   }
 }
 
-class TemplateListState extends BaseActivity<TemplateList, TemplateListCtr> {
+class TemplateListState extends BaseScaffold<TemplateList, TemplateListCtr> {
   @override
   void initState() {
     super.initState();

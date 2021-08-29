@@ -1,11 +1,27 @@
 import 'package:camera_marker/base/base_controller.dart';
+import 'package:camera_marker/model/exam.dart';
+import 'package:camera_marker/view/dialog/dialog_exam.dart';
+import 'package:camera_marker/view/extend/list_select/list_select_ctr.dart';
 
 import 'exam_page.dart';
 
-class ExamPageCtr extends BaseController<ExamPageState> {
+class ExamPageCtr extends ListSelectCtr<ExamPageState, Exam> {
   ExamPageCtr(ExamPageState state) : super(state);
 
-  List<dynamic> get exams => [];
+  @override
+  void onDelete() {
+    // TODO: implement onDelete
+  }
 
-  void addExam() {}
+  @override
+  void showNew() {
+    DialogExam.showNew(onConfirm: addExam);
+  }
+
+  @override
+  void showUpdate(Exam? item, int index) {
+    // TODO: implement showUpdate
+  }
+
+  void addExam(Exam exam) {}
 }

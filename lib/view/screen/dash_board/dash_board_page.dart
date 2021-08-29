@@ -12,7 +12,7 @@ class DashBoardPage extends StatefulWidget {
   }
 }
 
-class DashBoardState extends BaseActivity<DashBoardPage, DashBoardCtr> {
+class DashBoardState extends BaseScaffold<DashBoardPage, DashBoardCtr> {
   @override
   DashBoardCtr initController() {
     return DashBoardCtr(this);

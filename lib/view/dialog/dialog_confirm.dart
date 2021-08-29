@@ -19,14 +19,16 @@ class DialogConfirm extends StatelessWidget {
       required String message,
       String? leftTitle,
       String? rightTitle}) async {
-    return Get.dialog(DialogConfirm(
-      message: message,
-      onLeft: onLeft,
-      onRight: onRight,
-      title: title,
-      leftTitle: leftTitle,
-      rightTitle: rightTitle,
-    ));
+    return Get.dialog(
+        DialogConfirm(
+          message: message,
+          onLeft: onLeft,
+          onRight: onRight,
+          title: title,
+          leftTitle: leftTitle,
+          rightTitle: rightTitle,
+        ),
+        barrierDismissible: false);
   }
 
   const DialogConfirm({

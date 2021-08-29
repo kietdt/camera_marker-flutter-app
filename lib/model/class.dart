@@ -1,4 +1,4 @@
-class Class {
+class MyClass {
   String? id;
   String? code;
   String? name;
@@ -6,7 +6,7 @@ class Class {
   DateTime? createdAt;
   DateTime? updatedAt;
 
-  Class(
+  MyClass(
       {this.id,
       this.code,
       this.name,
@@ -14,7 +14,7 @@ class Class {
       this.createdAt,
       this.updatedAt});
 
-  Class.fromJson(Map json) {
+  MyClass.fromJson(Map json) {
     id = json["id"];
     code = json["code"];
     name = json["name"];

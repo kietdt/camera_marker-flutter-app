@@ -25,7 +25,7 @@ class TemplateDetail extends StatefulWidget {
 }
 
 class TemplateDetailState
-    extends BaseActivity<TemplateDetail, TemplateDetailCtr> {
+    extends BaseScaffold<TemplateDetail, TemplateDetailCtr> {
   @override
   void initState() {
     super.initState();

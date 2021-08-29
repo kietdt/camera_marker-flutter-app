@@ -8,8 +8,8 @@ import 'package:get/get.dart';
 enum DialogClassType { New, Update }
 
 class DialogClass extends StatelessWidget {
-  final Function(Class temp)? onDone;
-  final Class? temp;
+  final Function(MyClass temp)? onDone;
+  final MyClass? temp;
   final DialogClassType? type;
 
   final TextEditingController _codeCtr = TextEditingController();
@@ -31,7 +31,7 @@ class DialogClass extends StatelessWidget {
     }
   }
 
-  static showNew({Function(Class temp)? onDone}) async {
+  static showNew({Function(MyClass temp)? onDone}) async {
     return Get.dialog(
         DialogClass(
           onDone: onDone,
@@ -40,7 +40,7 @@ class DialogClass extends StatelessWidget {
         barrierDismissible: false);
   }
 
-  static showUpdate({Function(Class temp)? onDone, Class? temp}) async {
+  static showUpdate({Function(MyClass temp)? onDone, MyClass? temp}) async {
     return Get.dialog(
         DialogClass(
           onDone: onDone,
@@ -69,29 +69,35 @@ class DialogClass extends StatelessWidget {
               child: _content(),
             ),
             SizedBox(height: 100),
-            Container(
-              width: 200,
-              child: RectButton(
-                onTap: onCofirm,
-                title: isUpdate ? "Cập nhật" : "Thêm mới",
-                shadow: true,
-                color: ResourceManager().color!.lightBlue,
-              ),
-            ),
-            SizedBox(height: 15),
-            Container(
-              width: 200,
-              child: RectButton(
-                title: "Hủy",
-                shadow: true,
-                color: ResourceManager().color!.lightBlue,
-                onTap: Get.back,
-              ),
-            )
+            _button()
           ],
         ),
       ),
     );
+  }
+
+  Widget _button() {
+    return Column(children: [
+      Container(
+        width: 200,
+        child: RectButton(
+          onTap: onCofirm,
+          title: isUpdate ? "Cập nhật" : "Thêm mới",
+          shadow: true,
+          color: ResourceManager().color!.lightBlue,
+        ),
+      ),
+      SizedBox(height: 15),
+      Container(
+        width: 200,
+        child: RectButton(
+          title: "Hủy",
+          shadow: true,
+          color: ResourceManager().color!.lightBlue,
+          onTap: Get.back,
+        ),
+      )
+    ]);
   }
 
   Widget _content() {
@@ -164,7 +170,7 @@ class DialogClass extends StatelessWidget {
   void onCofirm() {
     if (validate()) {
       if (onDone != null) {
-        Class _class = temp ?? Class();
+        MyClass _class = temp ?? MyClass();
         _class.code = _codeCtr.text;
         _class.name = _nameCtr.text;
         _class.desc = _descCtr.text;

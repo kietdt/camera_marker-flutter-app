@@ -2,6 +2,8 @@ import 'package:intl/intl.dart';
 
 class Utils {
   static const String DMY = "dd/MM/yyyy";
+  static const String DMYHM = "dd/MM/yyyy HH:mm";
+  static const String HM = "HH:mm";
 
   static void statusPrint(String action, String what,
       {bool success = true, bool? loadig, String? customMes}) {

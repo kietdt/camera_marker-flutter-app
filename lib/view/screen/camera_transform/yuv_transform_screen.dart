@@ -17,7 +17,7 @@ class YuvTransformScreen extends StatefulWidget {
 }
 
 class YuvTransformScreenState
-    extends BaseActivity<YuvTransformScreen, YuvTransformScreenCtr> {
+    extends BaseScaffold<YuvTransformScreen, YuvTransformScreenCtr> {
   @override
   YuvTransformScreenCtr initController() {
     return YuvTransformScreenCtr(this);

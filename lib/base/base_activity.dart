@@ -6,7 +6,7 @@ import 'base_controller.dart';
 
 //created by Kietdt 28/07/2021
 //contact email: dotuankiet1403@gmail.com
-abstract class BaseActivity<S extends StatefulWidget, C extends BaseController>
+abstract class BaseScaffold<S extends StatefulWidget, C extends BaseController>
     extends BaseFragment<S, C> {
   final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
 

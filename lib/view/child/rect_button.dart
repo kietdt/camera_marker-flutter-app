@@ -8,6 +8,7 @@ class RectButton extends StatelessWidget {
   final Color? borderColor;
   final Color? color;
   final Color? textColor;
+  final double? textSize;
 
   const RectButton(
       {Key? key,
@@ -16,7 +17,8 @@ class RectButton extends StatelessWidget {
       this.shadow = false,
       this.borderColor,
       this.textColor,
-      this.color})
+      this.color,
+      this.textSize})
       : super(key: key);
 
   @override
@@ -46,7 +48,7 @@ class RectButton extends StatelessWidget {
         child: Text(this.title ?? "Xác nhận",
             style: ResourceManager().text!.boldStyle.copyWith(
                 color: textColor ?? ResourceManager().color!.white,
-                fontSize: 20)),
+                fontSize: textSize ?? 20)),
       ),
     );
   }

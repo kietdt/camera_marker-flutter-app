@@ -12,8 +12,16 @@ class BaseHttp {
 
   Future<Map<String, dynamic>?> get(String path,
       {Map<String, dynamic>? params}) async {
-    var response = await Dio(_baseOption)
-        .get<Map<String, dynamic>>(path, queryParameters: params);
+    Dio dio = Dio(_baseOption);
+    dio
+      ..interceptors.add(LogInterceptor(
+          responseBody: true,
+          request: true,
+          requestBody: true,
+          requestHeader: true,
+          responseHeader: true));
+    var response =
+        await dio.get<Map<String, dynamic>>(path, queryParameters: params);
     return wrapResponse(response);
   }
 
