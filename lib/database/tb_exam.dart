@@ -17,7 +17,7 @@ class TbExam extends BaseTable<Exam> {
     return List<Map<String, dynamic>>.from(entries.map((e) => e.toJson()));
   }
 
-  Future<void> addClass(Exam exam) async {
+  Future<void> addNewExam(Exam exam) async {
     exam.id = newId();
     await add(exam);
   }

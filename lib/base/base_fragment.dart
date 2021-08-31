@@ -69,7 +69,7 @@ abstract class BaseFragment<S extends StatefulWidget, C extends BaseController>
             alignment: Alignment.center,
             color: Colors.black.withOpacity(0.1),
             child: SpinKitWanderingCubes(
-                size: 52, color: ResourceManager().color!.primary))));
+                size: 52, color: ResourceManager().color.primary))));
   }
 
   @override

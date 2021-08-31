@@ -1,6 +1,6 @@
 import 'dart:async';
 
-import 'package:camera_marker/base/base_activity.dart';
+import 'package:camera_marker/base/base_scaffold.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';

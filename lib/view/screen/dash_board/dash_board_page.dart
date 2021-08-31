@@ -1,4 +1,4 @@
-import 'package:camera_marker/base/base_activity.dart';
+import 'package:camera_marker/base/base_scaffold.dart';
 import 'package:camera_marker/base/base_image_view.dart';
 import 'package:camera_marker/manager/resource_manager.dart';
 import 'package:flutter/material.dart';
@@ -30,7 +30,7 @@ class DashBoardState extends BaseScaffold<DashBoardPage, DashBoardCtr> {
                 asset: "lib/asset/ic_exam.png",
                 text: "Kì thi",
                 onTap: controller!.onExamPressed,
-                bgColor: ResourceManager().color!.primary),
+                bgColor: ResourceManager().color.primary),
           ),
           line(),
           Expanded(
@@ -46,7 +46,7 @@ class DashBoardState extends BaseScaffold<DashBoardPage, DashBoardCtr> {
                 asset: "lib/asset/ic_template.png",
                 text: "Mẫu đề thi",
                 onTap: controller!.onTemplatePressed,
-                bgColor: ResourceManager().color!.lightBlue),
+                bgColor: ResourceManager().color.lightBlue),
           ),
         ]));
   }
@@ -74,30 +74,30 @@ class DashBoardState extends BaseScaffold<DashBoardPage, DashBoardCtr> {
                               decoration: BoxDecoration(
                                   shape: BoxShape.circle,
                                   border: Border.all(
-                                      color: ResourceManager().color!.white,
+                                      color: ResourceManager().color.white,
                                       width: 6)),
                               child: CustomImageView(asset,
                                   width: size,
                                   height: size,
-                                  color: ResourceManager().color!.white)))),
+                                  color: ResourceManager().color.white)))),
                   SizedBox(width: 15),
                   Expanded(
                       flex: 5,
                       child: Text(text,
-                          style: ResourceManager().text!.boldStyle.copyWith(
-                              color: ResourceManager().color!.white,
+                          style: ResourceManager().text.boldStyle.copyWith(
+                              color: ResourceManager().color.white,
                               fontSize: textSize))),
                   next()
                 ]))));
   }
 
   Widget line() {
-    return Container(height: 2, color: ResourceManager().color!.white);
+    return Container(height: 2, color: ResourceManager().color.white);
   }
 
   Widget next() {
     return Container(
         child: Icon(Icons.navigate_next,
-            color: ResourceManager().color!.white, size: 40));
+            color: ResourceManager().color.white, size: 40));
   }
 }

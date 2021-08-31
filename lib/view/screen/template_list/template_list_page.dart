@@ -1,4 +1,4 @@
-import 'package:camera_marker/base/base_activity.dart';
+import 'package:camera_marker/base/base_scaffold.dart';
 import 'package:camera_marker/base/base_appbar.dart';
 import 'package:camera_marker/base/base_image_view.dart';
 import 'package:camera_marker/manager/resource_manager.dart';
@@ -55,7 +55,7 @@ class TemplateListState extends BaseScaffold<TemplateList, TemplateListCtr> {
                   offset: Offset(0, 1), // changes position of shadow
                 )
               ],
-              color: ResourceManager().color!.white,
+              color: ResourceManager().color.white,
               borderRadius: BorderRadius.all(Radius.circular(8))),
           child: IntrinsicHeight(
             child: Row(children: [
@@ -75,12 +75,12 @@ class TemplateListState extends BaseScaffold<TemplateList, TemplateListCtr> {
                       children: [
                     Text(template.title ?? "",
                         style: ResourceManager()
-                            .text!
+                            .text
                             .boldStyle
                             .copyWith(fontSize: 25)),
                     SizedBox(height: 10),
                     Text((template.desc ?? ""),
-                        style: ResourceManager().text!.normalStyle)
+                        style: ResourceManager().text.normalStyle)
                   ])),
               next()
             ]),
@@ -91,6 +91,6 @@ class TemplateListState extends BaseScaffold<TemplateList, TemplateListCtr> {
   Widget next() {
     return Container(
         child: Icon(Icons.navigate_next,
-            color: ResourceManager().color!.black, size: 25));
+            color: ResourceManager().color.black, size: 25));
   }
 }

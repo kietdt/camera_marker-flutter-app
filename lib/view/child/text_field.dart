@@ -12,6 +12,10 @@ class TextFieldView extends StatelessWidget {
   final bool? enable;
   final bool? readOnly;
   final Function()? onTap;
+  final String? suffixText;
+  final int? maxLength;
+  final String? counterText;
+  final Function(String)? onChanged;
 
   const TextFieldView(
       {Key? key,
@@ -24,6 +28,10 @@ class TextFieldView extends StatelessWidget {
       this.focusNode,
       this.onTap,
       this.readOnly,
+      this.suffixText,
+      this.maxLength,
+      this.counterText,
+      this.onChanged,
       this.enable})
       : super(key: key);
 
@@ -33,15 +41,19 @@ class TextFieldView extends StatelessWidget {
       controller: controller,
       style: style,
       keyboardType: keyboardType,
-      cursorColor: ResourceManager().color!.primary,
+      cursorColor: ResourceManager().color.primary,
       focusNode: focusNode,
       onTap: onTap,
       readOnly: readOnly ?? false,
       enabled: enable,
+      maxLength: maxLength,
+      onChanged: onChanged,
       decoration: InputDecoration(
           border: OutlineInputBorder(borderRadius: BorderRadius.circular(7)),
           hintStyle: hintStyle,
           hintText: hint,
+          suffixText: suffixText,
+          counterText: counterText ?? "",
           contentPadding: contentPadding ??
               EdgeInsets.symmetric(horizontal: 7, vertical: 5)),
     );

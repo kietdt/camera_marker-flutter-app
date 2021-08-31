@@ -17,18 +17,18 @@ class FloatingActionAdd extends StatelessWidget {
             shape: BoxShape.circle,
             boxShadow: [
               BoxShadow(
-                color: ResourceManager().color!.primary.withOpacity(0.2),
+                color: ResourceManager().color.primary.withOpacity(0.2),
                 spreadRadius: 2,
                 blurRadius: 5,
                 offset: Offset(0, 1), // changes position of shadow
               )
             ],
-            color: ResourceManager().color!.white,
+            color: ResourceManager().color.white,
             border: Border.all(
-                color: color ?? ResourceManager().color!.primary, width: 2)),
+                color: color ?? ResourceManager().color.primary, width: 2)),
         child: InkWell(
             onTap: onTap,
             child: Icon(Icons.add,
-                color: color ?? ResourceManager().color!.primary)));
+                color: color ?? ResourceManager().color.primary)));
   }
 }

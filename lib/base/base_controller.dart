@@ -34,8 +34,8 @@ abstract class BaseController<S extends State> {
 
   void bottomSnackBar(String title, String message) {
     Get.snackbar(title, message,
-        colorText: ResourceManager().color!.white,
-        backgroundColor: ResourceManager().color!.primary,
+        colorText: ResourceManager().color.white,
+        backgroundColor: ResourceManager().color.primary,
         snackPosition: SnackPosition.BOTTOM,
         margin: EdgeInsets.fromLTRB(15, 0, 15, 15),
         duration: Duration(milliseconds: 1500));
@@ -43,8 +43,8 @@ abstract class BaseController<S extends State> {
 
   void topSnackBar(String title, String message) {
     Get.snackbar(title, message,
-        colorText: ResourceManager().color!.black,
-        backgroundColor: ResourceManager().color!.white,
+        colorText: ResourceManager().color.black,
+        backgroundColor: ResourceManager().color.white,
         boxShadows: [
           BoxShadow(
             color: Colors.grey.withOpacity(0.2),

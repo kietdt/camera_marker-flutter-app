@@ -7,8 +7,8 @@ class ResourceManager {
   static ResourceManager? _internal;
   ResourceManager._();
 
-  BaseColor? color;
-  BaseTextStyle? text;
+  late BaseColor color;
+  late BaseTextStyle text;
 
   String appName = "For Teacher";
 

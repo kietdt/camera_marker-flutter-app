@@ -29,7 +29,7 @@ abstract class BaseScaffold<S extends StatefulWidget, C extends BaseController>
   PreferredSizeWidget? buildAppbar() => null;
 
   Widget buildBackground() =>
-      Container(color: ResourceManager().color!.background);
+      Container(color: ResourceManager().color.background);
 
   _scaffold() {
     return Scaffold(

@@ -1,6 +1,6 @@
 import 'dart:math';
 
-import 'package:camera_marker/base/base_activity.dart';
+import 'package:camera_marker/base/base_scaffold.dart';
 import 'package:camera_marker/base/base_appbar.dart';
 import 'package:camera_marker/manager/resource_manager.dart';
 import 'package:camera_marker/view/child/empty_page.dart';
@@ -36,7 +36,7 @@ abstract class ListSelect<S extends StatefulWidget, C extends ListSelectCtr, D>
         animation: controller!.deleteCtr,
         child: Obx(() => FloatingActionAdd(
               color: controller!.showSelect.value
-                  ? ResourceManager().color!.delete
+                  ? ResourceManager().color.delete
                   : null,
               onTap: controller!.showSelect.value
                   ? controller!.onDelete
@@ -82,8 +82,8 @@ abstract class ListSelect<S extends StatefulWidget, C extends ListSelectCtr, D>
               child: Obx(() => Checkbox(
                   // ignore: invalid_use_of_protected_member
                   value: controller!.selecteList.value[index],
-                  activeColor: ResourceManager().color!.primary,
-                  checkColor: ResourceManager().color!.white,
+                  activeColor: ResourceManager().color.primary,
+                  checkColor: ResourceManager().color.white,
                   onChanged: (value) => controller!.oncheckBox(index))),
             ),
           );

@@ -26,7 +26,7 @@ class ClassListState extends ListSelect<ClassListPage, ClassListCtr, MyClass> {
       padding: EdgeInsets.all(7),
       margin: EdgeInsets.only(top: controller!.mainPadding),
       decoration: BoxDecoration(
-          color: ResourceManager().color!.white,
+          color: ResourceManager().color.white,
           boxShadow: [
             BoxShadow(
               color: Colors.grey.withOpacity(0.2),
@@ -41,8 +41,8 @@ class ClassListState extends ListSelect<ClassListPage, ClassListCtr, MyClass> {
         children: [
           Text(
             "Mã lớp: ${item?.code}",
-            style: ResourceManager().text!.boldStyle.copyWith(
-                color: ResourceManager().color!.primary, fontSize: 25),
+            style: ResourceManager().text.boldStyle.copyWith(
+                color: ResourceManager().color.primary, fontSize: 25),
           ),
           _itemDesc("Tên lớp", item?.name),
           _itemDesc("Mô tả", item?.desc),
@@ -62,13 +62,13 @@ class ClassListState extends ListSelect<ClassListPage, ClassListCtr, MyClass> {
             width: 120,
             child: Text(
               title ?? "",
-              style: ResourceManager().text!.boldStyle.copyWith(fontSize: 15),
+              style: ResourceManager().text.boldStyle.copyWith(fontSize: 15),
             ),
           ),
           Expanded(
             child: Text(
               decs ?? "",
-              style: ResourceManager().text!.normalStyle.copyWith(fontSize: 15),
+              style: ResourceManager().text.normalStyle.copyWith(fontSize: 15),
             ),
           )
         ],

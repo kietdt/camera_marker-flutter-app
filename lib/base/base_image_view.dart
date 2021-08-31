@@ -53,6 +53,6 @@ class CustomImageView extends StatelessWidget {
         color: Colors.black.withOpacity(0.1),
         child: SpinKitWanderingCubes(
             size: (loadingSize ?? width ?? 200) / 5,
-            color: ResourceManager().color!.primary));
+            color: ResourceManager().color.primary));
   }
 }

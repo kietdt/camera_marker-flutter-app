@@ -56,6 +56,9 @@ class DialogExam extends StatelessWidget {
 
   double get inputHeight => 35;
   double get inputSize => 13;
+  bool get isNew => type == DialogExamType.New;
+
+  late var canSubmit = isNew ? false.obs : true.obs;
 
   static showNew({required Function(Exam exam) onConfirm}) {
     return Get.dialog(
@@ -98,14 +101,15 @@ class DialogExam extends StatelessWidget {
 
   Widget _content(BuildContext context) {
     return Container(
-      padding: EdgeInsets.symmetric(horizontal: 25, vertical: 25),
+      padding: EdgeInsets.symmetric(horizontal: 25, vertical: 25)
+          .copyWith(bottom: 15),
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          _item("Kì thi", titleFcn, titleCtr),
+          _item("Kì thi*", titleFcn, titleCtr),
           SizedBox(height: 7),
           _itemDropdown<int>(
-              title: "Câu trả lời",
+              title: "Câu trả lời*",
               defaultValue: questionValue,
               items: myQuestions,
               onChanged: (int? value) {
@@ -113,7 +117,7 @@ class DialogExam extends StatelessWidget {
                 print("CHỌN CÂU TRẢ LỜI ====================>$questionValue");
               }),
           _itemDropdown<MyClass>(
-              title: "Lớp",
+              title: "Lớp*",
               defaultValue: myClassSeletected,
               items: myClass,
               onChanged: (MyClass? value) {
@@ -121,11 +125,11 @@ class DialogExam extends StatelessWidget {
                 print("CHỌN CÂU TRẢ LỜI ====================>$questionValue");
               }),
           SizedBox(height: 7),
-          _item("Điểm", pointFcn, pointCtr,
+          _item("Điểm*", pointFcn, pointCtr,
               textInputType: TextInputType.number),
           SizedBox(height: 7),
           _itemDropdown<Template>(
-              title: "Mẫu đề thi",
+              title: "Mẫu đề thi*",
               defaultValue: templateSelected,
               items: myTemplate,
               onChanged: (Template? value) {
@@ -133,18 +137,24 @@ class DialogExam extends StatelessWidget {
                 print("CHỌN CÂU TRẢ LỜI ====================>$questionValue");
               }),
           SizedBox(height: 7),
-          _item("Ngày bắt đầu", null, dateStartCtr,
+          _item("Ngày bắt đầu*", null, dateStartCtr,
               readonly: true, textInputType: TextInputType.number, onTap: () {
             showDate(context);
           }),
           SizedBox(height: 7),
-          _item("Giờ bắt đầu", null, timeStartCtr,
+          _item("Giờ bắt đầu*", null, timeStartCtr,
               readonly: true, textInputType: TextInputType.number, onTap: () {
             showTime(context);
           }),
           SizedBox(height: 7),
-          _item("Thời gian thi", timeFcn, timeCtr,
-              textInputType: TextInputType.number),
+          _itemTime("Thời gian thi*", timeFcn, timeCtr,
+              textInputType: TextInputType.number, suffixText: "Phút"),
+          SizedBox(height: 15),
+          Text(
+            "Điền những phần có dấu * để tạo kì thi",
+            style: ResourceManager().text.normalStyle.copyWith(
+                fontSize: inputSize, color: ResourceManager().color.error),
+          ),
         ],
       ),
     );
@@ -153,6 +163,8 @@ class DialogExam extends StatelessWidget {
   Widget _item(String title, FocusNode? fcn, TextEditingController ctr,
       {TextInputType? textInputType,
       bool readonly = false,
+      Function(String)? onChanged,
+      String? suffixText,
       Function()? onTap}) {
     return Row(
       children: [
@@ -161,7 +173,7 @@ class DialogExam extends StatelessWidget {
           child: Text(
             title,
             style:
-                ResourceManager().text!.boldStyle.copyWith(fontSize: inputSize),
+                ResourceManager().text.boldStyle.copyWith(fontSize: inputSize),
           ),
         ),
         Expanded(
@@ -173,8 +185,15 @@ class DialogExam extends StatelessWidget {
               focusNode: fcn,
               readOnly: readonly,
               onTap: onTap,
+              suffixText: suffixText,
+              onChanged: (String text) {
+                if (onChanged != null) {
+                  onChanged(text);
+                }
+                validate();
+              },
               style: ResourceManager()
-                  .text!
+                  .text
                   .normalStyle
                   .copyWith(fontSize: inputSize),
             ),
@@ -182,6 +201,43 @@ class DialogExam extends StatelessWidget {
         )
       ],
     );
+  }
+
+  Widget _itemTime(String title, FocusNode? fcn, TextEditingController ctr,
+      {TextInputType? textInputType,
+      bool readonly = false,
+      String? suffixText,
+      Function()? onTap}) {
+    return Row(children: [
+      Container(
+        width: 100,
+        child: Text(
+          title,
+          style: ResourceManager().text.boldStyle.copyWith(fontSize: inputSize),
+        ),
+      ),
+      Container(
+        width: 70,
+        height: inputHeight,
+        child: TextFieldView(
+          keyboardType: textInputType,
+          controller: ctr,
+          focusNode: fcn,
+          readOnly: readonly,
+          maxLength: 4,
+          onTap: onTap,
+          onChanged: (text) {
+            validate();
+          },
+          style:
+              ResourceManager().text.normalStyle.copyWith(fontSize: inputSize),
+        ),
+      ),
+      SizedBox(width: 7),
+      Text(suffixText ?? "",
+          style: ResourceManager().text.normalStyle.copyWith(
+              fontSize: inputSize, color: ResourceManager().color.des))
+    ]);
   }
 
   Widget _itemDropdown<T>(
@@ -195,8 +251,8 @@ class DialogExam extends StatelessWidget {
           width: 100,
           child: Text(
             title,
-            style: ResourceManager().text!.boldStyle.copyWith(
-                fontSize: inputSize, color: ResourceManager().color!.black),
+            style: ResourceManager().text.boldStyle.copyWith(
+                fontSize: inputSize, color: ResourceManager().color.black),
           ),
         ),
         Expanded(child: _dropdown<T>(items, onChanged))
@@ -217,9 +273,9 @@ class DialogExam extends StatelessWidget {
           Expanded(
             child: RectButton(
               textSize: 15,
-              borderColor: ResourceManager().color!.des,
-              textColor: ResourceManager().color!.des,
-              color: ResourceManager().color!.white,
+              borderColor: ResourceManager().color.des,
+              textColor: ResourceManager().color.des,
+              color: ResourceManager().color.white,
               title: "Hủy",
               onTap: () {
                 Get.back();
@@ -228,13 +284,11 @@ class DialogExam extends StatelessWidget {
           ),
           SizedBox(width: 14),
           Expanded(
-              child: RectButton(
+              child: Obx(() => RectButton(
+                  disable: !canSubmit.value,
                   textSize: 15,
-                  title: "Tạo kì thi",
-                  onTap: () {
-                    Get.back();
-                    onConfirm(Exam());
-                  }))
+                  title: isNew ? "Tạo kì thi" : "Cập nhật",
+                  onTap: onCreate)))
         ]));
   }
 
@@ -272,5 +326,34 @@ class DialogExam extends StatelessWidget {
           "DATE PICK", Utils.dateToStr(dtStart, pattern: Utils.DMYHM));
       timeStartCtr.text = Utils.dateToStr(date, pattern: Utils.HM);
     }, currentTime: DateTime.now(), locale: LocaleType.vi);
+  }
+
+  void onCreate() {
+    Get.back();
+    Exam exam = Exam(
+        title: titleCtr.text,
+        question: questionValue,
+        myClass: myClassSeletected,
+        maxPoint: double.parse(pointCtr.text),
+        template: templateSelected,
+        startAt: dtStart,
+        minutes: int.tryParse(timeCtr.text));
+    onConfirm(exam);
+  }
+
+  void validate() {
+    bool valid = true;
+    if (titleCtr.text.isEmpty) {
+      valid = false;
+    } else if (pointCtr.text.isEmpty) {
+      valid = false;
+    } else if (timeStartCtr.text.isEmpty) {
+      valid = false;
+    } else if (dateStartCtr.text.isEmpty) {
+      valid = false;
+    } else if (timeCtr.text.isEmpty) {
+      valid = false;
+    }
+    canSubmit.value = valid;
   }
 }

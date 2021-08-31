@@ -31,7 +31,7 @@ class CustomDropdown<T> extends StatelessWidget {
           elevation: 0,
           isExpanded: true,
           style: style ??
-              ResourceManager().text!.normalStyle.copyWith(fontSize: 13),
+              ResourceManager().text.normalStyle.copyWith(fontSize: 13),
           onChanged: (value) {
             selectedValue?.value = value!;
             if (onChange != null) {
@@ -44,8 +44,8 @@ class CustomDropdown<T> extends StatelessWidget {
               value: value,
               child: Text(value.title ?? "",
                   style: style ??
-                      ResourceManager().text!.normalStyle.copyWith(
-                          fontSize: 13, color: ResourceManager().color!.black)),
+                      ResourceManager().text.normalStyle.copyWith(
+                          fontSize: 13, color: ResourceManager().color.black)),
             );
           }).toList(),
         ));

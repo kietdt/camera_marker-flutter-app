@@ -84,7 +84,7 @@ class DialogClass extends StatelessWidget {
           onTap: onCofirm,
           title: isUpdate ? "Cập nhật" : "Thêm mới",
           shadow: true,
-          color: ResourceManager().color!.lightBlue,
+          color: ResourceManager().color.lightBlue,
         ),
       ),
       SizedBox(height: 15),
@@ -93,7 +93,7 @@ class DialogClass extends StatelessWidget {
         child: RectButton(
           title: "Hủy",
           shadow: true,
-          color: ResourceManager().color!.lightBlue,
+          color: ResourceManager().color.lightBlue,
           onTap: Get.back,
         ),
       )
@@ -127,14 +127,14 @@ class DialogClass extends StatelessWidget {
           width: 70,
           child: Text(
             title,
-            style: ResourceManager().text!.boldStyle.copyWith(fontSize: 15),
+            style: ResourceManager().text.boldStyle.copyWith(fontSize: 15),
           ),
         ),
         Expanded(
           child: TextFieldView(
             controller: ctr,
             focusNode: fcn,
-            style: ResourceManager().text!.normalStyle.copyWith(fontSize: 15),
+            style: ResourceManager().text.normalStyle.copyWith(fontSize: 15),
           ),
         )
       ],
@@ -145,9 +145,9 @@ class DialogClass extends StatelessWidget {
     return Text(
       messageError.value,
       style: ResourceManager()
-          .text!
+          .text
           .normalStyle
-          .copyWith(color: ResourceManager().color!.error),
+          .copyWith(color: ResourceManager().color.error),
     );
   }
 

@@ -13,13 +13,13 @@ class EmptyPageView extends StatelessWidget {
     return Center(
         child: Column(mainAxisSize: MainAxisSize.min, children: [
       CustomImageView(asset ?? "lib/asset/ic_empty.png",
-          width: 100, height: 100, color: ResourceManager().color!.primary),
+          width: 100, height: 100, color: ResourceManager().color.primary),
       SizedBox(height: 10),
       Text(message ?? "",
           style: ResourceManager()
-              .text!
+              .text
               .normalStyle
-              .copyWith(color: ResourceManager().color!.primary, fontSize: 16))
+              .copyWith(color: ResourceManager().color.primary, fontSize: 16))
     ]));
   }
 }

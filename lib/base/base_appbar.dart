@@ -20,9 +20,9 @@ class BaseAppBar {
 
   PreferredSizeWidget toAppBar() {
     return AppBar(
-      backgroundColor: ResourceManager().color!.primary,
+      backgroundColor: ResourceManager().color.primary,
       title: (text != null)
-          ? Text(text!, style: ResourceManager().text!.boldStyle)
+          ? Text(text ?? "", style: ResourceManager().text.boldStyle)
           : title,
       centerTitle: centerTitle,
       leading: back! ? buildBack() : leading,

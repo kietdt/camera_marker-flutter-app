@@ -48,7 +48,7 @@ class DialogConfirm extends StatelessWidget {
       elevation: 0,
       child: Container(
         decoration: BoxDecoration(
-            color: ResourceManager().color!.white,
+            color: ResourceManager().color.white,
             borderRadius: BorderRadius.all(Radius.circular(7))),
         child: Column(
           mainAxisSize: MainAxisSize.min,
@@ -58,16 +58,16 @@ class DialogConfirm extends StatelessWidget {
             SizedBox(height: 7),
             Text(
               title ?? "Xác nhận",
-              style: ResourceManager().text!.boldStyle.copyWith(
-                  color: ResourceManager().color!.primary, fontSize: 20),
+              style: ResourceManager().text.boldStyle.copyWith(
+                  color: ResourceManager().color.primary, fontSize: 20),
             ),
             SizedBox(height: 7),
             Text(
               message,
               style: ResourceManager()
-                  .text!
+                  .text
                   .normalStyle
-                  .copyWith(color: ResourceManager().color!.des, fontSize: 13),
+                  .copyWith(color: ResourceManager().color.des, fontSize: 13),
             ),
             SizedBox(height: 14),
             _bottom(),
@@ -84,12 +84,12 @@ class DialogConfirm extends StatelessWidget {
       decoration: BoxDecoration(
           shape: BoxShape.circle,
           border:
-              Border.all(width: 3, color: ResourceManager().color!.primary)),
+              Border.all(width: 3, color: ResourceManager().color.primary)),
       child: CustomImageView(
         "lib/asset/ic_confirm.png",
         width: 50,
         height: 50,
-        color: ResourceManager().color!.primary,
+        color: ResourceManager().color.primary,
       ),
     );
   }
@@ -101,9 +101,9 @@ class DialogConfirm extends StatelessWidget {
         children: [
           Expanded(
             child: RectButton(
-              borderColor: ResourceManager().color!.des,
-              textColor: ResourceManager().color!.des,
-              color: ResourceManager().color!.white,
+              borderColor: ResourceManager().color.des,
+              textColor: ResourceManager().color.des,
+              color: ResourceManager().color.white,
               title: leftTitle ?? "Hủy",
               onTap: () {
                 Get.back();
