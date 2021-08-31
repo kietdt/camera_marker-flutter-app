@@ -39,9 +39,9 @@ abstract class BaseTable<T> {
     await storeTable();
   }
 
-  Future<bool> set(int index) async {
+  Future<bool> set(int index, T item) async {
     if (index >= 0) {
-      entities[index] = entities[index];
+      entities[index] = item;
       await storeTable();
       return true;
     }
@@ -61,11 +61,6 @@ abstract class BaseTable<T> {
       return true;
     }
     return false;
-  }
-
-  int getIndex(T entity) {
-    int index = entities.indexWhere((element) => element == entity);
-    return index;
   }
 
   String newId() {

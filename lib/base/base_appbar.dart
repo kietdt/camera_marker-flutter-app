@@ -2,6 +2,8 @@ import 'package:camera_marker/manager/resource_manager.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
+import 'utils.dart';
+
 class BaseAppBar {
   final bool? back;
   final Widget? leading;
@@ -22,7 +24,8 @@ class BaseAppBar {
     return AppBar(
       backgroundColor: ResourceManager().color.primary,
       title: (text != null)
-          ? Text(text ?? "", style: ResourceManager().text.boldStyle)
+          ? Text(Utils.upperAllFirst(text ?? ""),
+              style: ResourceManager().text.boldStyle)
           : title,
       centerTitle: centerTitle,
       leading: back! ? buildBack() : leading,

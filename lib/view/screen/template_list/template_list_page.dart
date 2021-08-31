@@ -30,10 +30,10 @@ class TemplateListState extends BaseScaffold<TemplateList, TemplateListCtr> {
   @override
   Widget body() {
     return Obx(() => Padding(
-          padding: EdgeInsets.symmetric(horizontal: controller!.mainPadding),
+          padding: EdgeInsets.symmetric(horizontal: controller.mainPadding),
           child: ListView.builder(
-              itemCount: controller!.templates.length,
-              itemBuilder: (ctx, index) => _item(controller!.templates[index])),
+              itemCount: controller.templates.length,
+              itemBuilder: (ctx, index) => _item(controller.templates[index])),
         ));
   }
 
@@ -42,9 +42,9 @@ class TemplateListState extends BaseScaffold<TemplateList, TemplateListCtr> {
     double imHeight = 90;
 
     return InkWell(
-      onTap: () => controller!.onItemPressed(template),
+      onTap: () => controller.onItemPressed(template),
       child: Container(
-          margin: EdgeInsets.only(top: controller!.mainPadding),
+          margin: EdgeInsets.only(top: controller.mainPadding),
           padding: EdgeInsets.all(10),
           decoration: BoxDecoration(
               boxShadow: [

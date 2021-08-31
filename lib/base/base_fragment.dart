@@ -11,9 +11,9 @@ import 'base_controller.dart';
 abstract class BaseFragment<S extends StatefulWidget, C extends BaseController>
     extends State<S>
     with AutomaticKeepAliveClientMixin<S>, WidgetsBindingObserver {
-  C? _controller;
+  late C _controller;
 
-  C? get controller => _controller;
+  C get controller => _controller;
 
   C initController();
 
@@ -64,7 +64,7 @@ abstract class BaseFragment<S extends StatefulWidget, C extends BaseController>
 
   Widget buildLoading() {
     return Obx(() => Visibility(
-        visible: _controller!.loading.value,
+        visible: _controller.loading.value,
         child: Container(
             alignment: Alignment.center,
             color: Colors.black.withOpacity(0.1),
@@ -77,7 +77,7 @@ abstract class BaseFragment<S extends StatefulWidget, C extends BaseController>
 
   @override
   void dispose() {
-    controller!.onDispose();
+    controller.onDispose();
     WidgetsBinding.instance!.removeObserver(this);
     super.dispose();
   }

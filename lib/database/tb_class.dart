@@ -31,11 +31,19 @@ class TbClass extends BaseTable<MyClass> {
   Future<void> updateClass(MyClass _class) async {
     _class.updatedAt = DateTime.now();
     int index = entities.indexWhere((element) => element.id == _class.id);
-    await set(index);
+    await set(index, _class);
   }
 
   Future<void> deleteClass(MyClass _class) async {
     int index = entities.indexWhere((element) => element.id == _class.id);
     await delete(index);
+  }
+
+  MyClass? getById(String? id) {
+    int index = entities.indexWhere((element) => element.id == id);
+    if (index >= 0) {
+      return entities[index];
+    }
+    return null;
   }
 }

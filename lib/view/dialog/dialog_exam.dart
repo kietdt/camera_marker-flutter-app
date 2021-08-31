@@ -17,7 +17,18 @@ enum DialogExamType { New, Update }
 // ignore: must_be_immutable
 class DialogExam extends StatelessWidget {
   DialogExam({Key? key, this.exam, required this.type, required this.onConfirm})
-      : super(key: key);
+      : super(key: key) {
+    titleCtr.text = this.exam?.title ?? "";
+    questionValue = this.exam?.question;
+    myClassSeletected = this.exam?.myClass;
+    pointCtr.text = this.exam?.maxPoint?.toString() ?? "";
+    templateSelected = this.exam?.template;
+    dateStartCtr.text = Utils.dateToStr(this.exam?.startAt);
+    timeStartCtr.text = Utils.dateToStr(this.exam?.startAt, pattern: Utils.HM);
+    timeCtr.text = this.exam?.minutes?.toString() ?? "";
+    dtStart = this.exam?.startAt;
+    validate();
+  }
 
   final Exam? exam;
   final DialogExamType type;
@@ -33,24 +44,20 @@ class DialogExam extends StatelessWidget {
   final FocusNode pointFcn = FocusNode();
   final FocusNode timeFcn = FocusNode();
 
-  int? questionValue = Exam.questionsSelect[19];
-  List<DropdownGen<int>> get myQuestions =>
-      List<DropdownGen<int>>.from(Exam.questionsSelect
-          .map((e) => DropdownGen<int>(title: e.toString(), value: e)));
+  late int? questionValue;
+  DropdownGenList<int> get myQuestions =>
+      DropdownGenList(List<DropdownGen<int>>.from(Exam.questionsSelect
+          .map((e) => DropdownGen<int>(title: e.toString(), value: e, id: e))));
 
-  MyClass? myClassSeletected;
-  List<DropdownGen<MyClass>> get myClass =>
-      List<DropdownGen<MyClass>>.from(DataBaseCtr()
-          .tbClass
-          .entities
-          .map((e) => DropdownGen<MyClass>(title: e.name, value: e)));
+  late MyClass? myClassSeletected;
+  DropdownGenList<MyClass> get myClass => DropdownGenList(
+      List<DropdownGen<MyClass>>.from(DataBaseCtr().tbClass.entities.map((e) =>
+          DropdownGen<MyClass>(title: e.titleDisplay, value: e, id: e.id))));
 
-  Template? templateSelected;
-  List<DropdownGen<Template>> get myTemplate =>
-      List<DropdownGen<Template>>.from(DataBaseCtr()
-          .tbTemplate
-          .entities
-          .map((e) => DropdownGen<Template>(title: e.title, value: e)));
+  late Template? templateSelected;
+  DropdownGenList<Template> get myTemplate => DropdownGenList(
+      List<DropdownGen<Template>>.from(DataBaseCtr().tbTemplate.entities.map(
+          (e) => DropdownGen<Template>(title: e.title, value: e, id: e.id))));
 
   DateTime? dtStart;
 
@@ -110,19 +117,21 @@ class DialogExam extends StatelessWidget {
           SizedBox(height: 7),
           _itemDropdown<int>(
               title: "Câu trả lời*",
-              defaultValue: questionValue,
+              defaultValue: DropdownGen<int>(id: questionValue),
               items: myQuestions,
               onChanged: (int? value) {
                 questionValue = value;
                 print("CHỌN CÂU TRẢ LỜI ====================>$questionValue");
+                validate();
               }),
           _itemDropdown<MyClass>(
               title: "Lớp*",
-              defaultValue: myClassSeletected,
+              defaultValue: DropdownGen<MyClass>(id: myClassSeletected?.id),
               items: myClass,
               onChanged: (MyClass? value) {
                 myClassSeletected = value;
                 print("CHỌN CÂU TRẢ LỜI ====================>$questionValue");
+                validate();
               }),
           SizedBox(height: 7),
           _item("Điểm*", pointFcn, pointCtr,
@@ -130,11 +139,12 @@ class DialogExam extends StatelessWidget {
           SizedBox(height: 7),
           _itemDropdown<Template>(
               title: "Mẫu đề thi*",
-              defaultValue: templateSelected,
+              defaultValue: DropdownGen<Template>(id: templateSelected?.id),
               items: myTemplate,
               onChanged: (Template? value) {
                 templateSelected = value;
                 print("CHỌN CÂU TRẢ LỜI ====================>$questionValue");
+                validate();
               }),
           SizedBox(height: 7),
           _item("Ngày bắt đầu*", null, dateStartCtr,
@@ -242,9 +252,9 @@ class DialogExam extends StatelessWidget {
 
   Widget _itemDropdown<T>(
       {required String title,
-      required List<DropdownGen<T>> items,
+      required DropdownGenList<T> items,
       required void Function(T? dropdownGen)? onChanged,
-      required T? defaultValue}) {
+      required DropdownGen<T>? defaultValue}) {
     return Row(
       children: [
         Container(
@@ -255,15 +265,15 @@ class DialogExam extends StatelessWidget {
                 fontSize: inputSize, color: ResourceManager().color.black),
           ),
         ),
-        Expanded(child: _dropdown<T>(items, onChanged))
+        Expanded(child: _dropdown<T>(items, onChanged, defaultValue))
       ],
     );
   }
 
-  Widget _dropdown<T>(
-      List<DropdownGen<T>> items, void Function(T? dropdownGen)? onChanged) {
+  Widget _dropdown<T>(DropdownGenList<T> items,
+      void Function(T? dropdownGen)? onChanged, DropdownGen<T>? defaultValue) {
     return CustomDropdown<T>(
-        onChange: onChanged, items: items, selectedType: items[0]);
+        onChange: onChanged, items: items, selectedType: defaultValue);
   }
 
   Widget _button() {
@@ -288,7 +298,7 @@ class DialogExam extends StatelessWidget {
                   disable: !canSubmit.value,
                   textSize: 15,
                   title: isNew ? "Tạo kì thi" : "Cập nhật",
-                  onTap: onCreate)))
+                  onTap: onSubmit)))
         ]));
   }
 
@@ -328,14 +338,15 @@ class DialogExam extends StatelessWidget {
     }, currentTime: DateTime.now(), locale: LocaleType.vi);
   }
 
-  void onCreate() {
+  void onSubmit() {
     Get.back();
     Exam exam = Exam(
+        id: this.exam?.id,
         title: titleCtr.text,
         question: questionValue,
-        myClass: myClassSeletected,
+        myClassId: myClassSeletected?.id,
         maxPoint: double.parse(pointCtr.text),
-        template: templateSelected,
+        templateId: templateSelected?.id,
         startAt: dtStart,
         minutes: int.tryParse(timeCtr.text));
     onConfirm(exam);
@@ -352,6 +363,12 @@ class DialogExam extends StatelessWidget {
     } else if (dateStartCtr.text.isEmpty) {
       valid = false;
     } else if (timeCtr.text.isEmpty) {
+      valid = false;
+    } else if (questionValue == null) {
+      valid = false;
+    } else if (myClassSeletected == null) {
+      valid = false;
+    } else if (templateSelected == null) {
       valid = false;
     }
     canSubmit.value = valid;

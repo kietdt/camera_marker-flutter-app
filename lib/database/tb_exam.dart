@@ -22,12 +22,12 @@ class TbExam extends BaseTable<Exam> {
     await add(exam);
   }
 
-  Future<void> updateClass(Exam exam) async {
+  Future<void> updateExam(Exam exam) async {
     int index = entities.indexWhere((element) => element.id == exam.id);
-    await set(index);
+    await set(index, exam);
   }
 
-  Future<void> deleteClass(Exam exam) async {
+  Future<void> deleteExam(Exam exam) async {
     int index = entities.indexWhere((element) => element.id == exam.id);
     await delete(index);
   }

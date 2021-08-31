@@ -1,3 +1,4 @@
+import 'package:camera_marker/database/database_ctr.dart';
 import 'package:camera_marker/model/class.dart';
 import 'package:camera_marker/model/config.dart';
 
@@ -6,22 +7,28 @@ class Exam {
       {this.id,
       this.title,
       this.question,
-      this.myClass,
+      this.myClassId,
       this.maxPoint,
-      this.template,
+      this.templateId,
       this.startAt,
       this.minutes});
 
   String? id;
   String? title;
   int? question;
-  MyClass? myClass;
+  String? myClassId;
   double? maxPoint;
-  Template? template;
+  int? templateId;
   DateTime? startAt;
   int? minutes;
 
   int get maxQuestions => 200;
+
+  String get minutesText => "$minutes phút";
+
+  MyClass? get myClass => DataBaseCtr().tbClass.getById(myClassId);
+
+  Template? get template => DataBaseCtr().tbTemplate.getById(templateId);
 
   static List<int> questionsSelect =
       List<int>.generate(200, (index) => index + 1);
@@ -30,9 +37,9 @@ class Exam {
     this.id = json["id"];
     this.title = json["title"];
     this.question = json["question"];
-    this.myClass = json["myClass"];
+    this.myClassId = json["myClassId"];
     this.maxPoint = json["maxPoint"];
-    this.template = json["template"];
+    this.templateId = json["templateId"];
     this.startAt = json["startAt"] != null
         ? DateTime.parse(json["startAt"]).toLocal()
         : null;
@@ -43,9 +50,9 @@ class Exam {
         "id": id,
         "title": title,
         "question": question,
-        "myClass": myClass,
+        "myClassId": myClassId,
         "maxPoint": maxPoint,
-        "template": template,
+        "templateId": templateId,
         "startAt": startAt?.toIso8601String(),
         "minutes": minutes
       };

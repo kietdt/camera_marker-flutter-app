@@ -5,4 +5,5 @@ class BaseRouteName {
   final String templateList = "template_list";
   final String tempPlateDetail = "template_detail";
   final String classList = "class_list";
+  final String examManager = "exam_manager";
 }

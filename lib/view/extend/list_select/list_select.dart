@@ -17,41 +17,41 @@ abstract class ListSelect<S extends StatefulWidget, C extends ListSelectCtr, D>
     super.initState();
     appBar = BaseAppBar(
         back: true,
-        text: controller!.title,
+        text: controller.title,
         action: [_deleteAction()]).toAppBar();
   }
 
   @override
   Widget body() {
     // ignore: invalid_use_of_protected_member
-    return Obx(() => controller!.items.value.isNotEmpty
+    return Obx(() => controller.items.value.isNotEmpty
         // ignore: invalid_use_of_protected_member
-        ? list(controller!.items.value as List<D>)
-        : EmptyPageView(message: controller!.emptyMessage));
+        ? list(controller.items.value as List<D>)
+        : EmptyPageView(message: controller.emptyMessage));
   }
 
   @override
   Widget? floatingActionButton() {
     return AnimatedBuilder(
-        animation: controller!.deleteCtr,
+        animation: controller.deleteCtr,
         child: Obx(() => FloatingActionAdd(
-              color: controller!.showSelect.value
+              color: controller.showSelect.value
                   ? ResourceManager().color.delete
                   : null,
-              onTap: controller!.showSelect.value
-                  ? controller!.onDelete
-                  : controller!.showNew,
+              onTap: controller.showSelect.value
+                  ? controller.onDelete
+                  : controller.showNew,
             )),
         builder: (ctx, child) => Transform.rotate(
-              angle: controller!.deleteCtr.value * (pi / 4),
+              angle: controller.deleteCtr.value * (pi / 4),
               child: child,
             ));
   }
 
   Widget list(List<D> items) {
     return Container(
-      padding: EdgeInsets.symmetric(horizontal: controller!.mainPadding),
-      margin: EdgeInsets.only(bottom: controller!.mainPadding),
+      padding: EdgeInsets.symmetric(horizontal: controller.mainPadding),
+      margin: EdgeInsets.only(bottom: controller.mainPadding),
       child: ListView.builder(
           itemCount: items.length,
           itemBuilder: (ctx, index) => itemCheckBox(items[index], index)),
@@ -64,7 +64,9 @@ abstract class ListSelect<S extends StatefulWidget, C extends ListSelectCtr, D>
         _checkBox(index),
         Expanded(
           child: InkWell(
-              onTap: () => controller!.onTap(item, index), child: child(item)),
+              onDoubleTap: () => controller.onDoubleTap(item, index),
+              onTap: () => controller.onTap(item, index),
+              child: child(item)),
         ),
       ],
     );
@@ -72,19 +74,19 @@ abstract class ListSelect<S extends StatefulWidget, C extends ListSelectCtr, D>
 
   Widget _checkBox(int index) {
     return AnimatedBuilder(
-        animation: controller!.deleteCtr,
+        animation: controller.deleteCtr,
         builder: (_, child) {
           return Visibility(
-            visible: controller!.showSelect.value,
+            visible: controller.showSelect.value,
             child: Container(
-              width: 25 * controller!.deleteCtr.value,
+              width: 25 * controller.deleteCtr.value,
               alignment: Alignment.centerLeft,
               child: Obx(() => Checkbox(
                   // ignore: invalid_use_of_protected_member
-                  value: controller!.selecteList.value[index],
+                  value: controller.selecteList.value[index],
                   activeColor: ResourceManager().color.primary,
                   checkColor: ResourceManager().color.white,
-                  onChanged: (value) => controller!.oncheckBox(index))),
+                  onChanged: (value) => controller.oncheckBox(index))),
             ),
           );
         });
@@ -92,9 +94,9 @@ abstract class ListSelect<S extends StatefulWidget, C extends ListSelectCtr, D>
 
   Widget _deleteAction() {
     return Obx(() => Visibility(
-        visible: controller!.items.length > 0,
+        visible: controller.items.length > 0,
         child: InkWell(
-            onTap: controller!.onSelect,
+            onTap: controller.onSelect,
             child: Container(
                 margin: EdgeInsets.symmetric(horizontal: 15),
                 child: Icon(Icons.delete)))));

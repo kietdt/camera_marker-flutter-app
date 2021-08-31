@@ -20,4 +20,12 @@ class TbTemplate extends BaseTable<Template> {
         List<Map<String, dynamic>>.from(entities.map((e) => e.toJson()));
     return temp;
   }
+
+  Template? getById(int? id) {
+    int index = entities.indexWhere((element) => element.id == id);
+    if (index >= 0) {
+      return entities[index];
+    }
+    return null;
+  }
 }

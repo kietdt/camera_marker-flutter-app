@@ -8,27 +8,33 @@ class DialogConfirm extends StatelessWidget {
   final Function()? onLeft;
   final Function()? onRight;
   final String? title;
-  final String message;
+  final String? message;
   final String? leftTitle;
   final String? rightTitle;
+  final bool? hasImage;
+  final String? fact;
 
   static show(
       {Function()? onLeft,
       Function()? onRight,
       String? title,
-      required String message,
+      String? message,
       String? leftTitle,
+      bool? hasImage,
+      String? fact,
+      bool? barrierDismissible,
       String? rightTitle}) async {
     return Get.dialog(
         DialogConfirm(
-          message: message,
-          onLeft: onLeft,
-          onRight: onRight,
-          title: title,
-          leftTitle: leftTitle,
-          rightTitle: rightTitle,
-        ),
-        barrierDismissible: false);
+            message: message,
+            onLeft: onLeft,
+            onRight: onRight,
+            title: title,
+            leftTitle: leftTitle,
+            rightTitle: rightTitle,
+            fact: fact,
+            hasImage: hasImage),
+        barrierDismissible: barrierDismissible ?? false);
   }
 
   const DialogConfirm({
@@ -38,6 +44,8 @@ class DialogConfirm extends StatelessWidget {
     this.title,
     this.leftTitle,
     this.rightTitle,
+    this.hasImage,
+    this.fact,
     required this.message,
   }) : super(key: key);
 
@@ -47,6 +55,7 @@ class DialogConfirm extends StatelessWidget {
       backgroundColor: Colors.transparent,
       elevation: 0,
       child: Container(
+        padding: EdgeInsets.symmetric(horizontal: 14),
         decoration: BoxDecoration(
             color: ResourceManager().color.white,
             borderRadius: BorderRadius.all(Radius.circular(7))),
@@ -62,13 +71,26 @@ class DialogConfirm extends StatelessWidget {
                   color: ResourceManager().color.primary, fontSize: 20),
             ),
             SizedBox(height: 7),
-            Text(
-              message,
-              style: ResourceManager()
-                  .text
-                  .normalStyle
-                  .copyWith(color: ResourceManager().color.des, fontSize: 13),
-            ),
+            Visibility(
+                visible: message != null,
+                child: Text(
+                  message ?? "",
+                  style: ResourceManager().text.normalStyle.copyWith(
+                      color: ResourceManager().color.des, fontSize: 13),
+                )),
+            Visibility(
+                visible: fact != null,
+                child: Column(
+                  children: [
+                    SizedBox(height: 7),
+                    Text(
+                      fact ?? "",
+                      textAlign: TextAlign.center,
+                      style: ResourceManager().text.normalStyle.copyWith(
+                          color: ResourceManager().color.error, fontSize: 13),
+                    ),
+                  ],
+                )),
             SizedBox(height: 14),
             _bottom(),
             SizedBox(height: 14),
@@ -79,17 +101,20 @@ class DialogConfirm extends StatelessWidget {
   }
 
   Widget _image() {
-    return Container(
-      padding: EdgeInsets.all(7),
-      decoration: BoxDecoration(
-          shape: BoxShape.circle,
-          border:
-              Border.all(width: 3, color: ResourceManager().color.primary)),
-      child: CustomImageView(
-        "lib/asset/ic_confirm.png",
-        width: 50,
-        height: 50,
-        color: ResourceManager().color.primary,
+    return Visibility(
+      visible: hasImage ?? true,
+      child: Container(
+        padding: EdgeInsets.all(7),
+        decoration: BoxDecoration(
+            shape: BoxShape.circle,
+            border:
+                Border.all(width: 3, color: ResourceManager().color.primary)),
+        child: CustomImageView(
+          "lib/asset/ic_confirm.png",
+          width: 50,
+          height: 50,
+          color: ResourceManager().color.primary,
+        ),
       ),
     );
   }
@@ -114,6 +139,7 @@ class DialogConfirm extends StatelessWidget {
           SizedBox(width: 14),
           Expanded(
             child: RectButton(
+              title: rightTitle,
               onTap: () {
                 Get.back();
                 if (onRight != null) onRight!();

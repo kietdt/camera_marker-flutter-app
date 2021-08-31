@@ -29,7 +29,7 @@ class DashBoardState extends BaseScaffold<DashBoardPage, DashBoardCtr> {
             child: _item(
                 asset: "lib/asset/ic_exam.png",
                 text: "Kì thi",
-                onTap: controller!.onExamPressed,
+                onTap: controller.onExamPressed,
                 bgColor: ResourceManager().color.primary),
           ),
           line(),
@@ -37,7 +37,7 @@ class DashBoardState extends BaseScaffold<DashBoardPage, DashBoardCtr> {
             child: _item(
                 asset: "lib/asset/ic_class.png",
                 text: "Lớp",
-                onTap: controller!.onClassPressed,
+                onTap: controller.onClassPressed,
                 bgColor: Color(0xff5285cd)),
           ),
           line(),
@@ -45,7 +45,7 @@ class DashBoardState extends BaseScaffold<DashBoardPage, DashBoardCtr> {
             child: _item(
                 asset: "lib/asset/ic_template.png",
                 text: "Mẫu đề thi",
-                onTap: controller!.onTemplatePressed,
+                onTap: controller.onTemplatePressed,
                 bgColor: ResourceManager().color.lightBlue),
           ),
         ]));

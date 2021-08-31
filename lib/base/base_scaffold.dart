@@ -20,7 +20,7 @@ abstract class BaseScaffold<S extends StatefulWidget, C extends BaseController>
       buildBackground(),
       GestureDetector(
         child: _scaffold(),
-        onTap: controller?.hideKeyboard,
+        onTap: controller.hideKeyboard,
       ),
       buildLoading(),
     ]);

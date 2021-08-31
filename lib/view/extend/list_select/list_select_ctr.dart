@@ -51,6 +51,20 @@ abstract class ListSelectCtr<S extends State, D> extends BaseController<S> {
     }
   }
 
+  //không override lại hàm này
+  void onDoubleTap(D? item, int index) {
+    if (showSelect.value) {
+      oncheckBox(index);
+    } else {
+      if (item != null) {
+        onChildDoubleTap(item, index);
+      }
+    }
+  }
+
+  //override lại hàm này
+  void onChildDoubleTap(D? item, int index) {}
+
   void onSelect() {
     if (!deleteCtr.isAnimating) {
       if (!showSelect.value) {

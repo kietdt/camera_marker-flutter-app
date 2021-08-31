@@ -9,7 +9,7 @@ class CustomDropdown<T> extends StatelessWidget {
   final TextStyle? style;
 
   late var selectedValue;
-  List<DropdownGen<T>>? items = [];
+  DropdownGenList<T>? items = DropdownGenList<T>([]);
 
   CustomDropdown(
       {Key? key,
@@ -18,7 +18,7 @@ class CustomDropdown<T> extends StatelessWidget {
       DropdownGen<T>? selectedType,
       this.style})
       : super(key: key) {
-    selectedValue = selectedType.obs;
+    selectedValue = items?.getItem(DropdownGen<T>(id: selectedType?.id)).obs;
     if (items != null) {
       items = items;
     }
@@ -38,7 +38,7 @@ class CustomDropdown<T> extends StatelessWidget {
               onChange!(value?.value);
             }
           },
-          items: items!
+          items: items!.value
               .map<DropdownMenuItem<DropdownGen<T>>>((DropdownGen<T> value) {
             return DropdownMenuItem<DropdownGen<T>>(
               value: value,

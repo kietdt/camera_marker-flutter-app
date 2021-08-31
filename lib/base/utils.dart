@@ -20,4 +20,16 @@ class Utils {
     String temp = DateFormat(pattern ?? DMY).format(dateTime);
     return temp;
   }
+
+  static String upperAllFirst(String? text) {
+    if (text == null) return "";
+    List<String> list = text.split(" ");
+    list = List.generate(list.length, (index) {
+      String first = list[index][0];
+      list[index] = list[index].substring(1);
+      list[index] = first.toUpperCase() + list[index];
+      return list[index];
+    });
+    return list.join(" ");
+  }
 }

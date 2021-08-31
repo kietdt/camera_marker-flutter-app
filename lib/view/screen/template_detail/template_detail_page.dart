@@ -44,10 +44,10 @@ class TemplateDetailState
   Widget body() {
     return SingleChildScrollView(
         child: Container(
-            margin: EdgeInsets.all(controller!.mainPadding),
+            margin: EdgeInsets.all(controller.mainPadding),
             child: Column(children: [
               content(widget.payload?.template),
-              SizedBox(height: controller!.mainPadding),
+              SizedBox(height: controller.mainPadding),
               Container(
                   height: screen.height,
                   child: CustomImageView(
@@ -100,7 +100,7 @@ class TemplateDetailState
 
   Widget _share() {
     return InkWell(
-        onTap: controller!.onSharePressed,
+        onTap: controller.onSharePressed,
         child: Container(
             margin: EdgeInsets.symmetric(horizontal: 15),
             child: Icon(Icons.share)));

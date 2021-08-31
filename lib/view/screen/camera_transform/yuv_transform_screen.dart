@@ -31,7 +31,7 @@ class YuvTransformScreenState
   @override
   void dispose() {
     // Dispose all streams!
-    controller!.subscription.forEach((element) {
+    controller.subscription.forEach((element) {
       element.cancel();
     });
     super.dispose();
@@ -39,19 +39,19 @@ class YuvTransformScreenState
 
   @override
   Future inactive() {
-    if (controller!.cameraCtr != null &&
-        controller!.cameraCtr!.value.isInitialized) {
-      controller!.cameraCtr?.dispose();
+    if (controller.cameraCtr != null &&
+        controller.cameraCtr!.value.isInitialized) {
+      controller.cameraCtr?.dispose();
     }
-    // controller!.resetRootView();
+    // controller.resetRootView();
     return super.inactive();
   }
 
   @override
   Future resumed() {
-    if (controller!.cameraCtr != null &&
-        controller!.cameraCtr!.value.isInitialized) {
-      controller!.onNewCameraSelected(controller!.cameraCtr!.description);
+    if (controller.cameraCtr != null &&
+        controller.cameraCtr!.value.isInitialized) {
+      controller.onNewCameraSelected(controller.cameraCtr!.description);
     }
     return super.resumed();
   }
@@ -63,14 +63,14 @@ class YuvTransformScreenState
       Column(children: <Widget>[
         Expanded(
             child: Obx(() => CameraScreenWidget(
-                key: ValueKey(controller!.isAvailable.value),
-                controller: controller!.cameraCtr)))
+                key: ValueKey(controller.isAvailable.value),
+                controller: controller.cameraCtr)))
       ]),
       Obx(() => BoundingBox(
           // ignore: invalid_use_of_protected_member
-          controller!.recognitions.value,
-          controller!.originHeight.value,
-          controller!.originWidth.value,
+          controller.recognitions.value,
+          controller.originHeight.value,
+          controller.originWidth.value,
           screen.height - (statusBar + navigateBar),
           screen.width))
     ]));

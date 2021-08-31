@@ -6,6 +6,8 @@ class MyClass {
   DateTime? createdAt;
   DateTime? updatedAt;
 
+  String get titleDisplay => code ?? "";
+  
   MyClass(
       {this.id,
       this.code,
