@@ -57,11 +57,12 @@ abstract class ListSelect<S extends StatefulWidget, C extends ListSelectCtr, D>
 
   Widget list(List<D> items) {
     return Container(
-      padding: EdgeInsets.symmetric(horizontal: controller.mainPadding),
       margin: EdgeInsets.only(bottom: controller.mainPadding),
       child: ListView.builder(
           itemCount: items.length,
-          itemBuilder: (ctx, index) => itemCheckBox(items[index], index)),
+          itemBuilder: (ctx, index) => Container(
+              padding: EdgeInsets.symmetric(horizontal: controller.mainPadding),
+              child: itemCheckBox(items[index], index))),
     );
   }
 

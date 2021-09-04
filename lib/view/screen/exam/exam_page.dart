@@ -72,11 +72,15 @@ class ExamPageState extends ListSelect<ExamPage, ExamPageCtr, Exam> {
             ),
           ),
           Expanded(
-              child: Text(decs ?? "",
-                  style: ResourceManager()
-                      .text
-                      .normalStyle
-                      .copyWith(fontSize: 15, color: color)))
+              child: SingleChildScrollView(
+            scrollDirection: Axis.horizontal,
+            child: Text(decs ?? "",
+                maxLines: 1,
+                style: ResourceManager()
+                    .text
+                    .normalStyle
+                    .copyWith(fontSize: 15, color: color)),
+          ))
         ]));
   }
 }

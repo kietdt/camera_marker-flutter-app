@@ -29,12 +29,12 @@ class TemplateListState extends BaseScaffold<TemplateList, TemplateListCtr> {
 
   @override
   Widget body() {
-    return Obx(() => Padding(
-          padding: EdgeInsets.symmetric(horizontal: controller.mainPadding),
-          child: ListView.builder(
-              itemCount: controller.templates.length,
-              itemBuilder: (ctx, index) => _item(controller.templates[index])),
-        ));
+    return Obx(() => ListView.builder(
+        itemCount: controller.templates.length,
+        itemBuilder: (ctx, index) => Padding(
+              padding: EdgeInsets.symmetric(horizontal: controller.mainPadding),
+              child: _item(controller.templates[index]),
+            )));
   }
 
   Widget _item(Template template) {
