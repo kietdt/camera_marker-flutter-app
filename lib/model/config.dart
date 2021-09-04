@@ -43,6 +43,8 @@ class Config {
   }
 }
 
+enum TemplateType { Multi, Single }
+
 class Template {
   int? id;
   String? title;
@@ -55,6 +57,11 @@ class Template {
   String? downloadLink;
   String? createAt;
   String? updateAt;
+  TemplateType? templateType;
+
+  bool get isMulti => templateType == TemplateType.Multi;
+
+  String get titleDisplay => (title ?? "") + " - " + (typeDecs ?? "");
 
   Template(
       {this.id,
@@ -65,7 +72,9 @@ class Template {
       this.thumbnail,
       this.originalImage,
       this.createAt,
-      this.updateAt});
+      this.updateAt}) {
+    this.templateType = getType(this.type);
+  }
 
   Template.fromJson(Map json) {
     id = json['id'];
@@ -73,6 +82,7 @@ class Template {
     desc = json['desc'];
     question = json['question'];
     type = json['type'];
+    this.templateType = getType(this.type);
     typeDecs = json['type_desc'];
     thumbnail = json['thumbnail'];
     originalImage = json['original_image'];
@@ -95,5 +105,15 @@ class Template {
     data['create_at'] = this.createAt;
     data['update_at'] = this.updateAt;
     return data;
+  }
+
+  TemplateType getType(String? type) {
+    switch (type) {
+      case "multi_choice":
+        return TemplateType.Multi;
+      case "single_choice":
+        return TemplateType.Single;
+    }
+    return TemplateType.Single;
   }
 }

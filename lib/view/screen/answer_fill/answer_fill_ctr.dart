@@ -12,7 +12,16 @@ import 'package:uuid/uuid.dart';
 import 'answer_fill_page.dart';
 
 class AnswerFillCtr extends BaseController<AnswerFillState> {
-  AnswerFillCtr(AnswerFillState state) : super(state);
+  AnswerFillCtr(AnswerFillState state) : super(state) {
+    this.answerSelected =
+        List<AnswerValue>.filled(exam?.question ?? 0, AnswerValue.empty());
+
+    for (int i = 0;
+        i < (state.widget.payload?.answer?.value?.length ?? 0);
+        i++) {
+      this.answerSelected?[i] = state.widget.payload?.answer?.value?[i];
+    }
+  }
 
   final PageController pageController = PageController();
 
@@ -23,11 +32,12 @@ class AnswerFillCtr extends BaseController<AnswerFillState> {
   var keyCode = "".obs;
   var keyAnswer = "".obs;
 
-  late int? codeSelected = state.widget.payload?.answer?.code;
-  late List<AnswerValue?>? answerSelected = state.widget.payload?.answer?.value;
+  late String? codeSelected = state.widget.payload?.answer?.code;
+  late List<AnswerValue?>? answerSelected;
 
   Exam? get exam => state.widget.payload?.exam;
   bool get isUpdate => state.widget.payload?.type == AnswerFillType.Update;
+  bool get isMulti => state.widget.payload?.exam?.template?.isMulti ?? false;
 
   void onTabChange(int index) {
     pageController.animateTo(state.screen.width * index,
@@ -46,7 +56,7 @@ class AnswerFillCtr extends BaseController<AnswerFillState> {
     }
   }
 
-  void onCodeChange(int code) {
+  void onCodeChange(String code) {
     this.codeSelected = code;
     print(code);
   }
@@ -92,16 +102,9 @@ class AnswerFillCtr extends BaseController<AnswerFillState> {
   }
 
   Future<bool> validate() async {
-    if (this.codeSelected == null) {
+    if ((this.codeSelected?.length ?? 0) < 3) {
       await DialogNoti.show(
-          message: "Chọn mã đề để tiếp tục",
-          image: "lib/asset/ic_warning.png",
-          hasImage: true);
-      onTabChange(0);
-      return false;
-    } else if (this.codeSelected! < 100) {
-      await DialogNoti.show(
-          message: "Chọn đủ kí tự của mã đề để tiếp tục",
+          message: "Chưa đủ kí tự mã đề",
           image: "lib/asset/ic_warning.png",
           hasImage: true);
       onTabChange(0);
@@ -112,7 +115,7 @@ class AnswerFillCtr extends BaseController<AnswerFillState> {
         (state.widget.payload?.answer?.code != this.codeSelected)) {
       List<Answer?>? _answers =
           DataBaseCtr().tbExam.getById(state.widget.payload?.exam?.id)?.answer;
-      List<int?>? codes = List.generate(
+      List<String?>? codes = List.generate(
           _answers?.length ?? 0, (index) => _answers?[index]?.code);
 
       if (codes.contains(this.codeSelected)) {
@@ -125,8 +128,10 @@ class AnswerFillCtr extends BaseController<AnswerFillState> {
       }
     }
 
-    int index =
-        this.answerSelected?.indexWhere((element) => element == null) ?? 0;
+    int index = this
+            .answerSelected
+            ?.indexWhere((element) => element?.valueEnum?.isEmpty ?? true) ??
+        0;
     if (index >= 0) {
       await DialogNoti.show(
           message: "Bạn chưa chọn đáp án ${index + 1}",
@@ -134,6 +139,21 @@ class AnswerFillCtr extends BaseController<AnswerFillState> {
           hasImage: true);
       onTabChange(1);
       return false;
+    }
+
+    if (!isMulti) {
+      index = this.answerSelected?.indexWhere(
+              (element) => (element?.valueEnum?.length ?? 0) > 1) ??
+          -1;
+      if (index >= 0) {
+        await DialogNoti.show(
+            message:
+                "Câu ${index + 1} có số đáp án lớn hơn 2. Bạn vui lòng bỏ bớt đáp án, hoặc chọn mẫu bảng trả lời cho phép chọn nhiều!",
+            image: "lib/asset/ic_warning.png",
+            hasImage: true);
+        onTabChange(1);
+        return false;
+      }
     }
     return true;
   }

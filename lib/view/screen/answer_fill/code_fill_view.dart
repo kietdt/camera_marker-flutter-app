@@ -9,8 +9,8 @@ import 'code_fill_ctr.dart';
 
 class CodeFillView extends StatefulWidget {
   final Exam? exam;
-  final int? code;
-  final Function(int)? onCodeChange;
+  final String? code;
+  final Function(String)? onCodeChange;
 
   CodeFillView({Key? key, this.code, this.onCodeChange, this.exam})
       : super(key: key);
@@ -80,24 +80,19 @@ class CodeFillViewState extends BaseFragment<CodeFillView, CodeFillViewCtr> {
 
   Widget checkBox(int rowIndex, int colIndex) {
     double size = 50;
-    return (rowIndex == 0 && colIndex == 0)
-        ? SizedBox(
-            width: size,
-            height: size,
-          )
-        : Container(
-            width: size,
-            height: size,
-            alignment: Alignment.centerLeft,
-            child: Obx(() => CustomCheckbox(
-                // ignore: invalid_use_of_protected_member
-                value: controller.listCode[colIndex].value == rowIndex,
-                shape: CircleBorder(),
-                activeColor: ResourceManager().color.primary,
-                width: size - 20,
-                checkColor: ResourceManager().color.white,
-                onChanged: (value) => controller.onCheck(rowIndex, colIndex))),
-          );
+    return Container(
+      width: size,
+      height: size,
+      alignment: Alignment.centerLeft,
+      child: Obx(() => CustomCheckbox(
+          // ignore: invalid_use_of_protected_member
+          value: controller.listCode[colIndex].value == rowIndex,
+          shape: CircleBorder(),
+          activeColor: ResourceManager().color.primary,
+          width: size - 20,
+          checkColor: ResourceManager().color.white,
+          onChanged: (value) => controller.onCheck(rowIndex, colIndex))),
+    );
   }
 
   Widget _buidCode() {

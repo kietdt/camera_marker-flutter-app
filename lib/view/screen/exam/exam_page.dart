@@ -51,7 +51,7 @@ class ExamPageState extends ListSelect<ExamPage, ExamPageCtr, Exam> {
                   ? ResourceManager().color.error
                   : null),
           _itemDesc("Điểm", item?.maxPoint?.toStringAsFixed(2)),
-          _itemDesc("Mẫu đề thi", item?.template?.title),
+          _itemDesc("Mẫu đề thi", item?.template?.titleDisplay),
           _itemDesc("Thời gian bắt đầu",
               Utils.dateToStr(item?.startAt, pattern: Utils.DMYHM)),
           _itemDesc("Thời gian thi", item?.minutesText),

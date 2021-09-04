@@ -25,6 +25,8 @@ abstract class BaseFragment<S extends StatefulWidget, C extends BaseController>
   @override
   void initState() {
     this._controller = initController();
+
+    WidgetsBinding.instance?.addPostFrameCallback(controller.onReady);
     WidgetsBinding.instance?.addObserver(this);
     super.initState();
   }

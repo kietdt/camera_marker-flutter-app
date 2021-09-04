@@ -12,38 +12,61 @@ class AnswerFillViewCtr extends BaseController<AnswerFillViewState> {
   int maxCol = 4;
 
   late int answerLength = state.widget.exam?.question ?? 0;
-  late RxList<RxInt> listAnswer =
-      List.generate(answerLength, (index) => (-1).obs).obs;
+  late RxList<Rx<AnswerValue?>?>? listAnswer =
+      List.generate(answerLength, (index) => AnswerValue.empty().obs).obs;
+
+  bool get isMulti => state.widget.exam?.template?.isMulti ?? false;
 
   void initListAnswer(List<AnswerValue?>? answerValue) {
     if (answerValue != null) {
-      listAnswer.value = List.generate(
-          answerValue.length,
-          (index) => AnswerValueEnum.values
-              .indexOf(answerValue[index]!.valueEnum!)
-              .obs);
+      List<Rx<AnswerValue?>?> _temp = List<Rx<AnswerValue>>.generate(
+          answerValue.length, (index) => answerValue[index]!.obs);
+
+      while (_temp.length < answerLength) {
+        _temp.add(AnswerValue.empty().obs);
+      }
+      listAnswer?.value = _temp;
+      onValueChange(getValue());
     }
   }
 
   void onCheck(int rowIndex, int colIndex) {
-    listAnswer[rowIndex] = colIndex.obs;
+    int? index = listAnswer?[rowIndex]
+        ?.value
+        ?.valueEnum
+        ?.indexWhere((element) => element == AnswerValueEnum.values[colIndex]);
+    AnswerValue? _temp = listAnswer?[rowIndex]?.value;
+    listAnswer?[rowIndex]?.value = AnswerValue.empty();
+
+    if (isMulti) {
+      if (index != null && index >= 0) {
+        _temp?.removeValueEnum(index);
+      } else {
+        _temp?.addValueEnum(AnswerValueEnum.values[colIndex]);
+      }
+    } else {
+      _temp = AnswerValue(valueEnum: [AnswerValueEnum.values[colIndex]]);
+    }
+
+    listAnswer?[rowIndex]?.value = _temp;
+
     onValueChange(getValue());
   }
 
-  void onValueChange(List<AnswerValue?> value) {
+  void onValueChange(List<AnswerValue?>? value) {
     if (state.widget.onValueChange != null) {
       state.widget.onValueChange!(value);
     }
   }
 
-  List<AnswerValue?> getValue() {
-    return List.generate(listAnswer.length, (index) {
-      if (listAnswer[index].value >= 0) {
-        return AnswerValue(
-            // index: index,
-            valueEnum: AnswerValueEnum.values[listAnswer[index].value]);
-      }
-      return null;
-    });
+  List<AnswerValue?>? getValue() {
+    return List.generate(listAnswer?.length ?? 0, (i) => listAnswer?[i]?.value);
+  }
+
+  bool isCheck(List<AnswerValueEnum>? list, int rowIndex, int colIndex) {
+    int? index = list
+        ?.indexWhere((element) => element == AnswerValueEnum.values[colIndex]);
+
+    return (index != null && index >= 0);
   }
 }

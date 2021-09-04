@@ -47,6 +47,8 @@ class YuvTransformScreenCtr extends BaseController<YuvTransformScreenState>
   RxDouble originWidth = 0.0.obs;
   RxString isAvailable = Uuid().v4().obs; // camera available
 
+  bool get isFill => state.widget.payload?.type == YuvTransformScreenType.Fill;
+
   void initCamera() async {
     await requestCameraPermission();
     // Fetch all available cameras.

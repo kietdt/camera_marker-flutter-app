@@ -117,7 +117,10 @@ class AnswerFillViewState
       alignment: Alignment.centerLeft,
       child: Obx(() => CustomCheckbox(
           // ignore: invalid_use_of_protected_member
-          value: controller.listAnswer[rowIndex].value == colIndex,
+          value: controller.isCheck(
+              controller.listAnswer?[rowIndex]?.value?.valueEnum,
+              rowIndex,
+              colIndex),
           shape: CircleBorder(),
           activeColor: ResourceManager().color.primary,
           width: size - 20,

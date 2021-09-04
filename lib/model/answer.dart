@@ -4,7 +4,7 @@ class Answer {
   Answer({this.id, this.code, this.value});
 
   String? id;
-  int? code;
+  String? code;
   List<AnswerValue?>? value;
 
   static int codeLength = 3;
@@ -28,11 +28,11 @@ class Answer {
   //model mẫu để test
   //sau này scan được sẽ xóa đi
   static Map<String, dynamic> sample = {
-    "code": 122,
+    "code": "011",
     "value": [
-      {"valueString": "A"},
-      {"valueString": "B"},
-      {"valueString": "C"},
+      {"valueString": "A B"},
+      {"valueString": "B C"},
+      {"valueString": "C D"},
       {"valueString": "A"},
       {"valueString": "A"},
       {"valueString": "A"},
@@ -48,9 +48,11 @@ class AnswerValue {
     this.valueString = getValueString(this.valueEnum);
   }
 
+  factory AnswerValue.empty() => AnswerValue(valueEnum: []);
+
   // int? index;
   String? valueString;
-  AnswerValueEnum? valueEnum;
+  List<AnswerValueEnum>? valueEnum;
 
   AnswerValue.fromJson(Map json) {
     // this.index = json["index"];
@@ -63,31 +65,60 @@ class AnswerValue {
         "valueString": this.valueString,
       };
 
-  String getValueString(AnswerValueEnum? valueEnum) {
-    if (valueEnum == null) return "";
-    switch (valueEnum) {
-      case AnswerValueEnum.A:
-        return "A";
-      case AnswerValueEnum.B:
-        return "B";
-      case AnswerValueEnum.C:
-        return "C";
-      case AnswerValueEnum.D:
-        return "D";
-    }
+  void addValueEnum(AnswerValueEnum valueEnum) {
+    this.valueEnum?.add(valueEnum);
+    this.valueString = getValueString(this.valueEnum);
   }
 
-  AnswerValueEnum? getValueEnum(String? valueString) {
-    if (valueString == null) return null;
-    switch (valueString) {
-      case "A":
-        return AnswerValueEnum.A;
-      case "B":
-        return AnswerValueEnum.B;
-      case "C":
-        return AnswerValueEnum.C;
-      case "D":
-        return AnswerValueEnum.D;
+  void removeValueEnum(int index) {
+    this.valueEnum?.removeAt(index);
+    this.valueString = getValueString(this.valueEnum);
+  }
+
+  String getValueString(List<AnswerValueEnum>? valueEnum) {
+    if (valueEnum == null) return "";
+    String _temp = "";
+
+    if (existEnum(AnswerValueEnum.A)) {
+      _temp += "A ";
     }
+    if (existEnum(AnswerValueEnum.B)) {
+      _temp += "B ";
+    }
+    if (existEnum(AnswerValueEnum.C)) {
+      _temp += "C ";
+    }
+    if (existEnum(AnswerValueEnum.D)) {
+      _temp += "D ";
+    }
+    _temp = _temp.trim();
+    return _temp;
+  }
+
+  bool existEnum(AnswerValueEnum answerValueEnum) {
+    int? index = valueEnum?.indexWhere((element) => element == answerValueEnum);
+
+    return (index != null && index >= 0);
+  }
+
+  List<AnswerValueEnum>? getValueEnum(String? valueString) {
+    if (valueString == null) return null;
+
+    List<AnswerValueEnum>? _temp = [];
+
+    if (valueString.contains("A")) {
+      _temp.add(AnswerValueEnum.A);
+    }
+    if (valueString.contains("B")) {
+      _temp.add(AnswerValueEnum.B);
+    }
+    if (valueString.contains("C")) {
+      _temp.add(AnswerValueEnum.C);
+    }
+    if (valueString.contains("D")) {
+      _temp.add(AnswerValueEnum.D);
+    }
+
+    return _temp;
   }
 }

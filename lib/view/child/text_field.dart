@@ -40,7 +40,7 @@ class TextFieldView extends StatelessWidget {
     return TextFormField(
       controller: controller,
       style: style,
-      keyboardType: keyboardType,
+      keyboardType: keyboardType ?? TextInputType.text,
       cursorColor: ResourceManager().color.primary,
       focusNode: focusNode,
       onTap: onTap,

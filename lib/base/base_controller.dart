@@ -57,4 +57,6 @@ abstract class BaseController<S extends State> {
         margin: EdgeInsets.fromLTRB(15, 0, 15, 15),
         duration: Duration(milliseconds: 1500));
   }
+
+  void onReady(Duration duration) {}
 }

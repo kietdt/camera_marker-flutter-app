@@ -16,15 +16,10 @@ class CodeFillViewCtr extends BaseController<CodeFillViewState> {
   late RxList<RxInt> listCode =
       List.generate(maxColumn, (index) => (-1).obs).obs;
 
-  void initListcode(int? code) {
+  void initListcode(String? code) {
     if (code != null) {
-      List<int> _list = [];
-      while (code! > 0) {
-        int _temp = code % 10;
-        _list.insert(0, _temp);
-        code = code ~/ 10;
-      }
-      listCode.value = List.generate(_list.length, (index) => _list[index].obs);
+      listCode.value =
+          List.generate(code.length, (index) => int.parse(code[index]).obs);
     }
   }
 
@@ -35,28 +30,32 @@ class CodeFillViewCtr extends BaseController<CodeFillViewState> {
 
   void random() {
     int rd = 0;
-    List<int?> codes = List<int?>.generate(
+    List<String?> codes = List<String?>.generate(
         state.widget.exam?.answer.length ?? 0,
         (index) => state.widget.exam?.answer[index].code);
-    while (rd < 100) {
+    int index = 0;
+    while (index >= 0) {
       rd = Random().nextInt(999);
-      if (codes.contains(rd)) rd = 0;
+      index = codes.indexWhere((element) => element == rd.toString());
     }
-    initListcode(rd);
-    onCodeChange(rd);
+    String _temp = rd.toString();
+    while (_temp.length < 3) _temp = "0" + _temp;
+
+    initListcode(_temp);
+    onCodeChange(_temp);
   }
 
-  int getCode() {
-    int code = 0;
+  String getCode() {
+    String code = "";
     List.generate(maxColumn, (index) {
       if (listCode[index].value >= 0) {
-        code = code * 10 + listCode[index].value;
+        code += listCode[index].value.toString();
       }
     });
     return code;
   }
 
-  void onCodeChange(int code) {
+  void onCodeChange(String code) {
     if (state.widget.onCodeChange != null) {
       state.widget.onCodeChange!(code);
     }
