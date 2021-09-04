@@ -1,3 +1,4 @@
+import 'tb_answer.dart';
 import 'tb_class.dart';
 import 'tb_exam.dart';
 import 'tb_template.dart';
@@ -14,10 +15,12 @@ class DataBaseCtr {
   late TbTemplate tbTemplate = TbTemplate();
   late TbClass tbClass = TbClass();
   late TbExam tbExam = TbExam();
+  late TbAnswer tbAnswer = TbAnswer();
 
   Future<void> init() async {
     await tbTemplate.loadTable();
     await tbClass.loadTable();
     await tbExam.loadTable();
+    await tbAnswer.loadTable();
   }
 }

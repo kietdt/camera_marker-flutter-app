@@ -5,9 +5,11 @@ import 'package:get/get.dart';
 //created by Kietdt 28/07/2021
 //contact email: dotuankiet1403@gmail.com
 abstract class BaseController<S extends State> {
-  S? _state;
+  late S _state;
 
-  S? get state => _state;
+  S get state => _state;
+
+  BuildContext get context => state.context;
 
   //UI
   RxBool _loading = false.obs;
@@ -28,9 +30,8 @@ abstract class BaseController<S extends State> {
   void onDispose() {}
 
   //defaul methods
-  void hideKeyboard() => _state != null
-      ? FocusScope.of(_state!.context).requestFocus(FocusNode())
-      : null;
+  void hideKeyboard() =>
+      FocusScope.of(_state.context).requestFocus(FocusNode());
 
   void bottomSnackBar(String title, String message) {
     Get.snackbar(title, message,

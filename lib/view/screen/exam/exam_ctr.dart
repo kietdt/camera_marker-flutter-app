@@ -1,5 +1,5 @@
-import 'package:camera_marker/base/base_controller.dart';
 import 'package:camera_marker/database/database_ctr.dart';
+import 'package:camera_marker/manager/resource_manager.dart';
 import 'package:camera_marker/manager/route_manager.dart';
 import 'package:camera_marker/model/exam.dart';
 import 'package:camera_marker/view/dialog/dialog_confirm.dart';
@@ -57,10 +57,10 @@ class ExamPageCtr extends ListSelectCtr<ExamPageState, Exam> {
         rightTitle: "Quản lý",
         barrierDismissible: true,
         hasImage: false,
-        fact:
-            "Fact: bạn cũng có thể nhấn 2 lần để vào trang quản lý của kì thi",
+        fact: "Fact: bạn cũng có thể nhấn 2 lần để vào trang quản lý kì thi",
         onRight: () => navigateManage(item),
-        onLeft: () => showDialogUpdate(item));
+        onLeft: () => showDialogUpdate(item),
+        leftColor: ResourceManager().color.primary);
   }
 
   @override

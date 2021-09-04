@@ -17,6 +17,8 @@ abstract class ListSelectCtr<S extends State, D> extends BaseController<S> {
   var showSelect = false.obs;
   var selecteList = [].obs;
 
+  bool showAdd = true;
+
   String get emptyMessage => "Không có nội dung nào";
   String get title => "";
   double get mainPadding => 15;

@@ -37,6 +37,7 @@ class MyApp extends StatelessWidget {
       //   scaffoldBackgroundColor: Color.fromARGB(245, 31, 31, 31),
       //   textTheme: TextTheme(bodyText2: TextStyle(color: Colors.white)),
       // ),
+      navigatorObservers: [RouteManager().navigatorOnservers],
       initialRoute: RouteManager().initialRoute,
       onGenerateRoute: RouteManager().onGenerateRoute,
     );

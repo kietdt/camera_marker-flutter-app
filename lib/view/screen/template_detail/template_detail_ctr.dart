@@ -10,7 +10,7 @@ class TemplateDetailCtr extends BaseController<TemplateDetailState> {
 
   double get mainPadding => 10;
 
-  Template? get template => state?.widget.payload?.template;
+  Template? get template => state.widget.payload?.template;
   String get downloadLink => template?.downloadLink ?? "";
   String get templateTitle => template?.title ?? "";
   String get subjectShare =>

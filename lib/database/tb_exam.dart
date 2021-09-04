@@ -1,4 +1,6 @@
 import 'package:camera_marker/database/base_table.dart';
+import 'package:camera_marker/database/database_ctr.dart';
+import 'package:camera_marker/model/answer.dart';
 import 'package:camera_marker/model/exam.dart';
 
 import 'base_path.dart';
@@ -29,6 +31,33 @@ class TbExam extends BaseTable<Exam> {
 
   Future<void> deleteExam(Exam exam) async {
     int index = entities.indexWhere((element) => element.id == exam.id);
+
+    //delete Answer related
+    Exam? _temp = getById(exam.id);
+    List.generate(
+        _temp?.answer.length ?? 0,
+        (index) async =>
+            await DataBaseCtr().tbAnswer.deleteAnswer(_temp?.answer[index]));
+
     await delete(index);
+  }
+
+  Exam? getById(String? id) {
+    int index = entities.indexWhere((element) => element.id == id);
+    if (index >= 0) {
+      return entities[index];
+    }
+    return null;
+  }
+
+  Future<void> addAnswer({required Exam? exam, required Answer? answer}) async {
+    if (exam != null && answer != null) {
+      List<String> ids = exam.answerIds ?? [];
+      if (!ids.contains(answer.id)) {
+        ids.add(answer.id ?? "");
+      }
+      exam.answerIds = ids;
+      await updateExam(exam);
+    }
   }
 }

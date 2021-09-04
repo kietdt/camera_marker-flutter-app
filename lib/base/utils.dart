@@ -22,7 +22,7 @@ class Utils {
   }
 
   static String upperAllFirst(String? text) {
-    if (text == null) return "";
+    if (text == null || text.isEmpty) return "";
     List<String> list = text.split(" ");
     list = List.generate(list.length, (index) {
       String first = list[index][0];

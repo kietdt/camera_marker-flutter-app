@@ -8,4 +8,5 @@ class BasePath {
   static const String CLASS = "$ROOT_DATABASE/class";
   static const String TEMPLATE = "$ROOT_DATABASE/template";
   static const String EXAM = "$ROOT_DATABASE/exam";
+  static const String ANSWER = "$ROOT_DATABASE/answer";
 }

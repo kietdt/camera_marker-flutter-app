@@ -1,6 +1,8 @@
 import 'dart:async';
+import 'dart:math';
 
 import 'package:camera_marker/base/base_scaffold.dart';
+import 'package:camera_marker/model/exam.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -11,7 +13,27 @@ import 'yuv_transform_creen_ctr.dart';
 
 // typedef void Callback(List<dynamic> list, int h, int w);
 
+enum YuvTransformScreenType { Fill, Verify }
+
+class YuvTransformScreenPayload {
+  final YuvTransformScreenType? type;
+  final Exam? exam;
+
+  YuvTransformScreenPayload({this.type, this.exam});
+
+  factory YuvTransformScreenPayload.fill({Exam? exam}) =>
+      YuvTransformScreenPayload(type: YuvTransformScreenType.Fill, exam: exam);
+
+  factory YuvTransformScreenPayload.verify({Exam? exam}) =>
+      YuvTransformScreenPayload(
+          type: YuvTransformScreenType.Verify, exam: exam);
+}
+
 class YuvTransformScreen extends StatefulWidget {
+  final YuvTransformScreenPayload? payload;
+
+  const YuvTransformScreen({Key? key, this.payload}) : super(key: key);
+
   @override
   YuvTransformScreenState createState() => YuvTransformScreenState();
 }
@@ -34,6 +56,7 @@ class YuvTransformScreenState
     controller.subscription.forEach((element) {
       element.cancel();
     });
+    controller.cameraCtr?.dispose();
     super.dispose();
   }
 
@@ -45,6 +68,15 @@ class YuvTransformScreenState
     }
     // controller.resetRootView();
     return super.inactive();
+  }
+
+  @override
+  Future paused() {
+    if (controller.cameraCtr != null &&
+        controller.cameraCtr!.value.isInitialized) {
+      controller.cameraCtr?.dispose();
+    }
+    return super.paused();
   }
 
   @override

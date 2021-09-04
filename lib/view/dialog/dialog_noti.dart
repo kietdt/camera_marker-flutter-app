@@ -4,52 +4,41 @@ import 'package:camera_marker/view/child/rect_button.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-class DialogConfirm extends StatelessWidget {
-  final Function()? onLeft;
-  final Function()? onRight;
+class DialogNoti extends StatelessWidget {
   final String? title;
   final String? message;
-  final String? leftTitle;
-  final String? rightTitle;
   final bool? hasImage;
   final String? fact;
-  final Color? leftColor;
+  final String? image;
+  final Color? imageColor;
 
-  static show(
-      {Function()? onLeft,
-      Function()? onRight,
-      String? title,
-      String? message,
-      String? leftTitle,
-      bool? hasImage,
-      String? fact,
-      bool? barrierDismissible,
-      Color? leftColor,
-      String? rightTitle}) async {
+  static show({
+    String? title,
+    String? message,
+    bool? hasImage = false,
+    String? fact,
+    bool? barrierDismissible,
+    Color? imageColor,
+    String? image,
+  }) async {
     return Get.dialog(
-        DialogConfirm(
+        DialogNoti(
             message: message,
-            onLeft: onLeft,
-            onRight: onRight,
             title: title,
-            leftTitle: leftTitle,
-            rightTitle: rightTitle,
             fact: fact,
-            leftColor: leftColor,
-            hasImage: hasImage),
+            hasImage: hasImage,
+            imageColor: imageColor,
+            image: image),
         barrierDismissible: barrierDismissible ?? false);
   }
 
-  const DialogConfirm({
+  const DialogNoti({
     Key? key,
-    this.onLeft,
-    this.onRight,
     this.title,
-    this.leftTitle,
-    this.rightTitle,
     this.hasImage,
     this.fact,
-    this.leftColor,
+    this.imageColor,
+    this.image,
     required this.message,
   }) : super(key: key);
 
@@ -70,17 +59,18 @@ class DialogConfirm extends StatelessWidget {
             _image(),
             SizedBox(height: 7),
             Text(
-              title ?? "Xác nhận",
+              title ?? "Thông báo",
               style: ResourceManager().text.boldStyle.copyWith(
-                  color: ResourceManager().color.primary, fontSize: 20),
+                  color: ResourceManager().color.primary, fontSize: 25),
             ),
-            SizedBox(height: 7),
+            SizedBox(height: 15),
             Visibility(
                 visible: message != null,
                 child: Text(
                   message ?? "",
+                  textAlign: TextAlign.center,
                   style: ResourceManager().text.normalStyle.copyWith(
-                      color: ResourceManager().color.des, fontSize: 13),
+                      color: ResourceManager().color.black, fontSize: 20),
                 )),
             Visibility(
                 visible: fact != null,
@@ -95,7 +85,7 @@ class DialogConfirm extends StatelessWidget {
                     ),
                   ],
                 )),
-            SizedBox(height: 14),
+            SizedBox(height: 20),
             _bottom(),
             SizedBox(height: 14),
           ],
@@ -111,13 +101,14 @@ class DialogConfirm extends StatelessWidget {
         padding: EdgeInsets.all(7),
         decoration: BoxDecoration(
             shape: BoxShape.circle,
-            border:
-                Border.all(width: 3, color: ResourceManager().color.primary)),
+            border: Border.all(
+                width: 3,
+                color: imageColor ?? ResourceManager().color.primary)),
         child: CustomImageView(
-          "lib/asset/ic_confirm.png",
+          image ?? "lib/asset/ic_confirm.png",
           width: 50,
           height: 50,
-          color: ResourceManager().color.primary,
+          color: imageColor ?? ResourceManager().color.primary,
         ),
       ),
     );
@@ -125,32 +116,16 @@ class DialogConfirm extends StatelessWidget {
 
   Widget _bottom() {
     return Container(
+      width: 150,
       margin: EdgeInsets.symmetric(horizontal: 14),
-      child: Row(
-        children: [
-          Expanded(
-            child: RectButton(
-              borderColor: leftColor ?? ResourceManager().color.des,
-              textColor: leftColor ?? ResourceManager().color.des,
-              color: ResourceManager().color.white,
-              title: leftTitle ?? "Hủy",
-              onTap: () {
-                Get.back();
-                if (onLeft != null) onLeft!();
-              },
-            ),
-          ),
-          SizedBox(width: 14),
-          Expanded(
-            child: RectButton(
-              title: rightTitle,
-              onTap: () {
-                Get.back();
-                if (onRight != null) onRight!();
-              },
-            ),
-          )
-        ],
+      child: RectButton(
+        borderColor: ResourceManager().color.primary,
+        textColor: ResourceManager().color.primary,
+        color: ResourceManager().color.white,
+        title: "Tiếp tục",
+        onTap: () {
+          Get.back();
+        },
       ),
     );
   }

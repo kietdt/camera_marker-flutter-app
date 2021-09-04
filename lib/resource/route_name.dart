@@ -6,4 +6,6 @@ class BaseRouteName {
   final String tempPlateDetail = "template_detail";
   final String classList = "class_list";
   final String examManager = "exam_manager";
+  final String answer = "answer";
+  final String answerFill = "answer_fill";
 }

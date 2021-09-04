@@ -5,13 +5,16 @@ import 'dart:typed_data';
 
 import 'package:camera/camera.dart';
 import 'package:camera_marker/base/base_controller.dart';
+import 'package:camera_marker/manager/route_manager.dart';
 import 'package:camera_marker/mix/camera_handler.dart';
 import 'package:camera_marker/mix/permission_mix.dart';
 import 'package:camera_marker/mix/rotate_mix.dart';
+import 'package:camera_marker/model/answer.dart';
 import 'package:camera_marker/model/draw_info.dart';
 import 'package:camera_marker/model/recognition.dart';
 import 'package:camera_marker/service/image_result_processor_service.dart';
 import 'package:camera_marker/service/method_channelling/yuv_chanelling.dart';
+import 'package:camera_marker/view/screen/answer_fill/answer_fill_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
@@ -23,6 +26,12 @@ class YuvTransformScreenCtr extends BaseController<YuvTransformScreenState>
     with CameraHandler, RotateMix, PermissionMix {
   YuvTransformScreenCtr(YuvTransformScreenState state) : super(state) {
     initCamera();
+
+    showLoading();
+    Future.delayed(Duration(milliseconds: 1000)).then((value) {
+      hideLoading();
+      onScanFill(Answer.sample);
+    });
   }
 
   List<StreamSubscription> subscription = [];
@@ -166,5 +175,14 @@ class YuvTransformScreenCtr extends BaseController<YuvTransformScreenState>
     this.recognitions.value = List<Recognition>.from(recognitions);
     this.originHeight.value = imageHeight;
     this.originWidth.value = imageWidth;
+  }
+
+  void onScanFill(Map<String, dynamic> json) async {
+    Answer answer = Answer.fromJson(json);
+    cameraCtr?.dispose();
+    await Get.toNamed(RouteManager().routeName.answerFill,
+        arguments: AnswerFillPayload.addNew(
+            exam: state.widget.payload?.exam, answer: answer, fromScan: true));
+    initCamera();
   }
 }

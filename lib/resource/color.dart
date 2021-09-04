@@ -10,4 +10,5 @@ class BaseColor {
   Color white = Colors.white;
   Color error = Colors.red;
   Color delete = Colors.red;
+  Color warning = Colors.yellow;
 }

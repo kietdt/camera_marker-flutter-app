@@ -12,13 +12,18 @@ import 'list_select_ctr.dart';
 
 abstract class ListSelect<S extends StatefulWidget, C extends ListSelectCtr, D>
     extends BaseScaffold<S, C> with TickerProviderStateMixin {
+  late List<Widget> actionLeft = [];
+  late List<Widget> actionRight = [];
+
+  late List<Widget> actions = [_deleteAction()];
+
   @override
   void initState() {
     super.initState();
-    appBar = BaseAppBar(
-        back: true,
-        text: controller.title,
-        action: [_deleteAction()]).toAppBar();
+    actions.insertAll(0, actionLeft);
+    actions.addAll(actionRight);
+    appBar = BaseAppBar(back: true, text: controller.title, action: actions)
+        .toAppBar();
   }
 
   @override
@@ -32,20 +37,22 @@ abstract class ListSelect<S extends StatefulWidget, C extends ListSelectCtr, D>
 
   @override
   Widget? floatingActionButton() {
-    return AnimatedBuilder(
-        animation: controller.deleteCtr,
-        child: Obx(() => FloatingActionAdd(
-              color: controller.showSelect.value
-                  ? ResourceManager().color.delete
-                  : null,
-              onTap: controller.showSelect.value
-                  ? controller.onDelete
-                  : controller.showNew,
-            )),
-        builder: (ctx, child) => Transform.rotate(
-              angle: controller.deleteCtr.value * (pi / 4),
-              child: child,
-            ));
+    return Obx(() => Visibility(
+        visible: controller.showSelect.value || controller.showAdd,
+        child: AnimatedBuilder(
+            animation: controller.deleteCtr,
+            child: Obx(() => FloatingActionAdd(
+                  color: controller.showSelect.value
+                      ? ResourceManager().color.delete
+                      : null,
+                  onTap: controller.showSelect.value
+                      ? controller.onDelete
+                      : controller.showNew,
+                )),
+            builder: (ctx, child) => Transform.rotate(
+                  angle: controller.deleteCtr.value * (pi / 4),
+                  child: child,
+                ))));
   }
 
   Widget list(List<D> items) {
@@ -63,10 +70,13 @@ abstract class ListSelect<S extends StatefulWidget, C extends ListSelectCtr, D>
       children: [
         _checkBox(index),
         Expanded(
-          child: InkWell(
-              onDoubleTap: () => controller.onDoubleTap(item, index),
-              onTap: () => controller.onTap(item, index),
-              child: child(item)),
+          child: Container(
+            margin: EdgeInsets.only(top: controller.mainPadding),
+            child: InkWell(
+                onDoubleTap: () => controller.onDoubleTap(item, index),
+                onTap: () => controller.onTap(item, index),
+                child: child(item)),
+          ),
         ),
       ],
     );
@@ -98,7 +108,7 @@ abstract class ListSelect<S extends StatefulWidget, C extends ListSelectCtr, D>
         child: InkWell(
             onTap: controller.onSelect,
             child: Container(
-                margin: EdgeInsets.symmetric(horizontal: 15),
+                margin: EdgeInsets.only(right: 15, left: 7),
                 child: Icon(Icons.delete)))));
   }
 

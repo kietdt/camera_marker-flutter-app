@@ -24,7 +24,6 @@ class ClassListState extends ListSelect<ClassListPage, ClassListCtr, MyClass> {
     return Container(
       width: double.infinity,
       padding: EdgeInsets.all(7),
-      margin: EdgeInsets.only(top: controller.mainPadding),
       decoration: BoxDecoration(
           color: ResourceManager().color.white,
           boxShadow: [
