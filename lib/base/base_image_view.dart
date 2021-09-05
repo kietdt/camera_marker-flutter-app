@@ -2,6 +2,8 @@ import 'package:camera_marker/manager/resource_manager.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 
+//created by kietdt 08/08/2021
+//contact email: dotuankiet1403@gmail.com
 class CustomImageView extends StatelessWidget {
   final String url;
   final double? width;

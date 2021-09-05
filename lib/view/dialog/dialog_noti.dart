@@ -4,6 +4,9 @@ import 'package:camera_marker/view/child/rect_button.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
+
+//created by kietdt 08/08/2021
+//contact email: dotuankiet1403@gmail.com
 class DialogNoti extends StatelessWidget {
   final String? title;
   final String? message;

@@ -7,6 +7,8 @@ import 'package:flutter/material.dart';
 
 import 'exam_manager_ctr.dart';
 
+//created by kietdt 08/08/2021
+//contact email: dotuankiet1403@gmail.com
 class ExamManagerPayLoad {
   final Exam? exam;
 

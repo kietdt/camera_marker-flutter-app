@@ -5,6 +5,9 @@ import 'package:flutter/material.dart';
 
 import 'dash_board_ctr.dart';
 
+
+//created by kietdt 08/08/2021
+//contact email: dotuankiet1403@gmail.com
 class DashBoardPage extends StatefulWidget {
   @override
   State<StatefulWidget> createState() {

@@ -5,11 +5,14 @@ import 'package:camera_marker/model/exam.dart';
 import 'package:camera_marker/view/dialog/dialog_confirm.dart';
 import 'package:camera_marker/view/dialog/dialog_exam.dart';
 import 'package:camera_marker/view/extend/list_select/list_select_ctr.dart';
-import 'package:camera_marker/view/screen/exam_manager/exam_manager.dart';
+import 'package:camera_marker/view/screen/exam_manager/exam_manager_page.dart';
 import 'package:get/get.dart';
 
 import 'exam_page.dart';
 
+
+//created by kietdt 08/08/2021
+//contact email: dotuankiet1403@gmail.com
 class ExamPageCtr extends ListSelectCtr<ExamPageState, Exam> {
   ExamPageCtr(ExamPageState state) : super(state) {
     getExam();

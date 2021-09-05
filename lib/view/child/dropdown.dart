@@ -3,6 +3,9 @@ import 'package:camera_marker/model/dropdown_gen.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
+//created by kietdt 08/08/2021
+//contact email: dotuankiet1403@gmail.com
+
 // ignore: must_be_immutable
 class CustomDropdown<T> extends StatelessWidget {
   final Function(T? value)? onChange;

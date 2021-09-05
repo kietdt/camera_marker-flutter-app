@@ -5,6 +5,8 @@ import 'package:flutter/animation.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:get/get.dart';
 
+//created by kietdt 08/08/2021
+//contact email: dotuankiet1403@gmail.com
 abstract class ListSelectCtr<S extends State, D> extends BaseController<S> {
   ListSelectCtr(S state) : super(state) {
     deleteCtr = AnimationController(

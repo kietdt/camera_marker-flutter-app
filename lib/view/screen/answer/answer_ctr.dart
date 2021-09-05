@@ -10,6 +10,8 @@ import 'package:get/get.dart';
 
 import 'answer_page.dart';
 
+//created by kietdt 08/08/2021
+//contact email: dotuankiet1403@gmail.com
 class AnswerCtr extends ListSelectCtr<AnswerState, Answer> {
   AnswerCtr(AnswerState state) : super(state) {
     getAnswer();

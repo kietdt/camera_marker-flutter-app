@@ -8,6 +8,9 @@ import 'package:get/get.dart';
 
 import 'template_list_crt.dart';
 
+
+//created by kietdt 08/08/2021
+//contact email: dotuankiet1403@gmail.com
 class TemplateList extends StatefulWidget {
   @override
   State<StatefulWidget> createState() {

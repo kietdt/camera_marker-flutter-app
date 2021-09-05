@@ -8,9 +8,13 @@ import 'package:camera_marker/model/exam.dart';
 import 'package:camera_marker/view/child/dropdown.dart';
 import 'package:camera_marker/view/child/rect_button.dart';
 import 'package:camera_marker/view/child/text_field.dart';
+import 'package:camera_marker/view/dialog/dialog_confirm.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
 import 'package:get/get.dart';
+
+//created by kietdt 08/08/2021
+//contact email: dotuankiet1403@gmail.com
 
 enum DialogExamType { New, Update }
 
@@ -348,7 +352,29 @@ class DialogExam extends StatelessWidget {
         maxPoint: double.parse(pointCtr.text),
         templateId: templateSelected?.id,
         startAt: dtStart,
+        answerIds: this.exam?.answerIds,
         minutes: int.tryParse(timeCtr.text));
+    if (this.exam?.templateId != null &&
+        this.exam?.templateId != templateSelected?.id &&
+        exam.answer.length > 0) {
+      //TODO: vì đổi mẫu đề thi có thể đổi từ mẫu chọn 1 => chọn nhiều
+      //TODO: ràng buộc chỗ này để khỏi xử lý nhiều
+      //TODO: vì đổi mẫu mã đề có thể sẽ đổi cách chấm
+      DialogConfirm.show(
+          message:
+              "Bạn đã thay đổi mẫu bảng trả lời, các đáp án và bài chấm đã tạo sẽ bị xóa. Tiếp tục?",
+          onRight: () {
+            DataBaseCtr().tbAnswer.deleteAnswerList(exam.answer);
+            exam.answerIds = null;
+            submit(exam);
+          },
+          rightTitle: "Tiếp tục");
+    } else {
+      submit(exam);
+    }
+  }
+
+  void submit(Exam exam) {
     onConfirm(exam);
   }
 

@@ -32,4 +32,10 @@ class TbAnswer extends BaseTable<Answer> {
     int index = entities.indexWhere((element) => element.id == answer?.id);
     await delete(index);
   }
+
+  Future<void> deleteAnswerList(List<Answer> answers) async {
+    for (int i = 0; i < answers.length; i++) {
+      await deleteAnswer(answers[i]);
+    }
+  }
 }

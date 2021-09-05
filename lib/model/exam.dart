@@ -3,6 +3,8 @@ import 'package:camera_marker/model/answer.dart';
 import 'package:camera_marker/model/class.dart';
 import 'package:camera_marker/model/config.dart';
 
+//created by kietdt 08/08/2021
+//contact email: dotuankiet1403@gmail.com
 class Exam {
   Exam(
       {this.id,
@@ -12,7 +14,8 @@ class Exam {
       this.maxPoint,
       this.templateId,
       this.startAt,
-      this.minutes});
+      this.minutes,
+      this.answerIds});
 
   String? id;
   String? title;
@@ -22,7 +25,6 @@ class Exam {
   int? templateId;
   DateTime? startAt;
   int? minutes;
-
   List<String>? answerIds;
 
   int get maxQuestions => 200;

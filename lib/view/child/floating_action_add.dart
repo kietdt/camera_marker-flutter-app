@@ -1,6 +1,8 @@
 import 'package:camera_marker/manager/resource_manager.dart';
 import 'package:flutter/material.dart';
 
+//created by kietdt 08/08/2021
+//contact email: dotuankiet1403@gmail.com
 class FloatingActionAdd extends StatelessWidget {
   final Function()? onTap;
   final Color? color;

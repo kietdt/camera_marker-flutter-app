@@ -7,6 +7,9 @@ import 'package:camera_marker/view/extend/list_select/list_select_ctr.dart';
 import 'package:get/get.dart';
 import 'class_list_page.dart';
 
+
+//created by kietdt 08/08/2021
+//contact email: dotuankiet1403@gmail.com
 class ClassListCtr extends ListSelectCtr<ClassListState, MyClass> {
   ClassListCtr(ClassListState state) : super(state) {
     getClass();

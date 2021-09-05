@@ -4,6 +4,8 @@ import 'package:get/get.dart';
 
 import 'utils.dart';
 
+//created by kietdt 08/08/2021
+//contact email: dotuankiet1403@gmail.com
 class BaseAppBar {
   final bool? back;
   final Widget? leading;

@@ -5,6 +5,9 @@ import 'package:share/share.dart';
 
 import 'template_detail_page.dart';
 
+
+//created by kietdt 08/08/2021
+//contact email: dotuankiet1403@gmail.com
 class TemplateDetailCtr extends BaseController<TemplateDetailState> {
   TemplateDetailCtr(TemplateDetailState state) : super(state);
 

@@ -8,6 +8,9 @@ import 'package:get/get.dart';
 
 import 'dash_board_page.dart';
 
+
+//created by kietdt 08/08/2021
+//contact email: dotuankiet1403@gmail.com
 class DashBoardCtr extends BaseController<DashBoardState> {
   DashBoardCtr(DashBoardState state) : super(state) {
     getConfig();

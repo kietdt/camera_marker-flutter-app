@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+//created by kietdt 08/08/2021
+//contact email: dotuankiet1403@gmail.com
 class BaseColor {
   Color background = Color(0xfff5f9fd);
   Color primary = Color(0xff3A6DB2);

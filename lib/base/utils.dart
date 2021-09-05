@@ -1,5 +1,7 @@
 import 'package:intl/intl.dart';
 
+//created by kietdt 08/08/2021
+//contact email: dotuankiet1403@gmail.com
 class Utils {
   static const String DMY = "dd/MM/yyyy";
   static const String DMYHM = "dd/MM/yyyy HH:mm";

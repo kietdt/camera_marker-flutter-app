@@ -7,6 +7,9 @@ import 'package:camera_marker/view/screen/template_detail/template_detail_page.d
 import 'template_list_page.dart';
 import 'package:get/get.dart';
 
+
+//created by kietdt 08/08/2021
+//contact email: dotuankiet1403@gmail.com
 class TemplateListCtr extends BaseController<TemplateListState> {
   TemplateListCtr(TemplateListState state) : super(state) {
     init();

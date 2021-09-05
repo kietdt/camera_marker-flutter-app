@@ -6,6 +6,8 @@ import 'package:flutter/material.dart';
 
 import 'class_list_ctr.dart';
 
+//created by kietdt 08/08/2021
+//contact email: dotuankiet1403@gmail.com
 class ClassListPage extends StatefulWidget {
   @override
   State<StatefulWidget> createState() {
@@ -40,8 +42,10 @@ class ClassListState extends ListSelect<ClassListPage, ClassListCtr, MyClass> {
         children: [
           Text(
             "Mã lớp: ${item?.code}",
-            style: ResourceManager().text.boldStyle.copyWith(
-                color: ResourceManager().color.primary, fontSize: 25),
+            style: ResourceManager()
+                .text
+                .boldStyle
+                .copyWith(color: ResourceManager().color.primary, fontSize: 25),
           ),
           _itemDesc("Tên lớp", item?.name),
           _itemDesc("Mô tả", item?.desc),
@@ -65,9 +69,13 @@ class ClassListState extends ListSelect<ClassListPage, ClassListCtr, MyClass> {
             ),
           ),
           Expanded(
-            child: Text(
-              decs ?? "",
-              style: ResourceManager().text.normalStyle.copyWith(fontSize: 15),
+            child: SingleChildScrollView(
+              scrollDirection: Axis.horizontal,
+              child: Text(
+                (decs ?? ""),
+                style:
+                    ResourceManager().text.normalStyle.copyWith(fontSize: 15),
+              ),
             ),
           )
         ],

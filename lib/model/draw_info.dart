@@ -1,3 +1,6 @@
+//created by kietdt 08/08/2021
+//contact email: dotuankiet1403@gmail.com
+
 class DrawInfo {
   double? width;
   double? height;

@@ -1,6 +1,7 @@
 import 'package:dio/dio.dart';
 
-//create by kietdt 18/08/2021
+//created by kietdt 08/08/2021
+//contact email: dotuankiet1403@gmail.com
 class BaseHttp {
   static const String API_KEY = "fd9697ec-d23f-4b2b-b734-16bda28fc794";
   static const String BASE_API = "https://json.psty.io/api_v1/stores/";

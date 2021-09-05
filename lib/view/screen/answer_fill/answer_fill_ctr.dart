@@ -11,14 +11,20 @@ import 'package:uuid/uuid.dart';
 
 import 'answer_fill_page.dart';
 
+//created by kietdt 08/08/2021
+//contact email: dotuankiet1403@gmail.com
 class AnswerFillCtr extends BaseController<AnswerFillState> {
   AnswerFillCtr(AnswerFillState state) : super(state) {
     this.answerSelected =
         List<AnswerValue>.filled(exam?.question ?? 0, AnswerValue.empty());
 
-    for (int i = 0;
-        i < (state.widget.payload?.answer?.value?.length ?? 0);
-        i++) {
+    int answerLength = state.widget.payload?.answer?.value?.length ?? 0;
+
+    if (exam?.question != null && answerLength > (exam?.question ?? 0)) {
+      answerLength = (exam?.question ?? 0);
+    }
+
+    for (int i = 0; i < (answerLength); i++) {
       this.answerSelected?[i] = state.widget.payload?.answer?.value?[i];
     }
   }

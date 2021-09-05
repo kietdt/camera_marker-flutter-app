@@ -5,6 +5,9 @@ import 'package:camera_marker/view/child/text_field.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
+//created by kietdt 08/08/2021
+//contact email: dotuankiet1403@gmail.com
+
 enum DialogClassType { New, Update }
 
 class DialogClass extends StatelessWidget {

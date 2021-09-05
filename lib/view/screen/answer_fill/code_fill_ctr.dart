@@ -6,6 +6,9 @@ import 'package:get/get.dart';
 
 import 'code_fill_view.dart';
 
+
+//created by kietdt 08/08/2021
+//contact email: dotuankiet1403@gmail.com
 class CodeFillViewCtr extends BaseController<CodeFillViewState> {
   CodeFillViewCtr(CodeFillViewState state) : super(state) {
     initListcode(state.widget.code);

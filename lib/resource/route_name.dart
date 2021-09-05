@@ -1,3 +1,6 @@
+//created by kietdt 08/08/2021
+//contact email: dotuankiet1403@gmail.com
+
 class BaseRouteName {
   final String dashBoard = "dash_board";
   final String cameraScan = "camera_scan";

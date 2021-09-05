@@ -1,6 +1,9 @@
 import 'package:camera_marker/model/recognition.dart';
 import 'package:flutter/material.dart';
 
+
+//created by kietdt 08/08/2021
+//contact email: dotuankiet1403@gmail.com
 class BoundingBox extends StatelessWidget {
   final List<Recognition> results;
   final double? previewH;

@@ -4,6 +4,8 @@ import 'package:get/get.dart';
 
 import 'answer_fill_vew.dart';
 
+//created by kietdt 08/08/2021
+//contact email: dotuankiet1403@gmail.com
 class AnswerFillViewCtr extends BaseController<AnswerFillViewState> {
   AnswerFillViewCtr(AnswerFillViewState state) : super(state) {
     initListAnswer(state.widget.value);

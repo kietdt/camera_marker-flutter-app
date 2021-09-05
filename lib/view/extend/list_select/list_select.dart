@@ -10,6 +10,8 @@ import 'package:get/get.dart';
 
 import 'list_select_ctr.dart';
 
+//created by kietdt 08/08/2021
+//contact email: dotuankiet1403@gmail.com
 abstract class ListSelect<S extends StatefulWidget, C extends ListSelectCtr, D>
     extends BaseScaffold<S, C> with TickerProviderStateMixin {
   late List<Widget> actionLeft = [];
@@ -59,6 +61,7 @@ abstract class ListSelect<S extends StatefulWidget, C extends ListSelectCtr, D>
     return Container(
       margin: EdgeInsets.only(bottom: controller.mainPadding),
       child: ListView.builder(
+          padding: EdgeInsets.only(bottom: 100),
           itemCount: items.length,
           itemBuilder: (ctx, index) => Container(
               padding: EdgeInsets.symmetric(horizontal: controller.mainPadding),

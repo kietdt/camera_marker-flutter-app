@@ -5,7 +5,7 @@ import 'package:camera_marker/view/screen/camera_transform/yuv_transform_screen.
 import 'package:camera_marker/view/screen/class/class_list_page.dart';
 import 'package:camera_marker/view/screen/dash_board/dash_board_page.dart';
 import 'package:camera_marker/view/screen/exam/exam_page.dart';
-import 'package:camera_marker/view/screen/exam_manager/exam_manager.dart';
+import 'package:camera_marker/view/screen/exam_manager/exam_manager_page.dart';
 import 'package:camera_marker/view/screen/template_detail/template_detail_page.dart';
 import 'package:camera_marker/view/screen/template_list/template_list_page.dart';
 import 'package:flutter/material.dart';

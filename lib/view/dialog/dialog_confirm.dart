@@ -4,6 +4,9 @@ import 'package:camera_marker/view/child/rect_button.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
+//created by kietdt 08/08/2021
+//contact email: dotuankiet1403@gmail.com
+
 class DialogConfirm extends StatelessWidget {
   final Function()? onLeft;
   final Function()? onRight;
@@ -79,6 +82,7 @@ class DialogConfirm extends StatelessWidget {
                 visible: message != null,
                 child: Text(
                   message ?? "",
+                  textAlign: TextAlign.center,
                   style: ResourceManager().text.normalStyle.copyWith(
                       color: ResourceManager().color.des, fontSize: 13),
                 )),
