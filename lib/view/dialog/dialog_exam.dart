@@ -138,7 +138,7 @@ class DialogExam extends StatelessWidget {
                 validate();
               }),
           SizedBox(height: 7),
-          _item("Điểm*", pointFcn, pointCtr,
+          _item("Thang điểm*", pointFcn, pointCtr,
               textInputType: TextInputType.number),
           SizedBox(height: 7),
           _itemDropdown<Template>(
@@ -356,15 +356,15 @@ class DialogExam extends StatelessWidget {
         minutes: int.tryParse(timeCtr.text));
     if (this.exam?.templateId != null &&
         this.exam?.templateId != templateSelected?.id &&
-        exam.answer.length > 0) {
+        (exam.answer.length > 0 || exam.result.length > 0)) {
       //TODO: vì đổi mẫu đề thi có thể đổi từ mẫu chọn 1 => chọn nhiều
       //TODO: ràng buộc chỗ này để khỏi xử lý nhiều
       //TODO: vì đổi mẫu mã đề có thể sẽ đổi cách chấm
       DialogConfirm.show(
           message:
               "Bạn đã thay đổi mẫu bảng trả lời, các đáp án và bài chấm đã tạo sẽ bị xóa. Tiếp tục?",
-          onRight: () {
-            DataBaseCtr().tbAnswer.deleteAnswerList(exam.answer);
+          onRight: () async {
+            await DataBaseCtr().tbAnswer.deleteAnswerList(exam.answer, null);
             exam.answerIds = null;
             submit(exam);
           },

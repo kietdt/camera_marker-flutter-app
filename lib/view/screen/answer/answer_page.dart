@@ -81,7 +81,7 @@ class AnswerState extends ListSelect<AnswerPage, AnswerCtr, Answer> {
         )),
         Expanded(
           child: Text(
-            answer?.code.toString() ?? "",
+            answer?.examCode.toString() ?? "",
             style: _style,
           ),
         ),

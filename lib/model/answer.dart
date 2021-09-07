@@ -1,38 +1,79 @@
-
 //created by kietdt 08/08/2021
 //contact email: dotuankiet1403@gmail.com
+
+import 'dart:math';
 
 enum AnswerValueEnum { A, B, C, D }
 
 class Answer {
-  Answer({this.id, this.code, this.value});
+  Answer({this.id, this.examCode, this.value});
 
   String? id;
-  String? code;
+  String? examCode;
   List<AnswerValue?>? value;
+  DateTime? createdAt;
+  DateTime? updatedAt;
 
   static int codeLength = 3;
 
   Answer.fromJson(Map json) {
     this.id = json["id"];
-    this.code = json["code"];
+    this.examCode = json["examCode"];
     this.value = json["value"] != null
         ? List<AnswerValue>.from(
             json["value"].map((e) => AnswerValue.fromJson(e)))
         : [];
+    this.createdAt =
+        json["createdAt"] != null ? DateTime.parse(json["createdAt"]) : null;
+    this.updatedAt =
+        json["updatedAt"] != null ? DateTime.parse(json["updatedAt"]) : null;
   }
 
   Map<String, dynamic> toJson() => {
         "id": this.id,
-        "code": this.code,
+        "examCode": this.examCode,
         "value": List<Map<String, dynamic>>.from(
-            this.value?.map((e) => e?.toJson()) ?? [])
+            this.value?.map((e) => e?.toJson()) ?? []),
+        "createdAt": this.createdAt?.toIso8601String(),
+        "updatedAt": this.updatedAt?.toIso8601String()
       };
+
+  //tính số câu đúng
+  int verify(List<AnswerValue?>? result) {
+    int correct = 0;
+    int length = min((result?.length ?? 0), (value?.length ?? 0));
+
+    if (length <= 0) return 0;
+
+    for (int i = 0; i < length; i++) {
+      if (match(value?[i], result?[i])) {
+        correct++;
+      }
+    }
+    return correct;
+  }
+
+  //Kiểm tra hai đáp án giống nhau
+  bool match(AnswerValue? first, AnswerValue? second) {
+    if (first?.valueEnum?.length != second?.valueEnum?.length) return false;
+
+    int i = 0;
+
+    while (i < (first?.valueEnum?.length ?? 0)) {
+      if (!(first?.valueEnum?.contains(second?.valueEnum?[i]) ?? false))
+        return false;
+      if (!(second?.valueEnum?.contains(first?.valueEnum?[i]) ?? false))
+        return false;
+      i++;
+    }
+
+    return true;
+  }
 
   //model mẫu để test
   //sau này scan được sẽ xóa đi
   static Map<String, dynamic> sample = {
-    "code": "011",
+    "examCode": "011",
     "value": [
       {"valueString": "A B"},
       {"valueString": "B C"},
@@ -46,7 +87,6 @@ class Answer {
 
 class AnswerValue {
   AnswerValue({
-    // this.index,
     this.valueEnum,
   }) {
     this.valueString = getValueString(this.valueEnum);
@@ -54,18 +94,15 @@ class AnswerValue {
 
   factory AnswerValue.empty() => AnswerValue(valueEnum: []);
 
-  // int? index;
   String? valueString;
   List<AnswerValueEnum>? valueEnum;
 
   AnswerValue.fromJson(Map json) {
-    // this.index = json["index"];
     this.valueString = json["valueString"];
     this.valueEnum = getValueEnum(this.valueString);
   }
 
   Map<String, dynamic> toJson() => {
-        // "index": this.index,
         "valueString": this.valueString,
       };
 

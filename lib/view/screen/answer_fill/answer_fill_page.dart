@@ -88,7 +88,7 @@ class AnswerFillState extends BaseScaffold<AnswerFillPage, AnswerFillCtr>
       children: [
         Obx(() => CodeFillView(
               key: ValueKey(controller.keyCode.value),
-              code: widget.payload?.answer?.code,
+              code: widget.payload?.answer?.examCode,
               onCodeChange: controller.onCodeChange,
               exam: widget.payload?.exam,
             )),

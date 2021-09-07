@@ -2,6 +2,7 @@ import 'package:camera_marker/database/database_ctr.dart';
 import 'package:camera_marker/model/answer.dart';
 import 'package:camera_marker/model/class.dart';
 import 'package:camera_marker/model/config.dart';
+import 'package:camera_marker/model/result.dart';
 
 //created by kietdt 08/08/2021
 //contact email: dotuankiet1403@gmail.com
@@ -26,6 +27,9 @@ class Exam {
   DateTime? startAt;
   int? minutes;
   List<String>? answerIds;
+  List<String>? resultIds;
+  DateTime? createdAt;
+  DateTime? updatedAt;
 
   int get maxQuestions => 200;
 
@@ -40,8 +44,27 @@ class Exam {
       .entities
       .where((element) => (answerIds ?? []).contains(element.id)));
 
+  List<Result> get result => List<Result>.from(DataBaseCtr()
+      .tbResult
+      .entities
+      .where((element) => (resultIds ?? []).contains(element.id)));
+
   static List<int> questionsSelect =
       List<int>.generate(200, (index) => index + 1);
+
+  int correct(Result? result) {
+    if (result == null) return -1;
+
+    List<Answer> _temp = answer;
+    int index =
+        _temp.indexWhere((element) => result.examCode == element.examCode);
+
+    if (index >= 0) {
+      return _temp[index].verify(result.value);
+    }
+
+    return -1;
+  }
 
   Exam.fromJson(Map json) {
     this.id = json["id"];
@@ -57,6 +80,13 @@ class Exam {
     this.answerIds = json["answerIds"] != null
         ? List<String>.from(json["answerIds"].map((e) => e))
         : [];
+    this.resultIds = json["resultIds"] != null
+        ? List<String>.from(json["resultIds"].map((e) => e))
+        : [];
+    this.createdAt =
+        json["createdAt"] != null ? DateTime.parse(json["createdAt"]) : null;
+    this.updatedAt =
+        json["updatedAt"] != null ? DateTime.parse(json["updatedAt"]) : null;
   }
 
   Map<String, dynamic> toJson() => {
@@ -68,6 +98,9 @@ class Exam {
         "templateId": templateId,
         "startAt": startAt?.toIso8601String(),
         "minutes": minutes,
-        "answerIds": this.answerIds
+        "answerIds": this.answerIds,
+        "resultIds": this.resultIds,
+        "createdAt": this.createdAt?.toIso8601String(),
+        "updatedAt": this.updatedAt?.toIso8601String(),
       };
 }

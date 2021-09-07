@@ -59,7 +59,6 @@ abstract class ListSelect<S extends StatefulWidget, C extends ListSelectCtr, D>
 
   Widget list(List<D> items) {
     return Container(
-      margin: EdgeInsets.only(bottom: controller.mainPadding),
       child: ListView.builder(
           padding: EdgeInsets.only(bottom: 100),
           itemCount: items.length,

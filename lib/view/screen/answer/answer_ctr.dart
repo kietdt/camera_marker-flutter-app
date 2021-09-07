@@ -39,7 +39,9 @@ class AnswerCtr extends ListSelectCtr<AnswerState, Answer> {
           message: "Bạn có chắc muốn xóa ${temp.length} đáp án đang chọn?",
           onRight: () {
             temp.forEach((element) {
-              DataBaseCtr().tbAnswer.deleteAnswer(element);
+              DataBaseCtr()
+                  .tbAnswer
+                  .deleteAnswer(element, state.widget.payload?.exam);
             });
             onSelect();
             getAnswer();

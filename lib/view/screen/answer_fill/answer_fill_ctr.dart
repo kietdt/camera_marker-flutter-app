@@ -38,7 +38,7 @@ class AnswerFillCtr extends BaseController<AnswerFillState> {
   var keyCode = "".obs;
   var keyAnswer = "".obs;
 
-  late String? codeSelected = state.widget.payload?.answer?.code;
+  late String? codeSelected = state.widget.payload?.answer?.examCode;
   late List<AnswerValue?>? answerSelected;
 
   Exam? get exam => state.widget.payload?.exam;
@@ -75,7 +75,7 @@ class AnswerFillCtr extends BaseController<AnswerFillState> {
     if (await validate()) {
       if (isUpdate) {
         Answer answer = state.widget.payload!.answer!;
-        answer.code = this.codeSelected;
+        answer.examCode = this.codeSelected;
         answer.value = this.answerSelected;
         await DataBaseCtr().tbAnswer.updateAnswer(answer);
         Get.until(
@@ -83,7 +83,7 @@ class AnswerFillCtr extends BaseController<AnswerFillState> {
         topSnackBar("Thông báo", "Cập nhật đáp án thành công");
       } else {
         Answer answer =
-            Answer(code: this.codeSelected, value: this.answerSelected);
+            Answer(examCode: this.codeSelected, value: this.answerSelected);
         String? id = await DataBaseCtr().tbAnswer.addNewAnswer(answer);
         answer.id = id;
         await DataBaseCtr().tbExam.addAnswer(answer: answer, exam: exam);
@@ -118,11 +118,11 @@ class AnswerFillCtr extends BaseController<AnswerFillState> {
     }
 
     if (!isUpdate ||
-        (state.widget.payload?.answer?.code != this.codeSelected)) {
+        (state.widget.payload?.answer?.examCode != this.codeSelected)) {
       List<Answer?>? _answers =
           DataBaseCtr().tbExam.getById(state.widget.payload?.exam?.id)?.answer;
       List<String?>? codes = List.generate(
-          _answers?.length ?? 0, (index) => _answers?[index]?.code);
+          _answers?.length ?? 0, (index) => _answers?[index]?.examCode);
 
       if (codes.contains(this.codeSelected)) {
         await DialogNoti.show(

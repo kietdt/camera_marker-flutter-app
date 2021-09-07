@@ -1,3 +1,5 @@
+import 'package:camera_marker/database/tb_result.dart';
+
 import 'tb_answer.dart';
 import 'tb_class.dart';
 import 'tb_exam.dart';
@@ -16,11 +18,13 @@ class DataBaseCtr {
   late TbClass tbClass = TbClass();
   late TbExam tbExam = TbExam();
   late TbAnswer tbAnswer = TbAnswer();
+  late TbResult tbResult = TbResult();
 
   Future<void> init() async {
     await tbTemplate.loadTable();
     await tbClass.loadTable();
     await tbExam.loadTable();
     await tbAnswer.loadTable();
+    await tbResult.loadTable();
   }
 }

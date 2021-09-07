@@ -6,7 +6,6 @@ import 'package:flutter/material.dart';
 
 import 'exam_ctr.dart';
 
-
 //created by kietdt 08/08/2021
 //contact email: dotuankiet1403@gmail.com
 class ExamPage extends StatefulWidget {
@@ -53,7 +52,7 @@ class ExamPageState extends ListSelect<ExamPage, ExamPageCtr, Exam> {
               color: item?.myClass?.titleDisplay == null
                   ? ResourceManager().color.error
                   : null),
-          _itemDesc("Điểm", item?.maxPoint?.toStringAsFixed(2)),
+          _itemDesc("Thang điểm", item?.maxPoint?.toStringAsFixed(2)),
           _itemDesc("Mẫu đề thi", item?.template?.titleDisplay),
           _itemDesc("Thời gian bắt đầu",
               Utils.dateToStr(item?.startAt, pattern: Utils.DMYHM)),

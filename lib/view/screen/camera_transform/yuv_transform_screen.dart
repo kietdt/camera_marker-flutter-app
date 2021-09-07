@@ -13,7 +13,7 @@ import 'yuv_transform_creen_ctr.dart';
 
 // typedef void Callback(List<dynamic> list, int h, int w);
 
-enum YuvTransformScreenType { Fill, Verify }
+enum YuvTransformScreenType { Fill, Result }
 
 class YuvTransformScreenPayload {
   final YuvTransformScreenType? type;
@@ -24,9 +24,9 @@ class YuvTransformScreenPayload {
   factory YuvTransformScreenPayload.fill({Exam? exam}) =>
       YuvTransformScreenPayload(type: YuvTransformScreenType.Fill, exam: exam);
 
-  factory YuvTransformScreenPayload.verify({Exam? exam}) =>
+  factory YuvTransformScreenPayload.result({Exam? exam}) =>
       YuvTransformScreenPayload(
-          type: YuvTransformScreenType.Verify, exam: exam);
+          type: YuvTransformScreenType.Result, exam: exam);
 }
 
 class YuvTransformScreen extends StatefulWidget {

@@ -5,16 +5,21 @@ import 'dart:typed_data';
 
 import 'package:camera/camera.dart';
 import 'package:camera_marker/base/base_controller.dart';
+import 'package:camera_marker/database/database_ctr.dart';
 import 'package:camera_marker/manager/route_manager.dart';
 import 'package:camera_marker/mix/camera_handler.dart';
 import 'package:camera_marker/mix/permission_mix.dart';
 import 'package:camera_marker/mix/rotate_mix.dart';
 import 'package:camera_marker/model/answer.dart';
 import 'package:camera_marker/model/draw_info.dart';
+import 'package:camera_marker/model/exam.dart';
 import 'package:camera_marker/model/recognition.dart';
+import 'package:camera_marker/model/result.dart';
 import 'package:camera_marker/service/image_result_processor_service.dart';
 import 'package:camera_marker/service/method_channelling/yuv_chanelling.dart';
+import 'package:camera_marker/view/dialog/dialog_noti.dart';
 import 'package:camera_marker/view/screen/answer_fill/answer_fill_page.dart';
+import 'package:camera_marker/view/screen/result/result_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
@@ -27,11 +32,19 @@ class YuvTransformScreenCtr extends BaseController<YuvTransformScreenState>
   YuvTransformScreenCtr(YuvTransformScreenState state) : super(state) {
     initCamera();
 
-    showLoading();
-    Future.delayed(Duration(milliseconds: 1000)).then((value) {
-      hideLoading();
-      onScanFill(Answer.sample);
-    });
+    // if (isFill) {
+    //   showLoading();
+    //   Future.delayed(Duration(milliseconds: 1000)).then((value) {
+    //     hideLoading();
+    //     onScanFill(Answer.sample);
+    //   });
+    // } else {
+    //   showLoading();
+    //   Future.delayed(Duration(milliseconds: 1000)).then((value) {
+    //     hideLoading();
+    //     onScanResult(Result.result1);
+    //   });
+    // }
   }
 
   List<StreamSubscription> subscription = [];
@@ -185,6 +198,29 @@ class YuvTransformScreenCtr extends BaseController<YuvTransformScreenState>
     await Get.toNamed(RouteManager().routeName.answerFill,
         arguments: AnswerFillPayload.addNew(
             exam: state.widget.payload?.exam, answer: answer, fromScan: true));
+    initCamera();
+  }
+
+  void onScanResult(Map<String, dynamic> json) async {
+    Exam? exam = DataBaseCtr().tbExam.getById(state.widget.payload?.exam?.id);
+    Result result = Result.fromJson(json);
+
+    cameraCtr?.dispose();
+
+    result.correct =
+        DataBaseCtr().tbExam.getById(exam?.id)?.correct(result) ?? 0;
+    result.maxPoint = exam?.maxPoint;
+    result.question = exam?.question;
+
+    if ((result.correct ?? -1) <= -1) {
+      await DialogNoti.show(message: "Không tồn tại mã đề ${result.examCode}");
+    } else {
+      result.id = await DataBaseCtr().tbResult.addNewResult(result);
+      await DataBaseCtr().tbExam.addResult(exam: exam, result: result);
+      await Get.toNamed(RouteManager().routeName.result,
+          arguments: ResultPagePayload(exam: exam, result: result));
+    }
+
     initCamera();
   }
 }

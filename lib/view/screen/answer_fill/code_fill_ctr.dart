@@ -6,7 +6,6 @@ import 'package:get/get.dart';
 
 import 'code_fill_view.dart';
 
-
 //created by kietdt 08/08/2021
 //contact email: dotuankiet1403@gmail.com
 class CodeFillViewCtr extends BaseController<CodeFillViewState> {
@@ -35,7 +34,7 @@ class CodeFillViewCtr extends BaseController<CodeFillViewState> {
     int rd = 0;
     List<String?> codes = List<String?>.generate(
         state.widget.exam?.answer.length ?? 0,
-        (index) => state.widget.exam?.answer[index].code);
+        (index) => state.widget.exam?.answer[index].examCode);
     int index = 0;
     while (index >= 0) {
       rd = Random().nextInt(999);

@@ -2,6 +2,7 @@ import 'package:camera_marker/database/base_table.dart';
 import 'package:camera_marker/database/database_ctr.dart';
 import 'package:camera_marker/model/answer.dart';
 import 'package:camera_marker/model/exam.dart';
+import 'package:camera_marker/model/result.dart';
 
 import 'base_path.dart';
 
@@ -21,12 +22,17 @@ class TbExam extends BaseTable<Exam> {
 
   Future<void> addNewExam(Exam exam) async {
     exam.id = newId();
+    exam.createdAt = DateTime.now();
+    exam.updatedAt = DateTime.now();
     await add(exam);
   }
 
   Future<void> updateExam(Exam exam) async {
     int index = entities.indexWhere((element) => element.id == exam.id);
-    await set(index, exam);
+    if (index >= 0) {
+      exam.updatedAt = DateTime.now();
+      await set(index, exam);
+    }
   }
 
   Future<void> deleteExam(Exam exam) async {
@@ -36,8 +42,16 @@ class TbExam extends BaseTable<Exam> {
     Exam? _temp = getById(exam.id);
     List.generate(
         _temp?.answer.length ?? 0,
-        (index) async =>
-            await DataBaseCtr().tbAnswer.deleteAnswer(_temp?.answer[index]));
+        (index) async => await DataBaseCtr()
+            .tbAnswer
+            .deleteAnswer(_temp?.answer[index], null));
+
+    //delete Result related
+    List.generate(
+        _temp?.result.length ?? 0,
+        (index) async => await DataBaseCtr()
+            .tbResult
+            .deleteResult(_temp?.result[index], null));
 
     await delete(index);
   }
@@ -57,6 +71,17 @@ class TbExam extends BaseTable<Exam> {
         ids.add(answer.id ?? "");
       }
       exam.answerIds = ids;
+      await updateExam(exam);
+    }
+  }
+
+  Future<void> addResult({required Exam? exam, required Result? result}) async {
+    if (exam != null && result != null) {
+      List<String> ids = exam.resultIds ?? [];
+      if (!ids.contains(result.id)) {
+        ids.add(result.id ?? "");
+      }
+      exam.resultIds = ids;
       await updateExam(exam);
     }
   }

@@ -11,4 +11,5 @@ class BaseRouteName {
   final String examManager = "exam_manager";
   final String answer = "answer";
   final String answerFill = "answer_fill";
+  final String result = "result";
 }
