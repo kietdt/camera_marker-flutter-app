@@ -34,7 +34,7 @@ class RectButton extends StatelessWidget {
         child: Container(
           alignment: Alignment.center,
           width: double.infinity,
-          padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+          padding: EdgeInsets.symmetric(horizontal: 15, vertical: 10),
           decoration: BoxDecoration(
               color: color ?? ResourceManager().color.primary,
               borderRadius: BorderRadius.all(Radius.circular(8)),
@@ -52,9 +52,10 @@ class RectButton extends StatelessWidget {
                     ]
                   : []),
           child: Text(this.title ?? "Xác nhận",
+              textAlign: TextAlign.center,
               style: ResourceManager().text.boldStyle.copyWith(
                   color: textColor ?? ResourceManager().color.white,
-                  fontSize: textSize ?? 20)),
+                  fontSize: textSize ?? 17)),
         ),
       ),
     );

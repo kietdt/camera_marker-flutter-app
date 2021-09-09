@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:math';
 
+import 'package:camera_marker/base/base_appbar.dart';
 import 'package:camera_marker/base/base_scaffold.dart';
 import 'package:camera_marker/model/exam.dart';
 import 'package:flutter/cupertino.dart';
@@ -48,6 +49,7 @@ class YuvTransformScreenState
   @override
   void initState() {
     super.initState();
+    appBar = BaseAppBar(text: "Quét", back: true).toAppBar();
   }
 
   @override
@@ -103,7 +105,7 @@ class YuvTransformScreenState
           controller.recognitions.value,
           controller.originHeight.value,
           controller.originWidth.value,
-          screen.height - (statusBar + navigateBar),
+          screen.height - (statusBar + navigateBar + BaseAppBar.height),
           screen.width))
     ]));
   }

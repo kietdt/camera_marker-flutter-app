@@ -12,6 +12,7 @@ class AnswerFillViewCtr extends BaseController<AnswerFillViewState> {
   }
 
   int maxCol = 4;
+  double sqSize = 50;
 
   late int answerLength = state.widget.exam?.question ?? 0;
   late RxList<Rx<AnswerValue?>?>? listAnswer =

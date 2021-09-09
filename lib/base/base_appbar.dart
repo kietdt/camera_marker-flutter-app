@@ -7,13 +7,6 @@ import 'utils.dart';
 //created by kietdt 08/08/2021
 //contact email: dotuankiet1403@gmail.com
 class BaseAppBar {
-  final bool? back;
-  final Widget? leading;
-  final Widget? title;
-  final String? text;
-  final List<Widget>? action;
-  final bool? centerTitle;
-
   BaseAppBar(
       {this.back,
       this.leading,
@@ -21,6 +14,15 @@ class BaseAppBar {
       this.text,
       this.action,
       this.centerTitle = true});
+
+  final bool? back;
+  final Widget? leading;
+  final Widget? title;
+  final String? text;
+  final List<Widget>? action;
+  final bool? centerTitle;
+
+  static double height = kToolbarHeight;
 
   PreferredSizeWidget toAppBar() {
     return AppBar(

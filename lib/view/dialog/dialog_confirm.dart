@@ -130,31 +130,33 @@ class DialogConfirm extends StatelessWidget {
   Widget _bottom() {
     return Container(
       margin: EdgeInsets.symmetric(horizontal: 14),
-      child: Row(
-        children: [
-          Expanded(
-            child: RectButton(
-              borderColor: leftColor ?? ResourceManager().color.des,
-              textColor: leftColor ?? ResourceManager().color.des,
-              color: ResourceManager().color.white,
-              title: leftTitle ?? "Hủy",
-              onTap: () {
-                Get.back();
-                if (onLeft != null) onLeft!();
-              },
+      child: IntrinsicHeight(
+        child: Row(
+          children: [
+            Expanded(
+              child: RectButton(
+                borderColor: leftColor ?? ResourceManager().color.des,
+                textColor: leftColor ?? ResourceManager().color.des,
+                color: ResourceManager().color.white,
+                title: leftTitle ?? "Hủy",
+                onTap: () {
+                  Get.back();
+                  if (onLeft != null) onLeft!();
+                },
+              ),
             ),
-          ),
-          SizedBox(width: 14),
-          Expanded(
-            child: RectButton(
-              title: rightTitle,
-              onTap: () {
-                Get.back();
-                if (onRight != null) onRight!();
-              },
-            ),
-          )
-        ],
+            SizedBox(width: 14),
+            Expanded(
+              child: RectButton(
+                title: rightTitle,
+                onTap: () {
+                  Get.back();
+                  if (onRight != null) onRight!();
+                },
+              ),
+            )
+          ],
+        ),
       ),
     );
   }

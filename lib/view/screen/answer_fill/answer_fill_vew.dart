@@ -67,17 +67,23 @@ class AnswerFillViewState
       children: [
         Expanded(flex: 1, child: SizedBox()),
         Expanded(
-          flex: controller.maxCol,
+          flex: controller.maxCol + 1,
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: List.generate(
                 controller.maxCol,
-                (index) => Text(
-                      AnswerValueEnum.values[index]
-                          .toString()
-                          .replaceAll("AnswerValueEnum.", ""),
-                      style: ResourceManager().text.boldStyle.copyWith(
-                          fontSize: 20, color: ResourceManager().color.primary),
+                (index) => Container(
+                      width: controller.sqSize,
+                      alignment: Alignment.center,
+                      child: Text(
+                        AnswerValueEnum.values[index]
+                            .toString()
+                            .replaceAll("AnswerValueEnum.", ""),
+                        textAlign: TextAlign.center,
+                        style: ResourceManager().text.boldStyle.copyWith(
+                            fontSize: 20,
+                            color: ResourceManager().color.primary),
+                      ),
                     )),
           ),
         )
@@ -100,7 +106,7 @@ class AnswerFillViewState
           ),
         ),
         Expanded(
-          flex: controller.maxCol,
+          flex: controller.maxCol + 1,
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: List.generate(
@@ -112,20 +118,16 @@ class AnswerFillViewState
   }
 
   Widget checkBox(int rowIndex, int colIndex) {
-    double size = 50;
     return Container(
-      width: size,
-      height: size,
       alignment: Alignment.centerLeft,
       child: Obx(() => CustomCheckbox(
-          // ignore: invalid_use_of_protected_member
           value: controller.isCheck(
               controller.listAnswer?[rowIndex]?.value?.valueEnum,
               rowIndex,
               colIndex),
           shape: CircleBorder(),
           activeColor: ResourceManager().color.primary,
-          width: size - 20,
+          width: controller.sqSize - 20,
           checkColor: ResourceManager().color.white,
           onChanged: (value) => controller.onCheck(rowIndex, colIndex))),
     );

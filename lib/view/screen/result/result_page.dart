@@ -46,18 +46,20 @@ class ResultState extends BaseScaffold<ResultPage, ResultCtr> {
       children: [
         Text(
             "======${widget.payload?.result?.correct}======${widget.payload?.result?.point.toStringAsFixed(2)}"),
-        Obx(() => FadeInImage(
-            placeholder: AssetImage("lib/asset/loading.gif"),
-            imageErrorBuilder: (_, object, stackTrace) => Container(
-                    child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    FadeInImage(
-                        placeholder: AssetImage("lib/asset/loading.gif"),
-                        image: AssetImage("lib/asset/loading.gif")),
-                  ],
-                )),
-            image: controller.iamge.value)),
+        Obx(() => Center(
+              child: FadeInImage(
+                  placeholder: AssetImage("lib/asset/loading.gif"),
+                  imageErrorBuilder: (_, object, stackTrace) => Container(
+                          child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          FadeInImage(
+                              placeholder: AssetImage("lib/asset/loading.gif"),
+                              image: AssetImage("lib/asset/loading.gif")),
+                        ],
+                      )),
+                  image: controller.iamge.value),
+            )),
       ],
     );
   }

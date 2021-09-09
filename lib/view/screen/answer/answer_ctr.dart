@@ -14,7 +14,7 @@ import 'answer_page.dart';
 //contact email: dotuankiet1403@gmail.com
 class AnswerCtr extends ListSelectCtr<AnswerState, Answer> {
   AnswerCtr(AnswerState state) : super(state) {
-    getAnswer();
+    getData();
   }
 
   @override
@@ -38,13 +38,13 @@ class AnswerCtr extends ListSelectCtr<AnswerState, Answer> {
       DialogConfirm.show(
           message: "Bạn có chắc muốn xóa ${temp.length} đáp án đang chọn?",
           onRight: () {
-            temp.forEach((element) {
-              DataBaseCtr()
+            temp.forEach((element) async {
+              await DataBaseCtr()
                   .tbAnswer
                   .deleteAnswer(element, state.widget.payload?.exam);
             });
             onSelect();
-            getAnswer();
+            getData();
             topSnackBar("Thông báo", "Đã xóa ${temp.length} đáp án");
           });
     } else {
@@ -56,7 +56,7 @@ class AnswerCtr extends ListSelectCtr<AnswerState, Answer> {
 
   @override
   void showNew() {
-    // do nothing
+    //do nothing
   }
 
   @override
@@ -64,23 +64,24 @@ class AnswerCtr extends ListSelectCtr<AnswerState, Answer> {
     await Get.toNamed(RouteManager().routeName.answerFill,
         arguments: AnswerFillPayload.update(
             exam: state.widget.payload?.exam, answer: item));
-    getAnswer();
+    getData();
   }
 
   void onScan() async {
     await Get.toNamed(RouteManager().routeName.cameraScan,
         arguments:
             YuvTransformScreenPayload.fill(exam: state.widget.payload?.exam));
-    getAnswer();
+    getData();
   }
 
   void onFill() async {
     await Get.toNamed(RouteManager().routeName.answerFill,
         arguments: AnswerFillPayload.addNew(exam: state.widget.payload?.exam));
-    getAnswer();
+    getData();
   }
 
-  void getAnswer() {
+  @override
+  void getData() {
     Exam? exam = DataBaseCtr().tbExam.getById(state.widget.payload?.exam?.id);
     items.value = exam?.answer ?? [];
     initSelectedList();

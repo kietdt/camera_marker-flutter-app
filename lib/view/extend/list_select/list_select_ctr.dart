@@ -21,6 +21,8 @@ abstract class ListSelectCtr<S extends State, D> extends BaseController<S> {
 
   bool showAdd = true;
 
+  double get checkBoxSize => 25;
+
   String get emptyMessage => "Không có nội dung nào";
   String get title => "";
   double get mainPadding => 15;
@@ -88,4 +90,6 @@ abstract class ListSelectCtr<S extends State, D> extends BaseController<S> {
   void onDelete();
 
   void showNew();
+
+  void getData();
 }

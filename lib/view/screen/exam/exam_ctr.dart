@@ -10,12 +10,11 @@ import 'package:get/get.dart';
 
 import 'exam_page.dart';
 
-
 //created by kietdt 08/08/2021
 //contact email: dotuankiet1403@gmail.com
 class ExamPageCtr extends ListSelectCtr<ExamPageState, Exam> {
   ExamPageCtr(ExamPageState state) : super(state) {
-    getExam();
+    getData();
   }
 
   @override
@@ -37,7 +36,7 @@ class ExamPageCtr extends ListSelectCtr<ExamPageState, Exam> {
               DataBaseCtr().tbExam.deleteExam(element);
             });
             onSelect();
-            getExam();
+            getData();
             topSnackBar("Thông báo", "Đã xóa ${temp.length} Kì thi");
           });
     } else {
@@ -79,22 +78,23 @@ class ExamPageCtr extends ListSelectCtr<ExamPageState, Exam> {
   void addExam(Exam exam) async {
     await DataBaseCtr().tbExam.addNewExam(exam);
     topSnackBar("Thông báo", "Thêm mới thành công");
-    getExam();
+    getData();
   }
 
   void updateExam(Exam exam) async {
     await DataBaseCtr().tbExam.updateExam(exam);
     topSnackBar("Thông báo", "Cập nhật thành công");
-    getExam();
-  }
-
-  void getExam() {
-    items.value = List<Exam>.from(DataBaseCtr().tbExam.entities);
-    initSelectedList();
+    getData();
   }
 
   void navigateManage(Exam? exam) {
     Get.toNamed(RouteManager().routeName.examManager,
         arguments: ExamManagerPayLoad(exam));
+  }
+
+  @override
+  void getData() {
+    items.value = List<Exam>.from(DataBaseCtr().tbExam.entities);
+    initSelectedList();
   }
 }

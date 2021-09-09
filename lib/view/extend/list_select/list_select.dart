@@ -19,6 +19,8 @@ abstract class ListSelect<S extends StatefulWidget, C extends ListSelectCtr, D>
 
   late List<Widget> actions = [_deleteAction()];
 
+  Widget header() => SizedBox();
+
   @override
   void initState() {
     super.initState();
@@ -31,10 +33,17 @@ abstract class ListSelect<S extends StatefulWidget, C extends ListSelectCtr, D>
   @override
   Widget body() {
     // ignore: invalid_use_of_protected_member
-    return Obx(() => controller.items.value.isNotEmpty
-        // ignore: invalid_use_of_protected_member
-        ? list(controller.items.value as List<D>)
-        : EmptyPageView(message: controller.emptyMessage));
+    return Column(
+      children: [
+        header(),
+        Expanded(
+          child: Obx(() => controller.items.value.isNotEmpty
+              // ignore: invalid_use_of_protected_member
+              ? list(controller.items.value as List<D>)
+              : EmptyPageView(message: controller.emptyMessage)),
+        ),
+      ],
+    );
   }
 
   @override
@@ -64,45 +73,60 @@ abstract class ListSelect<S extends StatefulWidget, C extends ListSelectCtr, D>
           itemCount: items.length,
           itemBuilder: (ctx, index) => Container(
               padding: EdgeInsets.symmetric(horizontal: controller.mainPadding),
-              child: itemCheckBox(items[index], index))),
+              child: SingleChildScrollView(
+                  physics: NeverScrollableScrollPhysics(),
+                  scrollDirection: Axis.horizontal,
+                  child: itemCheckBox(items[index], index)))),
     );
   }
 
   Widget itemCheckBox(D? item, int index) {
-    return Row(
-      children: [
-        _checkBox(index),
-        Expanded(
-          child: Container(
-            margin: EdgeInsets.only(top: controller.mainPadding),
-            child: InkWell(
-                onDoubleTap: () => controller.onDoubleTap(item, index),
-                onTap: () => controller.onTap(item, index),
-                child: child(item)),
+    return AnimatedBuilder(
+      animation: controller.deleteCtr,
+      builder: (BuildContext context, Widget? child) {
+        return Transform.translate(
+            offset: Offset(
+                (controller.checkBoxSize * controller.deleteCtr.value) -
+                    controller.checkBoxSize,
+                0),
+            child: child);
+      },
+      child: Stack(
+        children: [
+          Container(
+            width: (screen.width -
+                (2 * controller.mainPadding) +
+                controller.checkBoxSize),
+            child: Row(
+              children: [
+                _checkBox(index),
+                Container(
+                  width: screen.width - (2 * controller.mainPadding),
+                  margin: EdgeInsets.only(top: controller.mainPadding),
+                  child: InkWell(
+                      onDoubleTap: () => controller.onDoubleTap(item, index),
+                      onTap: () => controller.onTap(item, index),
+                      child: child(item)),
+                ),
+              ],
+            ),
           ),
-        ),
-      ],
+        ],
+      ),
     );
   }
 
   Widget _checkBox(int index) {
-    return AnimatedBuilder(
-        animation: controller.deleteCtr,
-        builder: (_, child) {
-          return Visibility(
-            visible: controller.showSelect.value,
-            child: Container(
-              width: 25 * controller.deleteCtr.value,
-              alignment: Alignment.centerLeft,
-              child: Obx(() => Checkbox(
-                  // ignore: invalid_use_of_protected_member
-                  value: controller.selecteList.value[index],
-                  activeColor: ResourceManager().color.primary,
-                  checkColor: ResourceManager().color.white,
-                  onChanged: (value) => controller.oncheckBox(index))),
-            ),
-          );
-        });
+    return Container(
+      width: 25,
+      alignment: Alignment.centerLeft,
+      child: Obx(() => Checkbox(
+          // ignore: invalid_use_of_protected_member
+          value: controller.selecteList.value[index],
+          activeColor: ResourceManager().color.primary,
+          checkColor: ResourceManager().color.white,
+          onChanged: (value) => controller.oncheckBox(index))),
+    );
   }
 
   Widget _deleteAction() {

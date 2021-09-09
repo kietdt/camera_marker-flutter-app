@@ -166,6 +166,7 @@ class DialogExam extends StatelessWidget {
           SizedBox(height: 15),
           Text(
             "Điền những phần có dấu * để tạo kì thi",
+            textAlign: TextAlign.center,
             style: ResourceManager().text.normalStyle.copyWith(
                 fontSize: inputSize, color: ResourceManager().color.error),
           ),
@@ -231,7 +232,7 @@ class DialogExam extends StatelessWidget {
         ),
       ),
       Container(
-        width: 70,
+        width: 50,
         height: inputHeight,
         child: TextFieldView(
           keyboardType: textInputType,
@@ -283,27 +284,29 @@ class DialogExam extends StatelessWidget {
   Widget _button() {
     return Container(
         margin: EdgeInsets.symmetric(horizontal: 14).copyWith(bottom: 15),
-        child: Row(children: [
-          Expanded(
-            child: RectButton(
-              textSize: 15,
-              borderColor: ResourceManager().color.des,
-              textColor: ResourceManager().color.des,
-              color: ResourceManager().color.white,
-              title: "Hủy",
-              onTap: () {
-                Get.back();
-              },
+        child: IntrinsicHeight(
+          child: Row(children: [
+            Expanded(
+              child: RectButton(
+                textSize: 15,
+                borderColor: ResourceManager().color.des,
+                textColor: ResourceManager().color.des,
+                color: ResourceManager().color.white,
+                title: "Hủy",
+                onTap: () {
+                  Get.back();
+                },
+              ),
             ),
-          ),
-          SizedBox(width: 14),
-          Expanded(
-              child: Obx(() => RectButton(
-                  disable: !canSubmit.value,
-                  textSize: 15,
-                  title: isNew ? "Tạo kì thi" : "Cập nhật",
-                  onTap: onSubmit)))
-        ]));
+            SizedBox(width: 14),
+            Expanded(
+                child: Obx(() => RectButton(
+                    disable: !canSubmit.value,
+                    textSize: 15,
+                    title: isNew ? "Tạo kì thi" : "Cập nhật",
+                    onTap: onSubmit)))
+          ]),
+        ));
   }
 
   void showDate(BuildContext context) {
@@ -365,7 +368,9 @@ class DialogExam extends StatelessWidget {
               "Bạn đã thay đổi mẫu bảng trả lời, các đáp án và bài chấm đã tạo sẽ bị xóa. Tiếp tục?",
           onRight: () async {
             await DataBaseCtr().tbAnswer.deleteAnswerList(exam.answer, null);
+            await DataBaseCtr().tbResult.deleteResultList(exam.result, null);
             exam.answerIds = null;
+            exam.resultIds = null;
             submit(exam);
           },
           rightTitle: "Tiếp tục");

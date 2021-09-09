@@ -49,7 +49,7 @@ class ExamManagerState extends BaseScaffold<ExamManager, ExamManagerCtr> {
         ),
         itemRow(
           item("Bài đã chấm", "lib/asset/ic_graded.png",
-              controller.navigateAnswer),
+              controller.navigateHistory),
           item("Thống kê", "lib/asset/ic_statistics.png",
               controller.navigateAnswer),
         ),

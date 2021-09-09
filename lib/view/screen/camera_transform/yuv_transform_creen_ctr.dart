@@ -17,6 +17,7 @@ import 'package:camera_marker/model/recognition.dart';
 import 'package:camera_marker/model/result.dart';
 import 'package:camera_marker/service/image_result_processor_service.dart';
 import 'package:camera_marker/service/method_channelling/yuv_chanelling.dart';
+import 'package:camera_marker/view/dialog/dialog_confirm.dart';
 import 'package:camera_marker/view/dialog/dialog_noti.dart';
 import 'package:camera_marker/view/screen/answer_fill/answer_fill_page.dart';
 import 'package:camera_marker/view/screen/result/result_page.dart';
@@ -32,6 +33,8 @@ class YuvTransformScreenCtr extends BaseController<YuvTransformScreenState>
   YuvTransformScreenCtr(YuvTransformScreenState state) : super(state) {
     initCamera();
 
+    //TODO: fake data
+    
     // if (isFill) {
     //   showLoading();
     //   Future.delayed(Duration(milliseconds: 1000)).then((value) {
@@ -42,7 +45,7 @@ class YuvTransformScreenCtr extends BaseController<YuvTransformScreenState>
     //   showLoading();
     //   Future.delayed(Duration(milliseconds: 1000)).then((value) {
     //     hideLoading();
-    //     onScanResult(Result.result1);
+    //     onScanResult(Result.result3);
     //   });
     // }
   }
@@ -215,12 +218,42 @@ class YuvTransformScreenCtr extends BaseController<YuvTransformScreenState>
     if ((result.correct ?? -1) <= -1) {
       await DialogNoti.show(message: "Không tồn tại mã đề ${result.examCode}");
     } else {
-      result.id = await DataBaseCtr().tbResult.addNewResult(result);
-      await DataBaseCtr().tbExam.addResult(exam: exam, result: result);
-      await Get.toNamed(RouteManager().routeName.result,
-          arguments: ResultPagePayload(exam: exam, result: result));
+      resultProcess(result: result, exam: exam);
     }
 
     initCamera();
+  }
+
+  void resultProcess({Result? result, Exam? exam}) async {
+    Result? _history;
+    int index = exam?.result.indexWhere(
+            (element) => element.studentCode == result?.studentCode) ??
+        -1;
+
+    if (index >= 0) {
+      _history = exam?.result[index];
+    }
+
+    if (_history != null) {
+      DialogConfirm.show(
+          message:
+              "Mã số sinh viên ${result?.studentCode} đã được chấm trước đó, bạn có muốn cập nhật kết quả mới?",
+          rightTitle: "Cập nhật",
+          onRight: () async {
+            _history!.value = result?.value;
+            _history.correct = result?.correct;
+            await DataBaseCtr().tbResult.updateResult(_history);
+            navigateResult(result: _history, exam: exam);
+          });
+    } else {
+      result?.id = await DataBaseCtr().tbResult.addNewResult(result);
+      await DataBaseCtr().tbExam.addResult(exam: exam, result: result);
+      navigateResult(result: result, exam: exam);
+    }
+  }
+
+  void navigateResult({Result? result, Exam? exam}) async {
+    await Get.toNamed(RouteManager().routeName.result,
+        arguments: ResultPagePayload(exam: exam, result: result));
   }
 }
