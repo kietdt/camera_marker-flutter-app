@@ -4,6 +4,7 @@ import 'package:camera_marker/model/exam.dart';
 import 'package:camera_marker/model/result.dart';
 import 'package:camera_marker/view/extend/list_select/list_select.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get_state_manager/get_state_manager.dart';
 
 import 'history_ctr.dart';
 
@@ -32,22 +33,26 @@ class HistoryState extends ListSelect<HistoryPage, HistoryCtr, Result> {
 
   @override
   Widget header() {
-    return Container(
-        margin: EdgeInsets.symmetric(horizontal: controller.mainPadding)
-            .copyWith(top: controller.mainPadding),
-        padding: EdgeInsets.all(controller.mainPadding).copyWith(right: 0),
-        decoration: BoxDecoration(
-            color: ResourceManager().color.card,
-            borderRadius: BorderRadius.all(Radius.circular(7)),
-            boxShadow: [
-              BoxShadow(
-                color: Colors.grey.withOpacity(0.2),
-                spreadRadius: 2,
-                blurRadius: 5,
-                offset: Offset(0, 1), // changes position of shadow
-              )
-            ]),
-        child: _item(title: "SBD", content: "ĐIỂM", isHeader: true));
+    return Obx(() => Visibility(
+          visible: controller.items.length > 0,
+          child: Container(
+              margin: EdgeInsets.symmetric(horizontal: controller.mainPadding)
+                  .copyWith(top: controller.mainPadding),
+              padding:
+                  EdgeInsets.all(controller.mainPadding).copyWith(right: 0),
+              decoration: BoxDecoration(
+                  color: ResourceManager().color.card,
+                  borderRadius: BorderRadius.all(Radius.circular(7)),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.grey.withOpacity(0.2),
+                      spreadRadius: 2,
+                      blurRadius: 5,
+                      offset: Offset(0, 1), // changes position of shadow
+                    )
+                  ]),
+              child: _item(title: "SBD", content: "ĐIỂM", isHeader: true)),
+        ));
   }
 
   @override

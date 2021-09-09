@@ -23,6 +23,9 @@ abstract class ListSelectCtr<S extends State, D> extends BaseController<S> {
 
   double get checkBoxSize => 25;
 
+  // space between checkbox + item
+  double get space => 5;
+
   String get emptyMessage => "Không có nội dung nào";
   String get title => "";
   double get mainPadding => 15;

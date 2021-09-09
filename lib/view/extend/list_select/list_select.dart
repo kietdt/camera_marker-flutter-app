@@ -69,7 +69,8 @@ abstract class ListSelect<S extends StatefulWidget, C extends ListSelectCtr, D>
   Widget list(List<D> items) {
     return Container(
       child: ListView.builder(
-          padding: EdgeInsets.only(bottom: 100),
+          padding:
+              EdgeInsets.only(bottom: 100, top: controller.mainPadding / 2),
           itemCount: items.length,
           itemBuilder: (ctx, index) => Container(
               padding: EdgeInsets.symmetric(horizontal: controller.mainPadding),
@@ -96,13 +97,19 @@ abstract class ListSelect<S extends StatefulWidget, C extends ListSelectCtr, D>
           Container(
             width: (screen.width -
                 (2 * controller.mainPadding) +
-                controller.checkBoxSize),
+                controller.checkBoxSize +
+                controller.space),
             child: Row(
               children: [
                 _checkBox(index),
+                SizedBox(width: controller.space),
                 Container(
-                  width: screen.width - (2 * controller.mainPadding),
-                  margin: EdgeInsets.only(top: controller.mainPadding),
+                  width: screen.width -
+                      (2 * controller.mainPadding) -
+                      controller.space * 2,
+                  margin: EdgeInsets.only(
+                      top: controller.mainPadding / 2,
+                      bottom: controller.mainPadding / 2),
                   child: InkWell(
                       onDoubleTap: () => controller.onDoubleTap(item, index),
                       onTap: () => controller.onTap(item, index),
@@ -118,7 +125,7 @@ abstract class ListSelect<S extends StatefulWidget, C extends ListSelectCtr, D>
 
   Widget _checkBox(int index) {
     return Container(
-      width: 25,
+      width: controller.checkBoxSize,
       alignment: Alignment.centerLeft,
       child: Obx(() => Checkbox(
           // ignore: invalid_use_of_protected_member
