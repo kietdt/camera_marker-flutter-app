@@ -34,7 +34,7 @@ class YuvTransformScreenCtr extends BaseController<YuvTransformScreenState>
     initCamera();
 
     //TODO: fake data
-    
+
     // if (isFill) {
     //   showLoading();
     //   Future.delayed(Duration(milliseconds: 1000)).then((value) {
@@ -45,7 +45,7 @@ class YuvTransformScreenCtr extends BaseController<YuvTransformScreenState>
     //   showLoading();
     //   Future.delayed(Duration(milliseconds: 1000)).then((value) {
     //     hideLoading();
-    //     onScanResult(Result.result3);
+    //     onScanResult(Result.result2);
     //   });
     // }
   }
@@ -112,7 +112,15 @@ class YuvTransformScreenCtr extends BaseController<YuvTransformScreenState>
             'platforms': data,
             'height': image.height,
             'width': image.width,
-            'strides': strides
+            'strides': strides,
+            'type': isFill ? "answer" : "result",
+            'exam': {
+              'title': state.widget.payload?.exam?.title ?? "",
+              'class_code': state.widget.payload?.exam?.myClass?.code ?? "",
+            },
+            'answer': List.generate(
+                state.widget.payload?.exam?.answer.length ?? 0,
+                (index) => state.widget.payload?.exam?.answer[index].toJson())
           }).then((value) {
             onResult(value, image);
             _isProcessing = false;

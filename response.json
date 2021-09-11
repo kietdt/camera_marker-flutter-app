@@ -1,0 +1,22 @@
+{
+    "examCode": "005",
+    "studentCode": "123",
+    "image": "",
+    "value": [
+        {
+            "valueString": "A B"
+        },
+        {
+            "valueString": "B C"
+        },
+        {
+            "valueString": "C D"
+        },
+        {
+            "valueString": "A"
+        },
+        {
+            "valueString": "A"
+        }
+    ]
+}

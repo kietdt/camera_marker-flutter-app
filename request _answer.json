@@ -1,0 +1,7 @@
+{
+    "platforms": "Kiểu List<Uint8List> - Hình ảnh từ camera",
+    "width": "kiểu int - chiều rộng của hình ảnh",
+    "height": "kiểu int - chiều cao của hình ảnh",
+    "strides": "Kiểu List<int>",
+    "type": "answer"
+}

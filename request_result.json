@@ -1,0 +1,47 @@
+{
+    "platforms": "Kiểu List<Uint8List> - Hình ảnh từ camera",
+    "width": "kiểu int - chiều rộng của hình ảnh",
+    "height": "kiểu int - chiều cao của hình ảnh",
+    "strides": "Kiểu List<int>",
+    "type": "result",
+    "exam": {
+        "title": "Thi hoc ki I",
+        "class_code": "CTTT2015"
+    },
+    "answer": [
+        {
+            "examCode": "023",
+            "value": [
+                {
+                    "valueString": "A B"
+                },
+                {
+                    "valueString": "B "
+                },
+                {
+                    "valueString": "C"
+                },
+                {
+                    "valueString": "D"
+                }
+            ]
+        },
+        {
+            "examCode": "024",
+            "value": [
+                {
+                    "valueString": "A B"
+                },
+                {
+                    "valueString": "B "
+                },
+                {
+                    "valueString": "C"
+                },
+                {
+                    "valueString": "D"
+                }
+            ]
+        }
+    ]
+}
