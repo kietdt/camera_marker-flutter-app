@@ -349,14 +349,14 @@ class DialogExam extends StatelessWidget {
     Get.back();
     Exam exam = Exam(
         id: this.exam?.id,
-        title: titleCtr.text,
+        title: titleCtr.text.trim(),
         question: questionValue,
         myClassId: myClassSeletected?.id,
-        maxPoint: double.parse(pointCtr.text),
+        maxPoint: double.parse(pointCtr.text.trim()),
         templateId: templateSelected?.id,
         startAt: dtStart,
         answerIds: this.exam?.answerIds,
-        minutes: int.tryParse(timeCtr.text));
+        minutes: int.tryParse(timeCtr.text.trim()));
     if (this.exam?.templateId != null &&
         this.exam?.templateId != templateSelected?.id &&
         (exam.answer.length > 0 || exam.result.length > 0)) {

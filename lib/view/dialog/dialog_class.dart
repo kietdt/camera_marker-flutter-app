@@ -174,9 +174,9 @@ class DialogClass extends StatelessWidget {
     if (validate()) {
       if (onDone != null) {
         MyClass _class = temp ?? MyClass();
-        _class.code = _codeCtr.text;
-        _class.name = _nameCtr.text;
-        _class.desc = _descCtr.text;
+        _class.code = _codeCtr.text.trim();
+        _class.name = _nameCtr.text.trim();
+        _class.desc = _descCtr.text.trim();
         onDone!(_class);
         Get.back();
       }
