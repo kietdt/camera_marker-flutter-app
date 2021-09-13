@@ -16,6 +16,7 @@ class Exam {
       this.templateId,
       this.startAt,
       this.minutes,
+      this.resultIds,
       this.answerIds});
 
   String? id;
@@ -64,6 +65,15 @@ class Exam {
     }
 
     return -1;
+  }
+
+  // Kiểm tra có câu trả lời nào chưa được fill ko
+  // Nếu có không cho chấm thi
+  int canResult() {
+    int index = answer.indexWhere((element) =>
+        ((element.value?.length ?? 0) < (question ?? 0) ||
+            (element.indexEmpty() >= 0)));
+    return index;
   }
 
   Exam.fromJson(Map json) {

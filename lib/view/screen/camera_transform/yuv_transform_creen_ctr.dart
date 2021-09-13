@@ -45,7 +45,7 @@ class YuvTransformScreenCtr extends BaseController<YuvTransformScreenState>
     //   showLoading();
     //   Future.delayed(Duration(milliseconds: 1000)).then((value) {
     //     hideLoading();
-    //     onScanResult(Result.result2);
+    //     onScanResult(Result.result1);
     //   });
     // }
   }
@@ -220,8 +220,8 @@ class YuvTransformScreenCtr extends BaseController<YuvTransformScreenState>
 
     result.correct =
         DataBaseCtr().tbExam.getById(exam?.id)?.correct(result) ?? 0;
-    result.maxPoint = exam?.maxPoint;
     result.question = exam?.question;
+    result.examId = exam?.id;
 
     if ((result.correct ?? -1) <= -1) {
       await DialogNoti.show(message: "Không tồn tại mã đề ${result.examCode}");

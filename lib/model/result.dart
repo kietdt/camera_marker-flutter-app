@@ -1,3 +1,5 @@
+import 'package:camera_marker/database/database_ctr.dart';
+
 import 'answer.dart';
 
 //created by kietdt 06/09/2021
@@ -11,12 +13,12 @@ class Result {
   int? correct;
   String? image;
   int? question;
-  double? maxPoint;
 
   //Bài thì sẽ không chỉnh sửa được
   //Nên sẽ không có updated date
   DateTime? createdAt;
 
+  double? get maxPoint => DataBaseCtr().tbExam.getById(examId)?.maxPoint;
   double get point => ((maxPoint ?? 0) / (question ?? 1)) * (correct ?? 0);
 
   Result(
@@ -27,7 +29,6 @@ class Result {
       this.value,
       this.correct,
       this.question,
-      this.maxPoint,
       this.createdAt});
 
   Result.fromJson(Map json) {
@@ -37,7 +38,6 @@ class Result {
     this.studentCode = json["studentCode"];
     this.correct = json["correct"];
     this.image = json["image"];
-    this.maxPoint = json["maxPoint"];
     this.question = json["question"];
     this.value = json["value"] != null
         ? List<AnswerValue>.from(
@@ -74,6 +74,11 @@ class Result {
       {"valueString": "C D"},
       {"valueString": "A"},
       {"valueString": "A"},
+      {"valueString": "A"},
+      {"valueString": "A"},
+      {"valueString": "A"},
+      {"valueString": "A"},
+      {"valueString": "A"},
     ],
   };
 
@@ -88,6 +93,10 @@ class Result {
       {"valueString": "A"},
       {"valueString": "A"},
       {"valueString": "A"},
+      {"valueString": "A"},
+      {"valueString": "A"},
+      {"valueString": "A"},
+      {"valueString": "A"},
     ],
   };
 
@@ -97,6 +106,14 @@ class Result {
     "image": "",
     "value": [
       {"valueString": "C"},
+      {"valueString": "D"},
+      {"valueString": "D"},
+      {"valueString": "D"},
+      {"valueString": "D"},
+      {"valueString": "C"},
+      {"valueString": "D"},
+      {"valueString": "D"},
+      {"valueString": "D"},
       {"valueString": "D"},
     ],
   };

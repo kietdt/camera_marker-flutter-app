@@ -16,6 +16,13 @@ class Answer {
 
   static int codeLength = 3;
 
+  int indexEmpty() {
+    int index =
+        value?.indexWhere((element) => (element?.valueString ?? "").isEmpty) ??
+            -1;
+    return index;
+  }
+
   Answer.fromJson(Map json) {
     this.id = json["id"];
     this.examCode = json["examCode"];

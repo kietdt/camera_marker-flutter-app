@@ -355,6 +355,7 @@ class DialogExam extends StatelessWidget {
         maxPoint: double.parse(pointCtr.text.trim()),
         templateId: templateSelected?.id,
         startAt: dtStart,
+        resultIds: this.exam?.resultIds,
         answerIds: this.exam?.answerIds,
         minutes: int.tryParse(timeCtr.text.trim()));
     if (this.exam?.templateId != null &&

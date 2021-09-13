@@ -1,5 +1,7 @@
 import 'package:camera_marker/base/base_controller.dart';
 import 'package:camera_marker/manager/route_manager.dart';
+import 'package:camera_marker/model/exam.dart';
+import 'package:camera_marker/view/dialog/dialog_noti.dart';
 import 'package:camera_marker/view/screen/answer/answer_page.dart';
 import 'package:camera_marker/view/screen/camera_transform/yuv_transform_screen.dart';
 import 'package:camera_marker/view/screen/history/history_page.dart';
@@ -21,9 +23,16 @@ class ExamManagerCtr extends BaseController<ExamManagerState> {
 
   void navigateScan() {
     //chấm thi
-    Get.toNamed(RouteManager().routeName.cameraScan,
-        arguments:
-            YuvTransformScreenPayload.result(exam: state.widget.payload?.exam));
+    Exam? exam = state.widget.payload?.exam;
+    int index = (exam?.canResult() ?? -1);
+    if (index >= 0) {
+      DialogNoti.show(
+          message:
+              "Mã đề ${exam?.answer[index].examCode} chưa điền đủ số lượng đáp án");
+    } else {
+      Get.toNamed(RouteManager().routeName.cameraScan,
+          arguments: YuvTransformScreenPayload.result(exam: exam));
+    }
   }
 
   void navigateHistory() {
