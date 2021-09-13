@@ -13,7 +13,7 @@ class Statistics {
   late Level weak = Level.weak();
   late Level poor = Level.poor();
 
-  int get maxAnswer => exam?.answer.length ?? 1;
+  int get maxAnswer => exam?.result.length ?? 1;
 
   double get percentVeryGood => levelCount(LevelType.VeryGood) / maxAnswer;
   double get percentGood => levelCount(LevelType.Good) / maxAnswer;
