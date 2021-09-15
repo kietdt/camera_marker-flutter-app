@@ -13,8 +13,8 @@ class BaseColor {
   Color error = Colors.red;
   Color delete = Colors.red;
   Color warning = Colors.yellow;
-  Color good = Color(0xff169c20);
-  Color pretty = Color(0xffd0a37f);
+  Color veryGood = Color(0xff169c20);
+  Color good = Color(0xffd0a37f);
   Color average = Color(0xfffffc38);
   Color weak = Color(0xffcd2c2f);
   Color poor = Color(0xffcccccc);

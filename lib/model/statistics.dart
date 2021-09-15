@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:camera_marker/manager/resource_manager.dart';
 import 'package:camera_marker/model/exam.dart';
 import 'package:flutter/material.dart';
@@ -13,13 +15,19 @@ class Statistics {
   late Level weak = Level.weak();
   late Level poor = Level.poor();
 
-  int get maxAnswer => exam?.result.length ?? 1;
+  int get maxResult => max(exam?.result.length ?? 1, 1);
 
-  double get percentVeryGood => levelCount(LevelType.VeryGood) / maxAnswer;
-  double get percentGood => levelCount(LevelType.Good) / maxAnswer;
-  double get percentAverage => levelCount(LevelType.Average) / maxAnswer;
-  double get percentWeak => levelCount(LevelType.Weak) / maxAnswer;
-  double get percentPoor => levelCount(LevelType.Poor) / maxAnswer;
+  double get percentVeryGood => levelCount(LevelType.VeryGood) / maxResult;
+  double get percentGood => levelCount(LevelType.Good) / maxResult;
+  double get percentAverage => levelCount(LevelType.Average) / maxResult;
+  double get percentWeak => levelCount(LevelType.Weak) / maxResult;
+  double get percentPoor => levelCount(LevelType.Poor) / maxResult;
+
+  int get countVeryGood => levelCount(LevelType.VeryGood);
+  int get countGood => levelCount(LevelType.Good);
+  int get countAverage => levelCount(LevelType.Average);
+  int get countWeak => levelCount(LevelType.Weak);
+  int get countPoor => levelCount(LevelType.Poor);
 
   int levelCount(LevelType type) {
     int count = 0;
@@ -61,48 +69,49 @@ class Statistics {
 enum LevelType { VeryGood, Good, Average, Weak, Poor }
 
 class Level {
-  Level({this.type, this.color, this.count, this.max, this.minPerent});
+  Level(
+      {this.type,
+      this.color = Colors.white,
+      this.minPerent,
+      this.description = ""});
 
   final LevelType? type;
-  final Color? color;
-  final int? count;
-  final int? max;
+  final Color color;
   final double? minPerent;
+  final String description;
 
-  double get percent => (count ?? 0) / (max ?? 1);
+  factory Level.veryGood() => Level(
+        type: LevelType.VeryGood,
+        color: ResourceManager().color.veryGood,
+        minPerent: 0.8,
+        description: "Giỏi",
+      );
 
-  factory Level.veryGood({int? count, int? max}) => Level(
-      type: LevelType.VeryGood,
-      color: ResourceManager().color.good,
-      count: count,
-      minPerent: 0.8,
-      max: max);
+  factory Level.good() => Level(
+        type: LevelType.Good,
+        color: ResourceManager().color.good,
+        minPerent: 0.65,
+        description: "Khá",
+      );
 
-  factory Level.good({int? count, int? max}) => Level(
-      type: LevelType.Good,
-      color: ResourceManager().color.pretty,
-      count: count,
-      minPerent: 0.65,
-      max: max);
+  factory Level.average() => Level(
+        type: LevelType.Average,
+        color: ResourceManager().color.average,
+        minPerent: 0.5,
+        description: "Trung bình",
+      );
 
-  factory Level.average({int? count, int? max}) => Level(
-      type: LevelType.Average,
-      color: ResourceManager().color.average,
-      count: count,
-      minPerent: 0.5,
-      max: max);
+  factory Level.weak() => Level(
+        type: LevelType.Weak,
+        color: ResourceManager().color.weak,
+        minPerent: 0.4,
+        description: "Yếu",
+      );
 
-  factory Level.weak({int? count, int? max}) => Level(
-      type: LevelType.Weak,
-      color: ResourceManager().color.weak,
-      count: count,
-      minPerent: 0.4,
-      max: max);
-
-  factory Level.poor({int? count, int? max}) => Level(
-      type: LevelType.Poor,
-      color: ResourceManager().color.poor,
-      count: count,
-      minPerent: 0,
-      max: max);
+  factory Level.poor() => Level(
+        type: LevelType.Poor,
+        color: ResourceManager().color.poor,
+        minPerent: 0,
+        description: "Kém",
+      );
 }

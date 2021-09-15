@@ -21,8 +21,15 @@ class BaseHttp {
           requestBody: true,
           requestHeader: true,
           responseHeader: true));
-    var response =
-        await dio.get<Map<String, dynamic>>(path, queryParameters: params);
+    var response = await dio
+        .get<Map<String, dynamic>>(path, queryParameters: params)
+        .catchError((e) {
+      if (e is DioError) {
+        return Response<Map<String, dynamic>>(
+            requestOptions: RequestOptions(path: path),
+            data: {"data": e.error});
+      }
+    });
     return wrapResponse(response);
   }
 
