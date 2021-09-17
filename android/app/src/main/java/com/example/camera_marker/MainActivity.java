@@ -91,6 +91,7 @@ public class MainActivity extends FlutterActivity {
                             int[][] pointsValue = new int[][] { { 0, 0, 100, 100, 1 },
                                     { max_width - 100, 0, 100, 100, 2 }, { 0, max_height - 100, 100, 100, 3 },
                                     { max_width - 100, max_height - 100, 100, 100, 4 }, };
+
                             for (int i = 0; i < 4; i++) {
                                 Point p1 = new Point(pointsValue[i][0], pointsValue[i][1]);
                                 Point p2 = new Point(pointsValue[i][2], pointsValue[i][3]);
@@ -157,7 +158,7 @@ public class MainActivity extends FlutterActivity {
                             mRgba.release();
                             mRgbaCopy.release(); //
                             result.success("{\"width\": " + max_width + ", \"height\": " + max_height + ", \"points\": "
-                                    + Arrays.deepToString(pointsValue) + "  }");
+                                    + Arrays.deepToString(pointsValue) + " , \"answer\": true }");
                         }
                     }
                 });
