@@ -33,7 +33,7 @@ class StatisticsState extends BaseScaffold<StatisticsPage, StatisticsCtr> {
   @override
   void initState() {
     super.initState();
-    appBar = BaseAppBar(back: true, text: "Thống kê").toAppBar();
+    appBar = BaseAppBar(back: true, text: "Kết quả").toAppBar();
   }
 
   @override
