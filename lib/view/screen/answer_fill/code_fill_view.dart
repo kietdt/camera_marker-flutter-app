@@ -1,4 +1,4 @@
-import 'package:camera_marker/base/base_fragment.dart';
+import 'package:camera_marker/base/base_view.dart';
 import 'package:camera_marker/base/check_box.dart';
 import 'package:camera_marker/manager/resource_manager.dart';
 import 'package:camera_marker/model/exam.dart';
@@ -24,7 +24,7 @@ class CodeFillView extends StatefulWidget {
   }
 }
 
-class CodeFillViewState extends BaseFragment<CodeFillView, CodeFillViewCtr> {
+class CodeFillViewState extends BaseView<CodeFillView, CodeFillViewCtr> {
   @override
   CodeFillViewCtr initController() {
     return CodeFillViewCtr(this);

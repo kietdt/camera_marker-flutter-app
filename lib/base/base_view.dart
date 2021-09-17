@@ -8,7 +8,7 @@ import 'base_controller.dart';
 
 //created by Kietdt 28/07/2021
 //contact email: dotuankiet1403@gmail.com
-abstract class BaseFragment<S extends StatefulWidget, C extends BaseController>
+abstract class BaseView<S extends StatefulWidget, C extends BaseController>
     extends State<S>
     with AutomaticKeepAliveClientMixin<S>, WidgetsBindingObserver {
   late C _controller;

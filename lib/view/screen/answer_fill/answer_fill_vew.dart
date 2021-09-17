@@ -1,4 +1,4 @@
-import 'package:camera_marker/base/base_fragment.dart';
+import 'package:camera_marker/base/base_view.dart';
 import 'package:camera_marker/base/check_box.dart';
 import 'package:camera_marker/manager/resource_manager.dart';
 import 'package:camera_marker/model/answer.dart';
@@ -25,7 +25,7 @@ class AnswerFillView extends StatefulWidget {
 }
 
 class AnswerFillViewState
-    extends BaseFragment<AnswerFillView, AnswerFillViewCtr> {
+    extends BaseView<AnswerFillView, AnswerFillViewCtr> {
   @override
   AnswerFillViewCtr initController() {
     return AnswerFillViewCtr(this);

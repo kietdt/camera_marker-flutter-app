@@ -65,7 +65,12 @@ class HistoryCtr extends ListSelectCtr<HistoryState, Result> {
   @override
   void getData() {
     Exam? exam = DataBaseCtr().tbExam.getById(state.widget.payload?.exam?.id);
-    items.value = exam?.result ?? [];
+    List<Result> _temp = exam?.result ?? [];
+    _temp.sort((a, b) =>
+        int.tryParse(a.studentCode ?? "0")
+            ?.compareTo(int.tryParse(b.studentCode ?? "0") ?? 0) ??
+        -1);
+    items.value = _temp;
     initSelectedList();
   }
 }

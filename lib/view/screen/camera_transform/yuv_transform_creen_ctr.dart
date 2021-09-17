@@ -122,7 +122,13 @@ class YuvTransformScreenCtr extends BaseController<YuvTransformScreenState>
                 state.widget.payload?.exam?.answer.length ?? 0,
                 (index) => state.widget.payload?.exam?.answer[index].toJson())
           }).then((value) {
+            print("==========Value gửi từ native===========>$value");
             onResult(value, image);
+            // if (isFill) {
+            //   onScanFill(value);
+            // } else {
+            //   onScanResult(value);
+            // }
             _isProcessing = false;
           });
         });
