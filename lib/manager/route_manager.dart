@@ -9,6 +9,8 @@ import 'package:camera_marker/view/screen/exam_manager/exam_manager_page.dart';
 import 'package:camera_marker/view/screen/history/history_page.dart';
 import 'package:camera_marker/view/screen/result/result_page.dart';
 import 'package:camera_marker/view/screen/statistics/statistics_page.dart';
+import 'package:camera_marker/view/screen/statistics_chart/statistics_chart_page.dart';
+import 'package:camera_marker/view/screen/statistics_question/statistics_question_page.dart';
 import 'package:camera_marker/view/screen/template_detail/template_detail_page.dart';
 import 'package:camera_marker/view/screen/template_list/template_list_page.dart';
 import 'package:flutter/material.dart';
@@ -60,6 +62,10 @@ class RouteManager {
       routeName.result: (payload) => ResultPage(payload: payload),
       routeName.history: (payload) => HistoryPage(payload: payload),
       routeName.statistics: (payload) => StatisticsPage(payload: payload),
+      routeName.statisticsChart: (payload) =>
+          StatisticsCharPage(payload: payload),
+      routeName.statisticsQuestion: (payload) =>
+          StatisticsQuestionPage(payload: payload),
     };
   }
 }

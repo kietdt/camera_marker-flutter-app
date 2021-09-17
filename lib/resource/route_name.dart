@@ -14,4 +14,6 @@ class BaseRouteName {
   final String result = "result";
   final String history = "history";
   final String statistics = "statistics";
+  final String statisticsChart = "statistics_chart";
+  final String statisticsQuestion = "statistics_question";
 }
