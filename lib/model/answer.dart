@@ -3,6 +3,9 @@
 
 import 'dart:math';
 
+import 'result.dart';
+import 'statistics.dart';
+
 enum AnswerValueEnum { A, B, C, D }
 
 class Answer {
@@ -75,6 +78,21 @@ class Answer {
     }
 
     return true;
+  }
+
+  List<CorrectPercent> correctByQuestion(List<Result> result) {
+    List<CorrectPercent> _temp = List.generate(
+        value?.length ?? 0, (index) => CorrectPercent(question: index + 1));
+    for (int i = 0; i < (value?.length ?? 0); i++) {
+      int sum = 0;
+      for (int j = 0; j < result.length; j++) {
+        if (match(value?[i], result[j].value?[i])) {
+          sum++;
+        }
+      }
+      _temp[i].percent = (sum / (max(result.length, 1))) * 100;
+    }
+    return _temp;
   }
 
   //model mẫu để test

@@ -42,8 +42,13 @@ class ExamManagerCtr extends BaseController<ExamManagerState> {
   }
 
   void navigateStatistics() {
-    //Thống kê
-    Get.toNamed(RouteManager().routeName.statistics,
-        arguments: StatisticsPagePayload(exam: state.widget.payload?.exam));
+    //Kết quả
+    Exam? exam = state.widget.payload?.exam;
+    if ((exam?.result.length ?? 0) <= 0) {
+      DialogNoti.show(message: "Hãy chấm bài để xem kết quả");
+    } else {
+      Get.toNamed(RouteManager().routeName.statistics,
+          arguments: StatisticsPagePayload(exam: state.widget.payload?.exam));
+    }
   }
 }

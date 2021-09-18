@@ -45,7 +45,7 @@ class YuvTransformScreenCtr extends BaseController<YuvTransformScreenState>
     //   showLoading();
     //   Future.delayed(Duration(milliseconds: 1000)).then((value) {
     //     hideLoading();
-    //     onScanResult(Result.result1);
+    //     onScanResult(Result.result5);
     //   });
     // }
   }

@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:camera_marker/base/base_controller.dart';
 import 'package:camera_marker/model/answer.dart';
 import 'package:get/get.dart';
@@ -23,7 +25,9 @@ class AnswerFillViewCtr extends BaseController<AnswerFillViewState> {
   void initListAnswer(List<AnswerValue?>? answerValue) {
     if (answerValue != null) {
       List<Rx<AnswerValue?>?> _temp = List<Rx<AnswerValue>>.generate(
-          answerValue.length, (index) => answerValue[index]!.obs);
+          //chỉ lấy đúng chiều dài số lượng câu hỏi đã tạo ở kì thi
+          min(answerValue.length, answerLength),
+          (index) => answerValue[index]!.obs);
 
       while (_temp.length < answerLength) {
         _temp.add(AnswerValue.empty().obs);

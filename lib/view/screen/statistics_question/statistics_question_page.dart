@@ -1,17 +1,17 @@
 import 'package:camera_marker/base/base_appbar.dart';
 import 'package:camera_marker/base/base_scaffold.dart';
+import 'package:camera_marker/base/utils.dart';
 import 'package:camera_marker/manager/resource_manager.dart';
-import 'package:camera_marker/model/answer.dart';
 import 'package:camera_marker/model/exam.dart';
+import 'package:camera_marker/model/statistics.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get_state_manager/get_state_manager.dart';
 
 import 'statistics_question_ctr.dart';
 
 class StatisticsQuestionPagePayload {
   final Exam? exam;
-  final Answer? answer;
-
-  StatisticsQuestionPagePayload({this.exam, this.answer});
+  StatisticsQuestionPagePayload({this.exam});
 }
 
 class StatisticsQuestionPage extends StatefulWidget {
@@ -35,20 +35,42 @@ class StatisticsQuestionState
   @override
   void initState() {
     super.initState();
-    appBar = BaseAppBar(back: true, text: "Tỉ lệ đúng").toAppBar();
+    appBar = BaseAppBar(
+      back: true,
+      title: Obx(() => Text(
+          Utils.upperAllFirst(
+              "Mã đề " + (controller.answertSelected.value?.examCode ?? "")),
+          style: ResourceManager().text.boldStyle)),
+      action: [_filter()],
+    ).toAppBar();
   }
 
   @override
   Widget body() {
     return Column(
-      children: [header()],
+      children: [
+        header(),
+        Expanded(
+          child: _list(),
+        )
+      ],
     );
+  }
+
+  Widget _filter() {
+    return InkWell(
+        onTap: controller.onFilterPressed,
+        child: Container(
+            margin: EdgeInsets.symmetric(horizontal: 15),
+            child: Icon(
+              Icons.filter_alt_outlined,
+              color: ResourceManager().color.white,
+            )));
   }
 
   Widget header() {
     return Container(
-        margin: EdgeInsets.symmetric(horizontal: controller.mainPadding)
-            .copyWith(top: controller.mainPadding),
+        margin: EdgeInsets.all(controller.mainPadding),
         padding: EdgeInsets.all(controller.mainPadding).copyWith(right: 0),
         decoration: BoxDecoration(
             color: ResourceManager().color.card,
@@ -64,25 +86,54 @@ class StatisticsQuestionState
         child: _item(title: "Câu hỏi", content: "Tỉ lệ đúng (%)"));
   }
 
+  Widget _list() {
+    return SingleChildScrollView(
+      child: Container(
+        margin: EdgeInsets.symmetric(horizontal: controller.mainPadding),
+        child: Obx(() => Column(
+              children: List.generate(
+                  controller.correctPercent.value?.length ?? 0, (index) {
+                CorrectPercent? _correct =
+                    controller.correctPercent.value?[index];
+                return _listChild(_correct?.question, _correct?.percent);
+              }),
+            )),
+      ),
+    );
+  }
+
+  Widget _listChild(int? questtion, double? percent) {
+    return Container(
+        padding: EdgeInsets.all(controller.mainPadding).copyWith(right: 0),
+        decoration: BoxDecoration(
+            color: ResourceManager().color.background,
+            border:
+                Border(bottom: BorderSide(color: ResourceManager().color.des))),
+        child: _item(
+            title: questtion.toString(), content: percent?.toStringAsFixed(2)));
+  }
+
   Widget _item({String? title, String? content}) {
     TextStyle _style = ResourceManager()
         .text
         .boldStyle
         .copyWith(fontSize: 17, color: ResourceManager().color.primary);
     return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
-        Expanded(
-            flex: 6,
-            child: Text(
-              title ?? "",
-              textAlign: TextAlign.start,
-              style: _style,
-            )),
-        Expanded(
-          flex: 4,
+        Container(
+          width: screen.width / 5,
+          child: Text(
+            title ?? "",
+            textAlign: TextAlign.center,
+            style: _style,
+          ),
+        ),
+        Container(
+          width: screen.width / 3,
           child: Text(
             content ?? "",
-            textAlign: TextAlign.start,
+            textAlign: TextAlign.center,
             style: _style,
           ),
         )

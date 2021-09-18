@@ -44,8 +44,6 @@ class RouteManager {
         curve: Curves.linear,
         settings: routeSettings,
         page: () => routes![routeSettings.name]!(routeSettings.arguments));
-
-    ;
   }
 
   Map<String, Widget Function(dynamic)> _initRoute() {
