@@ -151,7 +151,7 @@ class YuvTransformScreenCtr extends BaseController<YuvTransformScreenState>
 
   void onResult(dynamic value, CameraImage image) {
     print(value);
-    DrawInfo data = DrawInfo.fromJson(json.decode(value));
+    DrawInfo data = DrawInfo.fromJson(value);
     // chiều dài của ảnh khi xử lý ở native
     double rotateWidth = data.width!;
     // chiều cao của ảnh khi xử lý ở native
