@@ -158,7 +158,7 @@ public class MainActivity extends FlutterActivity {
                             mRgba.release();
                             mRgbaCopy.release(); //
                             result.success("{\"width\": " + max_width + ", \"height\": " + max_height + ", \"points\": "
-                                    + Arrays.deepToString(pointsValue) + " , \"answer\": true }");
+                                    + Arrays.deepToString(pointsValue) + " , \"answer\": false }");
                         }
                     }
                 });

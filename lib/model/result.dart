@@ -117,4 +117,40 @@ class Result {
       {"valueString": "D"},
     ],
   };
+
+  static Map<String, dynamic> result4 = {
+    "examCode": "004",
+    "studentCode": "127",
+    "image": "",
+    "value": [
+      {"valueString": "C"},
+      {"valueString": "D"},
+      {"valueString": "A"},
+      {"valueString": "A"},
+      {"valueString": "A"},
+      {"valueString": "A"},
+      {"valueString": "A"},
+      {"valueString": "A"},
+      {"valueString": "A"},
+      {"valueString": "A"},
+    ],
+  };
+
+  static Map<String, dynamic> result5 = {
+    "examCode": "004",
+    "studentCode": "129",
+    "image": "",
+    "value": [
+      {"valueString": "C"},
+      {"valueString": "D"},
+      {"valueString": "A"},
+      {"valueString": "A"},
+      {"valueString": "A"},
+      {"valueString": "A"},
+      {"valueString": "A"},
+      {"valueString": "A"},
+      {"valueString": "A"},
+      {"valueString": "A"},
+    ],
+  };
 }

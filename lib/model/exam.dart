@@ -53,29 +53,6 @@ class Exam {
   static List<int> questionsSelect =
       List<int>.generate(200, (index) => index + 1);
 
-  int correct(Result? result) {
-    if (result == null) return -1;
-
-    List<Answer> _temp = answer;
-    int index =
-        _temp.indexWhere((element) => result.examCode == element.examCode);
-
-    if (index >= 0) {
-      return _temp[index].verify(result.value);
-    }
-
-    return -1;
-  }
-
-  // Kiểm tra có câu trả lời nào chưa được fill ko
-  // Nếu có không cho chấm thi
-  int canResult() {
-    int index = answer.indexWhere((element) =>
-        ((element.value?.length ?? 0) < (question ?? 0) ||
-            (element.indexEmpty() >= 0)));
-    return index;
-  }
-
   Exam.fromJson(Map json) {
     this.id = json["id"];
     this.title = json["title"];
@@ -113,4 +90,32 @@ class Exam {
         "createdAt": this.createdAt?.toIso8601String(),
         "updatedAt": this.updatedAt?.toIso8601String(),
       };
+
+  int correct(Result? result) {
+    if (result == null) return -1;
+
+    List<Answer> _temp = answer;
+    int index =
+        _temp.indexWhere((element) => result.examCode == element.examCode);
+
+    if (index >= 0) {
+      return _temp[index].verify(result.value);
+    }
+
+    return -1;
+  }
+
+  // Kiểm tra có câu trả lời nào chưa được fill ko
+  // Nếu có không cho chấm thi
+  int canResult() {
+    int index = answer.indexWhere((element) =>
+        ((element.value?.length ?? 0) < (question ?? 0) ||
+            (element.indexEmpty() >= 0)));
+    return index;
+  }
+
+  List<Result> resultByExamCode(Answer? answer) {
+    return List<Result>.from(
+        result.where((element) => element.examCode == answer?.examCode));
+  }
 }

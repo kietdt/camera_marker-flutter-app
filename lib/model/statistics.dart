@@ -1,8 +1,11 @@
 import 'dart:math';
 
 import 'package:camera_marker/manager/resource_manager.dart';
+import 'package:camera_marker/model/answer.dart';
 import 'package:camera_marker/model/exam.dart';
 import 'package:flutter/material.dart';
+
+import 'result.dart';
 
 class Statistics {
   Statistics({this.exam});
@@ -16,6 +19,7 @@ class Statistics {
   late Level poor = Level.poor();
 
   int get maxResult => max(exam?.result.length ?? 1, 1);
+  int get questionLength => exam?.question ?? 0;
 
   double get percentVeryGood => levelCount(LevelType.VeryGood) / maxResult;
   double get percentGood => levelCount(LevelType.Good) / maxResult;
@@ -63,6 +67,12 @@ class Statistics {
     });
 
     return count;
+  }
+
+  List<CorrectPercent>? correctByExamCode(Answer? answer) {
+    List<Result>? result = exam?.resultByExamCode(answer);
+    List<CorrectPercent>? _temp = answer?.correctByQuestion(result ?? []);
+    return _temp;
   }
 }
 
@@ -114,4 +124,11 @@ class Level {
         minPerent: 0,
         description: "Kém",
       );
+}
+
+class CorrectPercent {
+  int? question;
+  double? percent = 0;
+
+  CorrectPercent({this.question, this.percent = 0});
 }

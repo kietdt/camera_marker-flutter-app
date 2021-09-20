@@ -45,7 +45,7 @@ class YuvTransformScreenCtr extends BaseController<YuvTransformScreenState>
     //   showLoading();
     //   Future.delayed(Duration(milliseconds: 1000)).then((value) {
     //     hideLoading();
-    //     onScanResult(Result.result1);
+    //     onScanResult(Result.result5);
     //   });
     // }
   }
@@ -121,14 +121,19 @@ class YuvTransformScreenCtr extends BaseController<YuvTransformScreenState>
             'answer': List.generate(
                 state.widget.payload?.exam?.answer.length ?? 0,
                 (index) => state.widget.payload?.exam?.answer[index].toJson())
-          }).then((value) {
+          }).then((value) async {
             print("==========Value gửi từ native===========>$value");
-            onResult(value, image);
-            // if (isFill) {
-            //   onScanFill(value);
-            // } else {
-            //   onScanResult(value);
-            // }
+
+            Map<String, dynamic> _json = json.decode(value);
+            if ((_json["answer"] ?? false)) {
+              if (isFill) {
+                await onScanFill(value);
+              } else {
+                await onScanResult(value);
+              }
+            } else {
+              onResult(_json, image);
+            }
             _isProcessing = false;
           });
         });
@@ -210,7 +215,7 @@ class YuvTransformScreenCtr extends BaseController<YuvTransformScreenState>
     this.originWidth.value = imageWidth;
   }
 
-  void onScanFill(Map<String, dynamic> json) async {
+  Future<void> onScanFill(Map<String, dynamic> json) async {
     Answer answer = Answer.fromJson(json);
     cameraCtr?.dispose();
     await Get.toNamed(RouteManager().routeName.answerFill,
@@ -219,7 +224,7 @@ class YuvTransformScreenCtr extends BaseController<YuvTransformScreenState>
     initCamera();
   }
 
-  void onScanResult(Map<String, dynamic> json) async {
+  Future<void> onScanResult(Map<String, dynamic> json) async {
     Exam? exam = DataBaseCtr().tbExam.getById(state.widget.payload?.exam?.id);
     Result result = Result.fromJson(json);
 
@@ -233,13 +238,13 @@ class YuvTransformScreenCtr extends BaseController<YuvTransformScreenState>
     if ((result.correct ?? -1) <= -1) {
       await DialogNoti.show(message: "Không tồn tại mã đề ${result.examCode}");
     } else {
-      resultProcess(result: result, exam: exam);
+      await resultProcess(result: result, exam: exam);
     }
 
     initCamera();
   }
 
-  void resultProcess({Result? result, Exam? exam}) async {
+  Future<void> resultProcess({Result? result, Exam? exam}) async {
     Result? _history;
     int index = exam?.result.indexWhere(
             (element) => element.studentCode == result?.studentCode) ??
@@ -258,16 +263,16 @@ class YuvTransformScreenCtr extends BaseController<YuvTransformScreenState>
             _history!.value = result?.value;
             _history.correct = result?.correct;
             await DataBaseCtr().tbResult.updateResult(_history);
-            navigateResult(result: _history, exam: exam);
+            await navigateResult(result: _history, exam: exam);
           });
     } else {
       result?.id = await DataBaseCtr().tbResult.addNewResult(result);
       await DataBaseCtr().tbExam.addResult(exam: exam, result: result);
-      navigateResult(result: result, exam: exam);
+      await navigateResult(result: result, exam: exam);
     }
   }
 
-  void navigateResult({Result? result, Exam? exam}) async {
+  Future<void> navigateResult({Result? result, Exam? exam}) async {
     await Get.toNamed(RouteManager().routeName.result,
         arguments: ResultPagePayload(exam: exam, result: result));
   }

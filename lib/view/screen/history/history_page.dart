@@ -51,7 +51,11 @@ class HistoryState extends ListSelect<HistoryPage, HistoryCtr, Result> {
                       offset: Offset(0, 1), // changes position of shadow
                     )
                   ]),
-              child: _item(title: "SBD", content: "ĐIỂM", isHeader: true)),
+              child: _item(
+                  title: "SBD",
+                  examCode: "MÃ ĐỀ",
+                  content: "ĐIỂM",
+                  isHeader: true)),
         ));
   }
 
@@ -64,10 +68,16 @@ class HistoryState extends ListSelect<HistoryPage, HistoryCtr, Result> {
             border:
                 Border(bottom: BorderSide(color: ResourceManager().color.des))),
         child: _item(
-            title: item?.studentCode, content: item?.point.toStringAsFixed(2)));
+            title: item?.studentCode,
+            examCode: item?.examCode,
+            content: item?.point.toStringAsFixed(2)));
   }
 
-  Widget _item({String? title, String? content, bool isHeader = false}) {
+  Widget _item(
+      {String? title,
+      String? examCode,
+      String? content,
+      bool isHeader = false}) {
     TextStyle _style = ResourceManager()
         .text
         .boldStyle
@@ -75,9 +85,16 @@ class HistoryState extends ListSelect<HistoryPage, HistoryCtr, Result> {
     return Row(
       children: [
         Expanded(
-            flex: 7,
+            flex: 1,
             child: Text(
               title ?? "",
+              style: _style,
+            )),
+        Expanded(
+            flex: 6,
+            child: Text(
+              examCode ?? "",
+              textAlign: TextAlign.center,
               style: _style,
             )),
         Expanded(
