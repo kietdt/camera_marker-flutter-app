@@ -4,7 +4,6 @@ import 'package:camera_marker/view/child/rect_button.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-
 //created by kietdt 08/08/2021
 //contact email: dotuankiet1403@gmail.com
 class DialogNoti extends StatelessWidget {
@@ -14,16 +13,17 @@ class DialogNoti extends StatelessWidget {
   final String? fact;
   final String? image;
   final Color? imageColor;
+  final Widget? child;
 
-  static show({
-    String? title,
-    String? message,
-    bool? hasImage = false,
-    String? fact,
-    bool? barrierDismissible,
-    Color? imageColor,
-    String? image,
-  }) async {
+  static show(
+      {String? title,
+      String? message,
+      bool? hasImage = false,
+      String? fact,
+      bool? barrierDismissible,
+      Color? imageColor,
+      String? image,
+      Widget? child}) async {
     return Get.dialog(
         DialogNoti(
             message: message,
@@ -31,6 +31,7 @@ class DialogNoti extends StatelessWidget {
             fact: fact,
             hasImage: hasImage,
             imageColor: imageColor,
+            child: child,
             image: image),
         barrierDismissible: barrierDismissible ?? false);
   }
@@ -42,6 +43,7 @@ class DialogNoti extends StatelessWidget {
     this.fact,
     this.imageColor,
     this.image,
+    this.child,
     required this.message,
   }) : super(key: key);
 
@@ -67,6 +69,7 @@ class DialogNoti extends StatelessWidget {
                   color: ResourceManager().color.primary, fontSize: 25),
             ),
             SizedBox(height: 15),
+            if (child != null) ...[child!],
             Visibility(
                 visible: message != null,
                 child: Text(
@@ -127,7 +130,7 @@ class DialogNoti extends StatelessWidget {
         color: ResourceManager().color.white,
         title: "Tiếp tục",
         onTap: () {
-          Get.back();
+          Get.back(result: "true");
         },
       ),
     );
