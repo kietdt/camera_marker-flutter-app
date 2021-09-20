@@ -4,6 +4,7 @@ import 'package:camera_marker/base/base_scaffold.dart';
 import 'package:camera_marker/manager/resource_manager.dart';
 import 'package:camera_marker/model/exam.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
 import 'statistics_ctr.dart';
 
@@ -33,7 +34,11 @@ class StatisticsState extends BaseScaffold<StatisticsPage, StatisticsCtr> {
   @override
   void initState() {
     super.initState();
-    appBar = BaseAppBar(back: true, text: "Kết quả").toAppBar();
+    appBar = BaseAppBar(
+      back: true,
+      text: "Kết quả",
+      action: [_export()],
+    ).toAppBar();
   }
 
   @override
@@ -109,5 +114,42 @@ class StatisticsState extends BaseScaffold<StatisticsPage, StatisticsCtr> {
     return Container(
         child: Icon(Icons.navigate_next,
             color: ResourceManager().color.white, size: 40));
+  }
+
+  Widget _export() {
+    return InkWell(
+        onTap: controller.onExportPressed,
+        child: Container(
+            margin: EdgeInsets.symmetric(horizontal: 15),
+            child: Icon(
+              Icons.offline_share,
+              color: ResourceManager().color.white,
+            )));
+  }
+
+  Widget exportOption() {
+    return Column(
+      children: List.generate(2, (index) {
+        return InkWell(
+          onTap: () => controller.onOptionSelected(index),
+          child: Padding(
+            padding: EdgeInsets.symmetric(horizontal: 15).copyWith(bottom: 7),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                Obx(() => Icon(
+                      controller.optionSelected.value == index
+                          ? Icons.radio_button_on
+                          : Icons.radio_button_off,
+                      color: ResourceManager().color.primary,
+                    )),
+                SizedBox(width: 7),
+                Text(controller.optionDes[index]),
+              ],
+            ),
+          ),
+        );
+      }),
+    );
   }
 }

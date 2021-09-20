@@ -1,13 +1,29 @@
 import 'package:camera_marker/base/base_controller.dart';
 import 'package:camera_marker/manager/route_manager.dart';
+import 'package:camera_marker/mix/export_mix.dart';
+import 'package:camera_marker/model/exam.dart';
+import 'package:camera_marker/model/exam.dart';
+import 'package:camera_marker/view/dialog/dialog_noti.dart';
 import 'package:camera_marker/view/screen/statistics_chart/statistics_chart_page.dart';
 import 'package:camera_marker/view/screen/statistics_question/statistics_question_page.dart';
 import 'package:get/get.dart';
+import 'package:share/share.dart';
 
 import 'statistics_page.dart';
 
-class StatisticsCtr extends BaseController<StatisticsState> {
+enum ExportType { Excel, Full }
+
+class StatisticsCtr extends BaseController<StatisticsState> with ExportMix {
   StatisticsCtr(StatisticsState state) : super(state);
+
+  List<String> optionDes = [
+    "Chỉ xuất excel",
+    "Xuất excel và hình ảnh chấm thi"
+  ];
+
+  RxInt optionSelected = 0.obs;
+
+  Exam? get exam => state.widget.payload?.exam;
 
   void onChartPressed() {
     Get.toNamed(RouteManager().routeName.statisticsChart,
@@ -19,5 +35,22 @@ class StatisticsCtr extends BaseController<StatisticsState> {
     Get.toNamed(RouteManager().routeName.statisticsQuestion,
         arguments:
             StatisticsQuestionPagePayload(exam: state.widget.payload?.exam));
+  }
+
+  void onExportPressed() async {
+    var result = await DialogNoti.show(
+        title: "Chọn phương thức",
+        barrierDismissible: true,
+        child: state.exportOption());
+    if (result == "true") {
+      String path = await filePath(exam: exam);
+      print("=======share====path======>$path");
+      await Share.shareFiles([path]);
+      // deletefile(path);
+    }
+  }
+
+  void onOptionSelected(int index) {
+    optionSelected.value = index;
   }
 }
