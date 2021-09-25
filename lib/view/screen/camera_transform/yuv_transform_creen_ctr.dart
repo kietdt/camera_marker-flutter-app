@@ -107,7 +107,8 @@ class YuvTransformScreenCtr extends BaseController<YuvTransformScreenState>
             index++;
             return plane.bytes;
           }).toList();
-
+          print(List.generate(state.widget.payload?.exam?.answer.length ?? 0,
+              (index) => state.widget.payload?.exam?.answer[index].toJson()));
           platform.invokeMethod('yuv_transform', {
             'platforms': data,
             'height': image.height,
