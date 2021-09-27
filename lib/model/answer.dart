@@ -97,7 +97,7 @@ class Answer {
 
   //model mẫu để test
   //sau này scan được sẽ xóa đi
-  static Map<String, dynamic> sample = {
+  static Map<String, dynamic> sample1 = {
     "examCode": "011",
     "value": [
       {"valueString": "A B"},
@@ -107,6 +107,54 @@ class Answer {
       {"valueString": "A"},
       {"valueString": "A"},
     ]
+  };
+
+  //model mẫu để test
+  //sau này scan được sẽ xóa đi
+  static Map<String, dynamic> sample2 = {
+    "examCode": "004",
+    "value": [
+      {"valueString": "C"},
+      {"valueString": "D"},
+      {"valueString": "A"},
+      {"valueString": "A"},
+      {"valueString": "A"},
+      {"valueString": "A"},
+      {"valueString": "A"},
+      {"valueString": "A"},
+      {"valueString": "A"},
+      {"valueString": "A"},
+    ]
+  };
+  static Map<String, dynamic> sample3 = {
+    "examCode": "004",
+    "value": [
+      {"valueString": "C"},
+      {"valueString": "D"},
+      {"valueString": "A"},
+      {"valueString": "A"},
+      {"valueString": "A"},
+      {"valueString": "A"},
+      {"valueString": "A"},
+      {"valueString": "A"},
+      {"valueString": "A"},
+      {"valueString": "A"},
+    ]
+  };
+  static Map<String, dynamic> sample4 = {
+    "examCode": "024",
+    "value": [
+      {"valueString": "C"},
+      {"valueString": "D"},
+      {"valueString": "A"},
+      {"valueString": "A"},
+      {"valueString": "A"},
+      {"valueString": "A"},
+      {"valueString": "A"},
+      {"valueString": "A"},
+      {"valueString": "A"},
+      {"valueString": "A"},
+    ],
   };
 }
 

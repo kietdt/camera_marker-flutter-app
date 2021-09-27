@@ -35,19 +35,19 @@ class YuvTransformScreenCtr extends BaseController<YuvTransformScreenState>
 
     //TODO: fake data
 
-    // if (isFill) {
-    //   showLoading();
-    //   Future.delayed(Duration(milliseconds: 1000)).then((value) {
-    //     hideLoading();
-    //     onScanFill(Answer.sample);
-    //   });
-    // } else {
-    //   showLoading();
-    //   Future.delayed(Duration(milliseconds: 1000)).then((value) {
-    //     hideLoading();
-    //     onScanResult(Result.result5);
-    //   });
-    // }
+    if (isFill) {
+      showLoading();
+      Future.delayed(Duration(milliseconds: 1000)).then((value) {
+        hideLoading();
+        onScanFill(Answer.sample4);
+      });
+    } else {
+      showLoading();
+      Future.delayed(Duration(milliseconds: 1000)).then((value) {
+        hideLoading();
+        onScanResult(Result.result4);
+      });
+    }
   }
 
   List<StreamSubscription> subscription = [];
