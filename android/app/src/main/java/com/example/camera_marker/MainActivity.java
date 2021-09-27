@@ -80,9 +80,12 @@ public class MainActivity extends FlutterActivity {
                             int[] strides = call.argument("strides");
                             int width = call.argument("width");
                             int height = call.argument("height");
+                            ArrayList answerReq = call.argument("answer");
 
+                            // example code
                             byte[] data = YuvConverter.NV21toJPEG(
                                     YuvConverter.YUVtoNV21(bytesList, strides, width, height), width, height, 100);
+                            
                             Bitmap bitmapRaw = BitmapFactory.decodeByteArray(data, 0, data.length);
                             Matrix matrix = new Matrix();
                             matrix.postRotate(90);
@@ -194,15 +197,18 @@ public class MainActivity extends FlutterActivity {
                             try {
                                 feedback.put("width", max_width);
                                 feedback.put("height", max_height);
+                                feedback.put("answerReqClass", (answerReq.get(0)).getClass());
+                                feedback.put("answerReqT", answerReqT.get(0));
                             } catch (JSONException e) {
                                 e.printStackTrace();
                             }
                             int correctAnwers = 0;
                             String path = null;
                             String error = "";
-                            String stdId = "";
+                            String studentCode = "";
                             String examCode = "";
                             int non0;
+                            JSONArray stdAnswer = new JSONArray();
                             if (numberRect == 4) {
                                 isAnswer = true;
 
@@ -236,19 +242,19 @@ public class MainActivity extends FlutterActivity {
                                 for (int i = 0; i < 6; i++) {
                                     int count = 0;
                                     for (int j = 0; j < 10; j++) {
-                                        p1.x = i * box_width + 30 + 10;
-                                        p1.y = j * box_height + 770 + 10;
-                                        p2.x = p1.x + box_width - 10 - 10;
-                                        p2.y = p1.y + box_height - 10 - 10;
+                                        p1.x = i * box_width + 30 + 14;
+                                        p1.y = j * box_height + 770 + 14;
+                                        p2.x = p1.x + box_width - 14 - 14;
+                                        p2.y = p1.y + box_height - 14 - 14;
 
                                         //
                                         Rect rectCrop = new Rect(p1, p2);
                                         Mat image_roi = new Mat(mRgba, rectCrop);
                                         non0 = Core.countNonZero(image_roi);
-                                        if (non0 < 130) {
+                                        if (non0 < 150) {
                                             count++;
                                             Imgproc.rectangle(mRgbaCopy, p1, p2, s, 3);
-                                            stdId = stdId + Integer.toString(j);
+                                            studentCode = studentCode + Integer.toString(j);
                                         }
                                         image_roi.release();
 
@@ -263,14 +269,14 @@ public class MainActivity extends FlutterActivity {
                                 for (int i = 0; i < 3; i++) {
                                     int count = 0;
                                     for (int j = 0; j < 10; j++) {
-                                        p1.x = i * box_width + 320 + 10;
-                                        p1.y = j * box_height + 770 + 10;
-                                        p2.x = p1.x + box_width - 10 - 10;
-                                        p2.y = p1.y + box_height - 10 - 10;
+                                        p1.x = i * box_width + 320 + 14;
+                                        p1.y = j * box_height + 770 + 14;
+                                        p2.x = p1.x + box_width - 14 - 14;
+                                        p2.y = p1.y + box_height - 14 - 14;
                                         Rect rectCrop = new Rect(p1, p2);
                                         Mat image_roi = new Mat(mRgba, rectCrop);
                                         non0 = Core.countNonZero(image_roi);
-                                        if (non0 < 130) {
+                                        if (non0 < 150) {
                                             count = count + 1;
                                             Imgproc.rectangle(mRgbaCopy, p1, p2, s, 3);
                                             examCode = examCode + Integer.toString(j);
@@ -283,6 +289,7 @@ public class MainActivity extends FlutterActivity {
                                 }
 
                                 // get answer
+
                                 int[][] listBox = new int[][] { { 567, 770 }, { 811, 770 }, { 72, 1430 }, { 319, 1430 },
                                         { 565, 1430 }, { 814, 1430 }, };
                                 Scalar wrongColor = new Scalar(255.0, 0.0, 0.0, 255.0);
@@ -290,32 +297,42 @@ public class MainActivity extends FlutterActivity {
                                 for (int i = 0; i < listBox.length; i++) {
                                     int quesPoint = 0;
                                     for (int row = 0; row < 10; row++) {
+                                        String stdAnswerString = "";
                                         answerCol: for (int col = 0; col < 5; col++) {
-                                            p1.x = col * box_width + listBox[i][0] + 10;
-                                            p1.y = row * box_height + listBox[i][1] + 10;
-                                            p2.x = p1.x + box_width - 10 - 10;
-                                            p2.y = p1.y + box_height - 10 - 10;
+                                            p1.x = col * box_width + listBox[i][0] + 14;
+                                            p1.y = row * box_height + listBox[i][1] + 14;
+                                            p2.x = p1.x + box_width - 14 - 14;
+                                            p2.y = p1.y + box_height - 14 - 14;
                                             Rect rectCrop = new Rect(p1, p2);
 
                                             Mat image_roi = new Mat(mRgba, rectCrop);
                                             non0 = Core.countNonZero(image_roi);
                                             image_roi.release();
                                             String current_answer = numberToAnswer(col);
-                                            if (current_answer == answer[row + i * 10] && non0 < 120) {
+                                            if (current_answer == answer[row + i * 10] && non0 < 150) {
+                                                stdAnswerString += current_answer;
                                                 quesPoint = quesPoint + 1;
                                                 correctAnwers = correctAnwers + 1;
                                                 Imgproc.rectangle(mRgbaCopy, p1, p2, correctColor, 5);
-                                            } else if (non0 < 120) {
+                                            } else if (non0 < 150) {
+                                                stdAnswerString += current_answer;
                                                 Imgproc.rectangle(mRgbaCopy, p1, p2, wrongColor, 5);
-                                                break answerCol;
                                             }
                                         }
                                         if (quesPoint > 0) {
                                             correctAnwers += 1;
                                         }
+                                        JSONObject stdAnswerJson = new JSONObject();
+                                        try {
+                                            stdAnswerJson.put("valueString", stdAnswerString);
+                                            stdAnswer.put(stdAnswerJson);
+                                        } catch (JSONException e) {
+                                            e.printStackTrace();
+                                        }
+
                                     }
                                 }
-                                Imgproc.putText(mRgbaCopy, "StdId: " + stdId, new Point(711, 370),
+                                Imgproc.putText(mRgbaCopy, "studentCode: " + studentCode, new Point(711, 370),
                                         Core.FONT_HERSHEY_COMPLEX, 1, correctColor, 3);
                                 Imgproc.putText(mRgbaCopy, "examCode: " + examCode, new Point(711, 470),
                                         Core.FONT_HERSHEY_COMPLEX, 1, correctColor, 3);
@@ -334,8 +351,7 @@ public class MainActivity extends FlutterActivity {
                                 Utils.matToBitmap(mRgbaCopy, myBitmap);
                                 path = saveToInternalStorage(myBitmap, "result.png");
 
-                                myBitmap = Bitmap.createBitmap(mRgba.cols(), mRgba.rows(),
-                                        Bitmap.Config.ARGB_8888);
+                                myBitmap = Bitmap.createBitmap(mRgba.cols(), mRgba.rows(), Bitmap.Config.ARGB_8888);
                                 Utils.matToBitmap(mRgba, myBitmap);
                                 path = saveToInternalStorage(myBitmap, "resultT.png");
 
@@ -344,10 +360,10 @@ public class MainActivity extends FlutterActivity {
                             try {
                                 feedback.put("answer", isAnswer);
                                 feedback.put("examCode", examCode);
-                                feedback.put("stdId", stdId);
-                                feedback.put("path", path);
+                                feedback.put("studentCode", studentCode);
+                                feedback.put("image", path);
                                 feedback.put("error", error);
-                                feedback.put("numCorrectAnwers", correctAnwers);
+                                feedback.put("value", stdAnswer);
                                 feedback.put("points", new JSONArray(pointsValue));
                             } catch (JSONException e) {
                                 e.printStackTrace();

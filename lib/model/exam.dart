@@ -70,10 +70,10 @@ class Exam {
     this.resultIds = json["resultIds"] != null
         ? List<String>.from(json["resultIds"].map((e) => e))
         : [];
-    this.createdAt =
-        json["createdAt"] != null ? DateTime.parse(json["createdAt"]) : null;
-    this.updatedAt =
-        json["updatedAt"] != null ? DateTime.parse(json["updatedAt"]) : null;
+    // this.createdAt =
+    //     json["createdAt"] != null ? DateTime.parse(json["createdAt"]) : null;
+    // this.updatedAt =
+    //     json["updatedAt"] != null ? DateTime.parse(json["updatedAt"]) : null;
   }
 
   Map<String, dynamic> toJson() => {
