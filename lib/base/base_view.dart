@@ -35,24 +35,24 @@ abstract class BaseView<S extends StatefulWidget, C extends BaseController>
   void didChangeAppLifecycleState(AppLifecycleState state) async {
     switch (state) {
       case AppLifecycleState.inactive:
-        await inactive();
+        await onInactive();
         break;
       case AppLifecycleState.resumed:
-        await resumed();
+        await onResumed();
         break;
       case AppLifecycleState.paused:
-        await paused();
+        await onPaused();
         break;
       case AppLifecycleState.detached:
-        await detached();
+        await onDetached();
         break;
     }
   }
 
-  Future inactive() async {}
-  Future resumed() async {}
-  Future paused() async {}
-  Future detached() async {}
+  Future onInactive() async {}
+  Future onResumed() async {}
+  Future onPaused() async {}
+  Future onDetached() async {}
 
   @override
   Widget build(BuildContext context) {

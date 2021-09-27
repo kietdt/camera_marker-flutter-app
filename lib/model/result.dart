@@ -137,8 +137,26 @@ class Result {
   };
 
   static Map<String, dynamic> result5 = {
-    "examCode": "004",
+    "examCode": "024",
     "studentCode": "129",
+    "image": "",
+    "value": [
+      {"valueString": "C"},
+      {"valueString": "D"},
+      {"valueString": "A"},
+      {"valueString": "A"},
+      {"valueString": "A C"},
+      {"valueString": "A A"},
+      {"valueString": "B"},
+      {"valueString": "A D"},
+      {"valueString": "A"},
+      {"valueString": "A"},
+    ],
+  };
+
+  static Map<String, dynamic> result6 = {
+    "examCode": "024",
+    "studentCode": "115",
     "image": "",
     "value": [
       {"valueString": "C"},
@@ -147,7 +165,7 @@ class Result {
       {"valueString": "A"},
       {"valueString": "A"},
       {"valueString": "A"},
-      {"valueString": "A"},
+      {"valueString": "B"},
       {"valueString": "A"},
       {"valueString": "A"},
       {"valueString": "A"},

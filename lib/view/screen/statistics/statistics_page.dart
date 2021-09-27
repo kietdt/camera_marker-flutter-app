@@ -42,6 +42,15 @@ class StatisticsState extends BaseScaffold<StatisticsPage, StatisticsCtr> {
   }
 
   @override
+  Future onResumed() {
+    if (controller.excelPath.isNotEmpty) {
+      controller.deletefile(controller.excelPath);
+      controller.excelPath = "";
+    }
+    return super.onResumed();
+  }
+
+  @override
   Widget body() {
     return SafeArea(
         child: Column(

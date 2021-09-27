@@ -21,6 +21,8 @@ class StatisticsCtr extends BaseController<StatisticsState> with ExportMix {
     "Xuất excel và hình ảnh chấm thi"
   ];
 
+  String excelPath = "";
+
   RxInt optionSelected = 0.obs;
 
   Exam? get exam => state.widget.payload?.exam;
@@ -43,10 +45,9 @@ class StatisticsCtr extends BaseController<StatisticsState> with ExportMix {
         barrierDismissible: true,
         child: state.exportOption());
     if (result == "true") {
-      String path = await filePath(exam: exam);
-      print("=======share====path======>$path");
-      await Share.shareFiles([path]);
-      // deletefile(path);
+      excelPath = await filePath(exam: exam);
+      print("=======share====path======>$excelPath");
+      await Share.shareFiles([excelPath]);
     }
   }
 

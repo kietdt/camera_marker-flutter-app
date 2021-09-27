@@ -63,31 +63,31 @@ class YuvTransformScreenState
   }
 
   @override
-  Future inactive() {
+  Future onInactive() {
     if (controller.cameraCtr != null &&
         controller.cameraCtr!.value.isInitialized) {
       controller.cameraCtr?.dispose();
     }
     // controller.resetRootView();
-    return super.inactive();
+    return super.onInactive();
   }
 
   @override
-  Future paused() {
+  Future onPaused() {
     if (controller.cameraCtr != null &&
         controller.cameraCtr!.value.isInitialized) {
       controller.cameraCtr?.dispose();
     }
-    return super.paused();
+    return super.onPaused();
   }
 
   @override
-  Future resumed() {
+  Future onResumed() {
     if (controller.cameraCtr != null &&
         controller.cameraCtr!.value.isInitialized) {
       controller.onNewCameraSelected(controller.cameraCtr!.description);
     }
-    return super.resumed();
+    return super.onResumed();
   }
 
   @override
