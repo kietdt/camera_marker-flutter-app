@@ -198,7 +198,7 @@ public class MainActivity extends FlutterActivity {
                                 feedback.put("width", max_width);
                                 feedback.put("height", max_height);
                                 feedback.put("answerReqClass", (answerReq.get(0)).getClass());
-                                feedback.put("answerReqT", answerReqT.get(0));
+                                feedback.put("answerReq", answerReq.get(0));
                             } catch (JSONException e) {
                                 e.printStackTrace();
                             }
