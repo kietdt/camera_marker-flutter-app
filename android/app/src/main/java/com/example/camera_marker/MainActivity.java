@@ -17,10 +17,13 @@ import android.content.ContextWrapper;
 
 import io.flutter.embedding.android.FlutterActivity;
 import io.flutter.embedding.engine.FlutterEngine;
+import io.flutter.plugin.common.MethodCall;
 import io.flutter.plugin.common.MethodChannel;
 import io.flutter.plugins.GeneratedPluginRegistrant;
 import org.opencv.imgproc.Imgproc;
 import android.graphics.BitmapFactory;
+import android.util.Log;
+
 import org.opencv.android.Utils;
 import org.opencv.core.Core;
 import org.opencv.core.Mat;
@@ -80,7 +83,9 @@ public class MainActivity extends FlutterActivity {
                             int[] strides = call.argument("strides");
                             int width = call.argument("width");
                             int height = call.argument("height");
-                            ArrayList answerReq = call.argument("answer");
+//                            for (int i = 0; i < value.size(); i ++ ) {
+//                                answer[i] = value[i]["valueString"] ;
+//                            }
 
                             // example code
                             byte[] data = YuvConverter.NV21toJPEG(
@@ -93,10 +98,30 @@ public class MainActivity extends FlutterActivity {
                                     bitmapRaw.getHeight(), matrix, true);
 
                             // convert answer
-                            String[] answer = { "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A",
-                                    "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A",
-                                    "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A",
-                                    "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", };
+                            String[] answer = {};
+//                            = { "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A",
+//                                    "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A",
+//                                    "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A",
+//                                    "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", };
+
+
+
+                            ArrayList<JSONObject> answerReq = call.argument("answer");
+                           try {
+                               for (int i = 0 ; i < answerReq.size(); i++){
+                                   String examCode = answerReq.get(i).getString("examCode");
+                                   JSONArray value = answerReq.get(i).getJSONArray("value");
+                                   Log.e("Ma de ===============>", examCode);
+                                   for (int j = 0; j < value.length(); j ++ ){
+                                       JSONObject temp = value.getJSONObject(j);
+                                       answer[j] = temp.getString("valueString");
+                                   }
+
+                               }
+                           } catch (Exception e) {
+                               Log.e("", "e");
+                           }
+
 
                             mRgba = bitmapToMat(finalbitmap);
                             int max_height = mRgba.rows();
