@@ -1,6 +1,5 @@
 package uit.kltn.cttt2015.camera_marker;
 
-import java.io.*;
 import java.util.*;
 
 import android.graphics.Bitmap;
@@ -9,7 +8,6 @@ import android.graphics.Matrix;
 
 import androidx.annotation.NonNull;
 
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.util.List;
 import android.content.Context;
@@ -17,11 +15,10 @@ import android.content.ContextWrapper;
 
 import io.flutter.embedding.android.FlutterActivity;
 import io.flutter.embedding.engine.FlutterEngine;
-import io.flutter.plugin.common.MethodCall;
 import io.flutter.plugin.common.MethodChannel;
 import io.flutter.plugins.GeneratedPluginRegistrant;
 import org.opencv.imgproc.Imgproc;
-import android.graphics.BitmapFactory;
+
 import android.util.Log;
 
 import org.opencv.android.Utils;
@@ -29,8 +26,6 @@ import org.opencv.core.Core;
 import org.opencv.core.Mat;
 import org.opencv.android.OpenCVLoader;
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import org.opencv.core.Scalar;
 import org.opencv.core.MatOfPoint;
@@ -38,8 +33,6 @@ import org.opencv.core.MatOfPoint2f;
 import org.opencv.core.Point;
 import org.opencv.core.Rect;
 import org.opencv.core.Size;
-import org.opencv.core.*;
-import org.opencv.photo.Photo;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -106,20 +99,21 @@ public class MainActivity extends FlutterActivity {
 
 
 
-                            ArrayList<JSONObject> answerReq = call.argument("answer");
+                            ArrayList<HashMap> answerReq = call.argument("answer");
                            try {
                                for (int i = 0 ; i < answerReq.size(); i++){
-                                   String examCode = answerReq.get(i).getString("examCode");
-                                   JSONArray value = answerReq.get(i).getJSONArray("value");
+                                   String examCode = (String) answerReq.get(i).get("examCode");
+                                   ArrayList<HashMap> value = (ArrayList) answerReq.get(i).get("value");
                                    Log.e("Ma de ===============>", examCode);
-                                   for (int j = 0; j < value.length(); j ++ ){
-                                       JSONObject temp = value.getJSONObject(j);
-                                       answer[j] = temp.getString("valueString");
+                                   ArrayList AnswerTemp = new ArrayList();
+                                   for (int j = 0; j < value.size(); j ++ ){
+                                       String temp = (String) value.get(j).get("valueString");
+                                       AnswerTemp.add(temp);
                                    }
-
+                                   Log.d("Chuỗi answer theo ma de", "ma de: " + examCode + "/nanswer: " + AnswerTemp);
                                }
                            } catch (Exception e) {
-                               Log.e("", "e");
+                               Log.e("", e.getMessage());
                            }
 
 
