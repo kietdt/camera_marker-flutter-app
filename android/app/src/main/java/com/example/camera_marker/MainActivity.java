@@ -82,6 +82,7 @@ public class MainActivity extends FlutterActivity {
                             int width = call.argument("width");
                             int height = call.argument("height");
                             String type = call.argument("type");
+
                             // example code
                             byte[] data = YuvConverter.NV21toJPEG(
                                     YuvConverter.YUVtoNV21(bytesList, strides, width, height), width, height, 100);
@@ -99,7 +100,63 @@ public class MainActivity extends FlutterActivity {
 
                             int numberRect = 0;
                             Scalar s = new Scalar(255, 0, 0);
+                            if (Objects.equals(type, new String("test"))) {
+                                // compare with request data to get right answer for examcode
+                                ArrayList<HashMap> answerReq = call.argument("answer");
 
+                                // array store right
+                                String examCodeReq = "";
+                                JSONArray stdAnswer = new JSONArray();
+
+                                try {
+                                    for (int i = 0; i < answerReq.size(); i++) {
+                                        examCodeReq = (String) answerReq.get(i).get("examCode");
+                                        
+
+                                        ArrayList<HashMap> value = (ArrayList) answerReq.get(i).get("value");
+                                        for (int j = 0; j < value.size(); j++) {
+                                            JSONObject stdAnswerJson = new JSONObject();
+                                            String temp = (String) value.get(j).get("valueString");
+                                            stdAnswerJson.put("valueString", temp);
+                                            stdAnswer.put(stdAnswerJson);
+                                        }
+                                        break;
+
+                                    }
+                                } catch (Exception e) {
+                                    Log.e("", e.getMessage());
+                                }
+                                
+                                // save file
+                                Bitmap myBitmap = null;
+                                // Getting the current date
+                                Date date = new Date();
+                                // This method returns the time in millis
+                                long timeMilli = date.getTime();
+
+                                myBitmap = Bitmap.createBitmap(mRgbaCopy.cols(), mRgbaCopy.rows(),
+                                        Bitmap.Config.ARGB_8888);
+                                Utils.matToBitmap(mRgbaCopy, myBitmap);
+                                String studentCode = "1234";
+                                String path = saveToInternalStorage(myBitmap, studentCode + "_" + timeMilli + ".png");
+                                
+                                JSONObject feedback = new JSONObject();
+                                try {
+                                    feedback.put("answer", true);
+                                    feedback.put("width", max_width);
+                                    feedback.put("height", max_height);
+                                    feedback.put("examCode", examCodeReq);
+                                    feedback.put("studentCode", studentCode);
+                                    feedback.put("image", path);
+                                    feedback.put("value", stdAnswer);
+                                } catch (JSONException e) {
+                                    e.printStackTrace();
+                                }
+                                mRgba.release();
+                                mRgbaCopy.release(); //
+                                result.success(feedback.toString());
+                                return;
+                            }
                             int[][] pointsValue = new int[][] { { 0, 0, 100, 100, 1 },
                                     { max_width - 100, 0, max_width, 100, 2 },
                                     { 0, max_height - 100, 100, max_height, 3 },
@@ -216,7 +273,6 @@ public class MainActivity extends FlutterActivity {
                                 // Photo.detailEnhance(mRgba, mRgba);
                                 Mat mRgbaRaw = mRgba.clone();
 
-
                                 Imgproc.resize(mRgba, mRgba, new Size(1080, 2100));
 
                                 mRgbaCopy = mRgba.clone();
@@ -317,7 +373,8 @@ public class MainActivity extends FlutterActivity {
                                     for (int row = 0; row < 10; row++) {
                                         int quesPoint = 0;
                                         String stdAnswerString = "";
-                                        if (Objects.equals(type, new String("result")) && (row + i * 10) > AnswerTemp.size() - 1) {
+                                        if (Objects.equals(type, new String("result"))
+                                                && (row + i * 10) > AnswerTemp.size() - 1) {
                                             break boxLoop;
                                         }
                                         answerCol: for (int col = 0; col < 5; col++) {
@@ -331,10 +388,11 @@ public class MainActivity extends FlutterActivity {
                                             non0 = Core.countNonZero(image_roi);
                                             image_roi.release();
                                             String current_answer = numberToAnswer(col);
-                                            if(Objects.equals(type, new String("result"))){
-                                                if (Objects.equals(AnswerTemp.get(row + i * 10), new String(current_answer))) {
+                                            if (Objects.equals(type, new String("result"))) {
+                                                if (Objects.equals(AnswerTemp.get(row + i * 10),
+                                                        new String(current_answer))) {
                                                     Imgproc.rectangle(mRgbaCopy, p1, p2, correctColor, 5);
-                                                    if(non0 < 150) {
+                                                    if (non0 < 150) {
                                                         stdAnswerString += current_answer;
                                                         quesPoint = quesPoint + 1;
                                                     }
@@ -365,16 +423,17 @@ public class MainActivity extends FlutterActivity {
                                     }
 
                                 }
-                                if(Objects.equals(type, new String("result"))){
+                                if (Objects.equals(type, new String("result"))) {
                                     Imgproc.putText(mRgbaCopy, "studentCode: " + studentCode, new Point(611, 370),
                                             Core.FONT_HERSHEY_COMPLEX, 1, correctColor, 3);
                                     Imgproc.putText(mRgbaCopy, "examCode: " + examCode, new Point(611, 270),
                                             Core.FONT_HERSHEY_COMPLEX, 1, correctColor, 3);
-//                                    Imgproc.putText(mRgbaCopy, correctAnwers + "/" + AnswerTemp.size(), new Point(611, 570),
-//                                            Core.FONT_HERSHEY_COMPLEX, 1, correctColor, 3);
+                                    // Imgproc.putText(mRgbaCopy, correctAnwers + "/" + AnswerTemp.size(), new
+                                    // Point(611, 570),
+                                    // Core.FONT_HERSHEY_COMPLEX, 1, correctColor, 3);
                                     if (error.length() > 0) {
-                                        Imgproc.putText(mRgbaCopy, error, new Point(611, 670), Core.FONT_HERSHEY_COMPLEX, 1,
-                                                correctColor, 3);
+                                        Imgproc.putText(mRgbaCopy, error, new Point(611, 670),
+                                                Core.FONT_HERSHEY_COMPLEX, 1, correctColor, 3);
                                     }
 
                                 }
@@ -447,7 +506,7 @@ public class MainActivity extends FlutterActivity {
                 e.printStackTrace();
             }
         }
-        return directory.getAbsolutePath();
+        return directory.getAbsolutePath() + "/" + path;
     }
 
     private String numberToAnswer(int number) {

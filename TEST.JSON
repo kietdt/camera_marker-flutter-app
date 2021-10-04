@@ -1,1 +1,190 @@
-"{"width":480,"height":640,"answer":false,"examCode":"012","studentCode":"","error":"","value":"[A, A, A, A, A, A, A, A, A, A, A, A, A, A, A, A, A, A, A, A, A, A, A, A, A, A, A, A, A, A, A, A, A, A, A, A, A, A, A, A, A, A, A, A, A, A, A, A, A, A, A, A, A, A, A, A, A, A, A, A]","points":[[0,0,100,100,1],[380,0,480,100,2],[0,540,100,640,3],[380,540,480,640,4]]}"
+{
+    "answer": true,
+    "width": 480,
+    "height": 640,
+    "examCode": "012",
+    "studentCode": "1234",
+    "image": "\/data\/user\/0\/uit.kltn.cttt2015.camera_marker\/app_imageDir\/1234_1633338388525.png",
+    "value": [
+        {
+            "valueString": "B"
+        },
+        {
+            "valueString": "A"
+        },
+        {
+            "valueString": "A"
+        },
+        {
+            "valueString": "A"
+        },
+        {
+            "valueString": "A"
+        },
+        {
+            "valueString": "A"
+        },
+        {
+            "valueString": "A"
+        },
+        {
+            "valueString": "A"
+        },
+        {
+            "valueString": "A"
+        },
+        {
+            "valueString": "A"
+        },
+        {
+            "valueString": "A"
+        },
+        {
+            "valueString": "A"
+        },
+        {
+            "valueString": "A"
+        },
+        {
+            "valueString": "A"
+        },
+        {
+            "valueString": "A"
+        },
+        {
+            "valueString": "A"
+        },
+        {
+            "valueString": "A"
+        },
+        {
+            "valueString": "A"
+        },
+        {
+            "valueString": "A"
+        },
+        {
+            "valueString": "A"
+        },
+        {
+            "valueString": "A"
+        },
+        {
+            "valueString": "A"
+        },
+        {
+            "valueString": "A"
+        },
+        {
+            "valueString": "A"
+        },
+        {
+            "valueString": "A"
+        },
+        {
+            "valueString": "A"
+        },
+        {
+            "valueString": "A"
+        },
+        {
+            "valueString": "A"
+        },
+        {
+            "valueString": "A"
+        },
+        {
+            "valueString": "A"
+        },
+        {
+            "valueString": "A"
+        },
+        {
+            "valueString": "A"
+        },
+        {
+            "valueString": "A"
+        },
+        {
+            "valueString": "A"
+        },
+        {
+            "valueString": "A"
+        },
+        {
+            "valueString": "A"
+        },
+        {
+            "valueString": "A"
+        },
+        {
+            "valueString": "A"
+        },
+        {
+            "valueString": "A"
+        },
+        {
+            "valueString": "A"
+        },
+        {
+            "valueString": "A"
+        },
+        {
+            "valueString": "A"
+        },
+        {
+            "valueString": "A"
+        },
+        {
+            "valueString": "A"
+        },
+        {
+            "valueString": "A"
+        },
+        {
+            "valueString": "A"
+        },
+        {
+            "valueString": "A"
+        },
+        {
+            "valueString": "A"
+        },
+        {
+            "valueString": "A"
+        },
+        {
+            "valueString": "A"
+        },
+        {
+            "valueString": "A"
+        },
+        {
+            "valueString": "A"
+        },
+        {
+            "valueString": "A"
+        },
+        {
+            "valueString": "A"
+        },
+        {
+            "valueString": "A"
+        },
+        {
+            "valueString": "A"
+        },
+        {
+            "valueString": "A"
+        },
+        {
+            "valueString": "A"
+        },
+        {
+            "valueString": "A"
+        },
+        {
+            "valueString": "A"
+        }
+    ]
+}
