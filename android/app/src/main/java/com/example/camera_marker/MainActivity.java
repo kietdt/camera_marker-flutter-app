@@ -38,7 +38,12 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.Calendar;
+import java.util.Date;
+import java.time.ZonedDateTime;
+
 import tomerblecher.yuvtransform.YuvConverter;
+import org.opencv.photo.Photo;
 
 public class MainActivity extends FlutterActivity {
     // Set a name for the method chanel.
@@ -76,46 +81,16 @@ public class MainActivity extends FlutterActivity {
                             int[] strides = call.argument("strides");
                             int width = call.argument("width");
                             int height = call.argument("height");
-//                            for (int i = 0; i < value.size(); i ++ ) {
-//                                answer[i] = value[i]["valueString"] ;
-//                            }
-
+                            String type = call.argument("type");
                             // example code
                             byte[] data = YuvConverter.NV21toJPEG(
                                     YuvConverter.YUVtoNV21(bytesList, strides, width, height), width, height, 100);
-                            
+
                             Bitmap bitmapRaw = BitmapFactory.decodeByteArray(data, 0, data.length);
                             Matrix matrix = new Matrix();
                             matrix.postRotate(90);
                             Bitmap finalbitmap = Bitmap.createBitmap(bitmapRaw, 0, 0, bitmapRaw.getWidth(),
                                     bitmapRaw.getHeight(), matrix, true);
-
-                            // convert answer
-                            String[] answer = {};
-//                            = { "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A",
-//                                    "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A",
-//                                    "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A",
-//                                    "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", };
-
-
-
-                            ArrayList<HashMap> answerReq = call.argument("answer");
-                           try {
-                               for (int i = 0 ; i < answerReq.size(); i++){
-                                   String examCode = (String) answerReq.get(i).get("examCode");
-                                   ArrayList<HashMap> value = (ArrayList) answerReq.get(i).get("value");
-                                   Log.e("Ma de ===============>", examCode);
-                                   ArrayList AnswerTemp = new ArrayList();
-                                   for (int j = 0; j < value.size(); j ++ ){
-                                       String temp = (String) value.get(j).get("valueString");
-                                       AnswerTemp.add(temp);
-                                   }
-                                   Log.d("Chuỗi answer theo ma de", "ma de: " + examCode + "/nanswer: " + AnswerTemp);
-                               }
-                           } catch (Exception e) {
-                               Log.e("", e.getMessage());
-                           }
-
 
                             mRgba = bitmapToMat(finalbitmap);
                             int max_height = mRgba.rows();
@@ -154,7 +129,7 @@ public class MainActivity extends FlutterActivity {
 
                                 innerLoop: for (MatOfPoint c : contours) {
                                     double area = Imgproc.contourArea(c);
-                                    if (area > 50 && area < 2000) {
+                                    if (area > 150 && area < 2000) {
                                         MatOfPoint2f c2f = new MatOfPoint2f(c.toArray());
                                         double peri = Imgproc.arcLength(c2f, true);
                                         MatOfPoint2f approx = new MatOfPoint2f();
@@ -216,8 +191,6 @@ public class MainActivity extends FlutterActivity {
                             try {
                                 feedback.put("width", max_width);
                                 feedback.put("height", max_height);
-                                feedback.put("answerReqClass", (answerReq.get(0)).getClass());
-                                feedback.put("answerReq", answerReq.get(0));
                             } catch (JSONException e) {
                                 e.printStackTrace();
                             }
@@ -228,6 +201,7 @@ public class MainActivity extends FlutterActivity {
                             String examCode = "";
                             int non0;
                             JSONArray stdAnswer = new JSONArray();
+
                             if (numberRect == 4) {
                                 isAnswer = true;
 
@@ -240,10 +214,14 @@ public class MainActivity extends FlutterActivity {
                                 Imgproc.warpPerspective(mRgba, mRgba, warpMat, size);
 
                                 // Photo.detailEnhance(mRgba, mRgba);
+                                Mat mRgbaRaw = mRgba.clone();
+
 
                                 Imgproc.resize(mRgba, mRgba, new Size(1080, 2100));
-                                mRgbaCopy = mRgba.clone();
 
+                                mRgbaCopy = mRgba.clone();
+                                Imgproc.blur(mRgba, mRgba, new Size(50, 50));
+                                Photo.detailEnhance(mRgba, mRgba, 10, 20);
                                 Imgproc.cvtColor(mRgba, mRgba, Imgproc.COLOR_BGR2GRAY);
                                 int width_c = 1080;
                                 int height_c = 2100;
@@ -270,7 +248,7 @@ public class MainActivity extends FlutterActivity {
                                         Rect rectCrop = new Rect(p1, p2);
                                         Mat image_roi = new Mat(mRgba, rectCrop);
                                         non0 = Core.countNonZero(image_roi);
-                                        if (non0 < 150) {
+                                        if (non0 < 50) {
                                             count++;
                                             Imgproc.rectangle(mRgbaCopy, p1, p2, s, 3);
                                             studentCode = studentCode + Integer.toString(j);
@@ -284,7 +262,6 @@ public class MainActivity extends FlutterActivity {
                                 }
 
                                 // get exam code
-
                                 for (int i = 0; i < 3; i++) {
                                     int count = 0;
                                     for (int j = 0; j < 10; j++) {
@@ -295,7 +272,7 @@ public class MainActivity extends FlutterActivity {
                                         Rect rectCrop = new Rect(p1, p2);
                                         Mat image_roi = new Mat(mRgba, rectCrop);
                                         non0 = Core.countNonZero(image_roi);
-                                        if (non0 < 150) {
+                                        if (non0 < 50) {
                                             count = count + 1;
                                             Imgproc.rectangle(mRgbaCopy, p1, p2, s, 3);
                                             examCode = examCode + Integer.toString(j);
@@ -306,17 +283,43 @@ public class MainActivity extends FlutterActivity {
                                         error = "Exam code invalid";
                                     }
                                 }
+                                // compare with request data to get right answer for examcode
+                                ArrayList<HashMap> answerReq = call.argument("answer");
+
+                                // array store right
+                                ArrayList AnswerTemp = new ArrayList();
+                                String examCodeReq = "";
+                                try {
+                                    for (int i = 0; i < answerReq.size(); i++) {
+                                        examCodeReq = (String) answerReq.get(i).get("examCode");
+                                        if (Objects.equals(examCodeReq, new String(examCode))) {
+                                            Log.d("=============", "get answer");
+                                            ArrayList<HashMap> value = (ArrayList) answerReq.get(i).get("value");
+                                            for (int j = 0; j < value.size(); j++) {
+                                                String temp = (String) value.get(j).get("valueString");
+                                                AnswerTemp.add(temp);
+                                            }
+                                            break;
+                                        }
+
+                                    }
+                                } catch (Exception e) {
+                                    Log.e("", e.getMessage());
+                                }
 
                                 // get answer
-
-                                int[][] listBox = new int[][] { { 567, 770 }, { 811, 770 }, { 72, 1430 }, { 319, 1430 },
-                                        { 565, 1430 }, { 814, 1430 }, };
                                 Scalar wrongColor = new Scalar(255.0, 0.0, 0.0, 255.0);
                                 Scalar correctColor = new Scalar(0.0, 255.0, 0.0, 255.0);
-                                for (int i = 0; i < listBox.length; i++) {
-                                    int quesPoint = 0;
+                                int[][] listBox = new int[][] { { 567, 770 }, { 811, 770 }, { 72, 1430 }, { 319, 1430 },
+                                        { 565, 1430 }, { 814, 1430 }, };
+
+                                boxLoop: for (int i = 0; i < listBox.length; i++) {
                                     for (int row = 0; row < 10; row++) {
+                                        int quesPoint = 0;
                                         String stdAnswerString = "";
+                                        if (Objects.equals(type, new String("result")) && (row + i * 10) > AnswerTemp.size() - 1) {
+                                            break boxLoop;
+                                        }
                                         answerCol: for (int col = 0; col < 5; col++) {
                                             p1.x = col * box_width + listBox[i][0] + 14;
                                             p1.y = row * box_height + listBox[i][1] + 14;
@@ -328,19 +331,30 @@ public class MainActivity extends FlutterActivity {
                                             non0 = Core.countNonZero(image_roi);
                                             image_roi.release();
                                             String current_answer = numberToAnswer(col);
-                                            if (current_answer == answer[row + i * 10] && non0 < 150) {
-                                                stdAnswerString += current_answer;
-                                                quesPoint = quesPoint + 1;
-                                                correctAnwers = correctAnwers + 1;
-                                                Imgproc.rectangle(mRgbaCopy, p1, p2, correctColor, 5);
-                                            } else if (non0 < 150) {
-                                                stdAnswerString += current_answer;
-                                                Imgproc.rectangle(mRgbaCopy, p1, p2, wrongColor, 5);
+                                            if(Objects.equals(type, new String("result"))){
+                                                if (Objects.equals(AnswerTemp.get(row + i * 10), new String(current_answer))) {
+                                                    Imgproc.rectangle(mRgbaCopy, p1, p2, correctColor, 5);
+                                                    if(non0 < 150) {
+                                                        stdAnswerString += current_answer;
+                                                        quesPoint = quesPoint + 1;
+                                                    }
+                                                } else if (non0 < 150) {
+                                                    quesPoint = quesPoint - 1;
+                                                    Imgproc.rectangle(mRgbaCopy, p1, p2, wrongColor, 5);
+                                                    stdAnswerString += current_answer;
+                                                }
+                                                if (quesPoint > 0) {
+                                                    correctAnwers += 1;
+                                                }
+                                            } else {
+                                                if (non0 < 150) {
+                                                    Imgproc.rectangle(mRgbaCopy, p1, p2, wrongColor, 5);
+                                                    stdAnswerString += current_answer;
+                                                }
                                             }
+
                                         }
-                                        if (quesPoint > 0) {
-                                            correctAnwers += 1;
-                                        }
+
                                         JSONObject stdAnswerJson = new JSONObject();
                                         try {
                                             stdAnswerJson.put("valueString", stdAnswerString);
@@ -348,31 +362,43 @@ public class MainActivity extends FlutterActivity {
                                         } catch (JSONException e) {
                                             e.printStackTrace();
                                         }
-
                                     }
+
                                 }
-                                Imgproc.putText(mRgbaCopy, "studentCode: " + studentCode, new Point(711, 370),
-                                        Core.FONT_HERSHEY_COMPLEX, 1, correctColor, 3);
-                                Imgproc.putText(mRgbaCopy, "examCode: " + examCode, new Point(711, 470),
-                                        Core.FONT_HERSHEY_COMPLEX, 1, correctColor, 3);
-                                Imgproc.putText(mRgbaCopy, correctAnwers + "/60", new Point(711, 570),
-                                        Core.FONT_HERSHEY_COMPLEX, 1, correctColor, 3);
-                                if (error.length() > 0) {
-                                    Imgproc.putText(mRgbaCopy, error, new Point(711, 670), Core.FONT_HERSHEY_COMPLEX, 1,
-                                            correctColor, 3);
+                                if(Objects.equals(type, new String("result"))){
+                                    Imgproc.putText(mRgbaCopy, "studentCode: " + studentCode, new Point(611, 370),
+                                            Core.FONT_HERSHEY_COMPLEX, 1, correctColor, 3);
+                                    Imgproc.putText(mRgbaCopy, "examCode: " + examCode, new Point(611, 270),
+                                            Core.FONT_HERSHEY_COMPLEX, 1, correctColor, 3);
+//                                    Imgproc.putText(mRgbaCopy, correctAnwers + "/" + AnswerTemp.size(), new Point(611, 570),
+//                                            Core.FONT_HERSHEY_COMPLEX, 1, correctColor, 3);
+                                    if (error.length() > 0) {
+                                        Imgproc.putText(mRgbaCopy, error, new Point(611, 670), Core.FONT_HERSHEY_COMPLEX, 1,
+                                                correctColor, 3);
+                                    }
+
                                 }
                                 Imgproc.resize(mRgbaCopy, mRgbaCopy, new Size(480, 640));
                                 // save file
                                 Bitmap myBitmap = null;
+                                // Getting the current date
+                                Date date = new Date();
+                                // This method returns the time in millis
+                                long timeMilli = date.getTime();
 
                                 myBitmap = Bitmap.createBitmap(mRgbaCopy.cols(), mRgbaCopy.rows(),
                                         Bitmap.Config.ARGB_8888);
                                 Utils.matToBitmap(mRgbaCopy, myBitmap);
-                                path = saveToInternalStorage(myBitmap, "result.png");
+                                path = saveToInternalStorage(myBitmap, studentCode + "_" + timeMilli + ".png");
 
                                 myBitmap = Bitmap.createBitmap(mRgba.cols(), mRgba.rows(), Bitmap.Config.ARGB_8888);
                                 Utils.matToBitmap(mRgba, myBitmap);
                                 path = saveToInternalStorage(myBitmap, "resultT.png");
+
+                                myBitmap = Bitmap.createBitmap(mRgbaRaw.cols(), mRgbaRaw.rows(),
+                                        Bitmap.Config.ARGB_8888);
+                                Utils.matToBitmap(mRgbaRaw, myBitmap);
+                                path = saveToInternalStorage(myBitmap, "mRgbaRaw.png");
 
                                 mRgbaCopy.release();
                             }
