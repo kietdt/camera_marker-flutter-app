@@ -5,35 +5,41 @@ import 'package:camera_marker/base/utils.dart';
 import 'package:camera_marker/model/exam.dart';
 import 'package:camera_marker/model/result.dart';
 import 'package:excel/excel.dart';
-import 'package:path_provider/path_provider.dart';
 import 'package:syncfusion_flutter_xlsio/xlsio.dart' as syncfusion;
 
 mixin ExportMix {
-  Future<String> filePath({Exam? exam}) async {
-    String excelRoot = await getExcelRoot(exam, returnPath: true);
-    // String zipPath = await saveZip(exam, [excelRoot]);
+  Future<String> filePath({Exam? exam, bool withPhoto = true}) async {
+    String excelRoot = await getExcelFolder(exam);
 
-    // deletefile(excelRoot);
+    String? photoRoot;
+    if (withPhoto) {
+      photoRoot = await getPhotoFolder(exam);
+    }
 
-    // return zipPath;
-    return excelRoot;
-  }
+    String zipPath = await saveZip(
+      exam,
+      excelRoot,
+    );
+    // String zipPath = await saveZip(exam, excelRoot, photoRoot: photoRoot);
 
-  Future<String> _localPath() async {
-    final directory = Platform.isAndroid
-        ? await getExternalStorageDirectory()
-        : await getApplicationDocumentsDirectory();
-    return directory!.path;
+    deletefile(excelRoot);
+    if (photoRoot != null) {
+      deletefile(photoRoot);
+    }
+
+    return zipPath;
+    // return excelRoot;
   }
 
   //Lưu file excel và trả về đường dẫn chưa thư mục excel
-  Future<String> getExcelRoot(Exam? exam, {bool returnPath = false}) async {
+  Future<String> getExcelFolder(Exam? exam, {bool returnPath = false}) async {
     String classCode = exam?.myClass?.code ?? "";
     String examName = (exam?.title ?? "").replaceAll(" ", "_");
     String excelName = "$classCode-$examName.xlsx";
 
-    String excelRoot = await _localPath() + Platform.pathSeparator + "export";
-    String excelPath = excelRoot + Platform.pathSeparator + excelName;
+    String excelFolder =
+        await Utils.localPath() + Platform.pathSeparator + "export";
+    String excelPath = excelFolder + Platform.pathSeparator + excelName;
 
     initBorder(exam, excelPath);
 
@@ -45,23 +51,66 @@ mixin ExportMix {
     if (fileBytes != null) {
       File file = File(excelPath)..createSync(recursive: true);
       await file.writeAsBytes(fileBytes);
-      return returnPath ? excelPath : excelRoot;
+      return returnPath ? excelPath : excelFolder;
     }
     return "";
   }
 
-  Future<String> saveZip(Exam? exam, List<String> fileDir) async {
+  //Lưu file excel và trả về đường dẫn chưa thư mục excel
+  Future<String> getPhotoFolder(Exam? exam) async {
+    String photoFolder = await Utils.localPath() +
+        Platform.pathSeparator +
+        "export${Platform.pathSeparator}photo";
+
+    List<Result> results = exam?.result ?? [];
+
+    for (int i = 0; i < results.length; i++) {
+      String image = results[i].image ?? "";
+      File? file;
+
+      if (image.isNotEmpty) {
+        try {
+          file = File(image);
+        } catch (e) {
+          print(e);
+        }
+
+        if (file != null) {
+          String name =
+              photoFolder + Platform.pathSeparator + results[i].exportName;
+          File(name)..createSync(recursive: true);
+          file.copy(name);
+          // try {
+          //     await Directory(name).create();
+          //   } catch (e) {
+          //     print("=============phoyo====>$e");
+          //   }
+        }
+      }
+    }
+    return photoFolder;
+  }
+
+  Future<String> saveZip(Exam? exam, String excel, {String? photoRoot}) async {
     String classCode = exam?.myClass?.code ?? "";
     String examName = (exam?.title ?? "").replaceAll(" ", "_");
     String zipName = "$classCode-$examName.zip";
 
-    String zipRoot = await _localPath() + Platform.pathSeparator + "archive";
+    String zipRoot =
+        await Utils.localPath() + Platform.pathSeparator + "archive";
     String zipPath = zipRoot + Platform.pathSeparator + zipName;
 
     ZipFileEncoder encoder = ZipFileEncoder();
     encoder.create(zipPath);
-    for (int i = 0; i < fileDir.length; i++) {
-      encoder.addDirectory(Directory(fileDir[i]));
+
+    encoder.addDirectory(Directory(excel));
+
+    try {
+      if (photoRoot != null) {
+        encoder.addDirectory(Directory(photoRoot));
+      }
+    } catch (e) {
+      print("=============phoyo====>$e");
     }
     encoder.close();
 
@@ -70,6 +119,7 @@ mixin ExportMix {
 
   Future<void> deletefile(String path) async {
     File file = File(path);
+    print("path=======EXESIT===>${await file.exists()}");
     try {
       await file.delete();
       print("delete====SUCCESS===>$path");
@@ -83,6 +133,7 @@ mixin ExportMix {
       }
       print(e);
     }
+    print("path=======EXESIT===>${await file.exists()}");
   }
 
   //sử dụng 1 thư viện khác để border trang tính

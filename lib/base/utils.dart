@@ -1,4 +1,7 @@
+import 'dart:io';
+
 import 'package:intl/intl.dart';
+import 'package:path_provider/path_provider.dart';
 
 //created by kietdt 08/08/2021
 //contact email: dotuankiet1403@gmail.com
@@ -7,14 +10,47 @@ class Utils {
   static const String DMYHM = "dd/MM/yyyy HH:mm";
   static const String HM = "HH:mm";
 
-  static void statusPrint(String action, String what,
-      {bool success = true, bool? loadig, String? customMes}) {
-    String status = success ? "SUCCESS" : "FAILED";
-    if (loadig != null) {
-      status = "LOADING";
+  static void statusPrint(String title, String content) {
+    int maxLength = 50;
+    int perLine = 255;
+
+    if (content.length > maxLength || title.length > maxLength) {
+      print("$title:$content");
+    } else {
+      int horiLeft = (maxLength - title.length) ~/ 2;
+      int horiRight = maxLength - horiLeft - 2 - title.length;
+
+      String top = strFromList(List.generate(maxLength, (index) => "="));
+      String bot = strFromList(List.generate(maxLength, (index) => "="));
+      String left = strFromList(
+          List.generate(horiLeft, (index) => index == 0 ? "||" : " "));
+      String right = strFromList(List.generate(
+          horiRight, (index) => index == (horiRight - 1) ? "||" : " "));
+
+      print("$top\n");
+      if (maxLength % perLine > 0) {
+        int length = maxLength % perLine;
+        List.generate(length, (index) => {
+          
+        });
+        print("$left$title$right\n");
+      }
+      print("$bot");
+
+      horiLeft = (maxLength - content.length) ~/ 2;
+      horiRight = maxLength - horiLeft - 2 - content.length;
+
+      top = strFromList(List.generate(maxLength, (index) => "="));
+      bot = strFromList(List.generate(maxLength, (index) => "="));
+      left = strFromList(
+          List.generate(horiLeft, (index) => index == 0 ? "||" : " "));
+      right = strFromList(List.generate(
+          horiRight, (index) => index == (horiRight - 1) ? "||" : " "));
+
+      print("$top\n");
+      print("$left$content$right\n");
+      print("$bot");
     }
-    print(
-        "$action========$what=========>${status + " <=> " + (customMes ?? "")}");
   }
 
   static String dateToStr(DateTime? dateTime, {String? pattern}) {
@@ -36,5 +72,18 @@ class Utils {
       return "";
     });
     return list.join(" ");
+  }
+
+  static String strFromList(List<String> list) {
+    String temp = "";
+    List.generate(list.length, (index) => temp += list[index]);
+    return temp;
+  }
+
+  static Future<String> localPath() async {
+    final directory = Platform.isAndroid
+        ? await getExternalStorageDirectory()
+        : await getApplicationDocumentsDirectory();
+    return directory!.path;
   }
 }

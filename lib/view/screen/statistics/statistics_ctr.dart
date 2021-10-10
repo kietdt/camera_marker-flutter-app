@@ -45,7 +45,8 @@ class StatisticsCtr extends BaseController<StatisticsState> with ExportMix {
         barrierDismissible: true,
         child: state.exportOption());
     if (result == "true") {
-      excelPath = await filePath(exam: exam);
+      excelPath =
+          await filePath(exam: exam, withPhoto: optionSelected.value == 1);
       print("=======share====path======>$excelPath");
       await Share.shareFiles([excelPath]);
     }

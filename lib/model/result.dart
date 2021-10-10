@@ -14,6 +14,8 @@ class Result {
   String? image;
   int? question;
 
+  String get exportName => "$studentCode-$examCode.png";
+
   //Bài thì sẽ không chỉnh sửa được
   //Nên sẽ không có updated date
   DateTime? createdAt;

@@ -4,6 +4,7 @@ import 'dart:io';
 import 'dart:isolate';
 import 'dart:ui';
 
+import 'package:camera_marker/base/utils.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_downloader/flutter_downloader.dart';
 import 'package:path_provider/path_provider.dart';
@@ -58,7 +59,7 @@ class ConfigManager {
   }
 
   Future<void> getConfig() async {
-    String localPath = await _localPath();
+    String localPath = await Utils.localPath();
     await _prepareSaveDir(localPath);
     if (rootPath != null) {
       _requestDownload();
@@ -78,13 +79,6 @@ class ConfigManager {
     } catch (e) {
       print(e);
     }
-  }
-
-  Future<String> _localPath() async {
-    final directory = Platform.isAndroid
-        ? await getExternalStorageDirectory()
-        : await getApplicationDocumentsDirectory();
-    return directory!.path;
   }
 
   Future<void> _requestDownload() async {

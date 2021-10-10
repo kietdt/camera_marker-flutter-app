@@ -1,4 +1,3 @@
-
 //created by kietdt 08/08/2021
 //contact email: dotuankiet1403@gmail.com
 
@@ -62,6 +61,7 @@ class Template {
   String? createAt;
   String? updateAt;
   TemplateType? templateType;
+  bool? visible;
 
   bool get isMulti => templateType == TemplateType.Multi;
 
@@ -76,6 +76,7 @@ class Template {
       this.thumbnail,
       this.originalImage,
       this.createAt,
+      this.visible,
       this.updateAt}) {
     this.templateType = getType(this.type);
   }
@@ -93,6 +94,7 @@ class Template {
     downloadLink = json['download_link'];
     createAt = json['create_at'];
     updateAt = json['update_at'];
+    visible = json['visible'];
   }
 
   Map<String, dynamic> toJson() {
@@ -108,6 +110,7 @@ class Template {
     data['download_link'] = this.downloadLink;
     data['create_at'] = this.createAt;
     data['update_at'] = this.updateAt;
+    data['visible'] = this.visible;
     return data;
   }
 

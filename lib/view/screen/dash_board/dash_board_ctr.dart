@@ -8,7 +8,6 @@ import 'package:get/get.dart';
 
 import 'dash_board_page.dart';
 
-
 //created by kietdt 08/08/2021
 //contact email: dotuankiet1403@gmail.com
 class DashBoardCtr extends BaseController<DashBoardState> {
@@ -37,14 +36,14 @@ class DashBoardCtr extends BaseController<DashBoardState> {
     var json = await HttpManager().getConfig();
     hideLoading();
 
-    if (json != null) {
-      configRespo = ConfigRespo.fromJson(json["data"]);
-      Utils.statusPrint("GET", "CONFIG", success: true);
+    if (json?["data"] != null) {
+      configRespo = ConfigRespo.fromJson(json!["data"]);
+      configRespo?.template
+          ?.removeWhere((element) => !(element.visible ?? true));
+      Utils.statusPrint("CONFIG", "SUCCESS");
       DataBaseCtr().tbTemplate.setList(configRespo?.template ?? []);
-      Utils.statusPrint("SET", "TEMPLATE",
-          success: true,
-          customMes:
-              "thumbnail: ${DataBaseCtr().tbTemplate.entities.first.thumbnail}");
+      Utils.statusPrint("SET",
+          "thumbnail: ${DataBaseCtr().tbTemplate.entities.first.thumbnail}");
     }
   }
 }

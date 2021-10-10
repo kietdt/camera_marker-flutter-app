@@ -91,14 +91,14 @@ class HistoryState extends ListSelect<HistoryPage, HistoryCtr, Result> {
               style: _style,
             )),
         Expanded(
-            flex: 6,
+            flex: 2,
             child: Text(
               examCode ?? "",
               textAlign: TextAlign.center,
               style: _style,
             )),
         Expanded(
-          flex: 3,
+          flex: 1,
           child: Text(
             content ?? "",
             style: _style,

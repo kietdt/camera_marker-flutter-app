@@ -1,10 +1,12 @@
 import 'dart:async';
 import 'dart:convert';
+import 'dart:io';
 import 'dart:math';
 import 'dart:typed_data';
 
 import 'package:camera/camera.dart';
 import 'package:camera_marker/base/base_controller.dart';
+import 'package:camera_marker/base/utils.dart';
 import 'package:camera_marker/database/database_ctr.dart';
 import 'package:camera_marker/manager/route_manager.dart';
 import 'package:camera_marker/mix/camera_handler.dart';
@@ -35,19 +37,19 @@ class YuvTransformScreenCtr extends BaseController<YuvTransformScreenState>
 
     //TODO: fake data
 
-    if (isFill) {
-      showLoading();
-      Future.delayed(Duration(milliseconds: 1000)).then((value) {
-        hideLoading();
-        onScanFill(Answer.sample4);
-      });
-    } else {
-      showLoading();
-      Future.delayed(Duration(milliseconds: 1000)).then((value) {
-        hideLoading();
-        onScanResult(Result.result4);
-      });
-    }
+    // if (isFill) {
+    //   showLoading();
+    //   Future.delayed(Duration(milliseconds: 1000)).then((value) {
+    //     hideLoading();
+    //     onScanFill(Answer.sample4);
+    //   });
+    // } else {
+    //   showLoading();
+    //   Future.delayed(Duration(milliseconds: 1000)).then((value) {
+    //     hideLoading();
+    //     onScanResult(Result.result4);
+    //   });
+    // }
   }
 
   List<StreamSubscription> subscription = [];
@@ -115,6 +117,7 @@ class YuvTransformScreenCtr extends BaseController<YuvTransformScreenState>
             'width': image.width,
             'strides': strides,
             'type': isFill ? "answer" : "result",
+            // 'type': "test",
             'exam': {
               'title': state.widget.payload?.exam?.title ?? "",
               'class_code': state.widget.payload?.exam?.myClass?.code ?? "",
@@ -128,9 +131,9 @@ class YuvTransformScreenCtr extends BaseController<YuvTransformScreenState>
             Map<String, dynamic> _json = json.decode(value);
             if ((_json["answer"] ?? false)) {
               if (isFill) {
-                await onScanFill(value);
+                await onScanFill(_json);
               } else {
-                await onScanResult(value);
+                await onScanResult(_json);
               }
             } else {
               onResult(_json, image);
@@ -256,7 +259,7 @@ class YuvTransformScreenCtr extends BaseController<YuvTransformScreenState>
     }
 
     if (_history != null) {
-      DialogConfirm.show(
+      await DialogConfirm.show(
           message:
               "Mã số sinh viên ${result?.studentCode} đã được chấm trước đó, bạn có muốn cập nhật kết quả mới?",
           rightTitle: "Cập nhật",
@@ -276,5 +279,14 @@ class YuvTransformScreenCtr extends BaseController<YuvTransformScreenState>
   Future<void> navigateResult({Result? result, Exam? exam}) async {
     await Get.toNamed(RouteManager().routeName.result,
         arguments: ResultPagePayload(exam: exam, result: result));
+  }
+
+  Future<String> imagePath(String image) async {
+    String _path = "";
+
+    String exportFolder =
+        await Utils.localPath() + Platform.pathSeparator + "export";
+
+    return _path;
   }
 }
