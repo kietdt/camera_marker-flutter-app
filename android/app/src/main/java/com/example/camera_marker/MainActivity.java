@@ -392,11 +392,11 @@ public class MainActivity extends FlutterActivity {
                                                 if (Objects.equals(AnswerTemp.get(row + i * 10),
                                                         new String(current_answer))) {
                                                     Imgproc.rectangle(mRgbaCopy, p1, p2, correctColor, 5);
-                                                    if (non0 < 150) {
+                                                    if (non0 < 200) {
                                                         stdAnswerString += current_answer;
                                                         quesPoint = quesPoint + 1;
                                                     }
-                                                } else if (non0 < 150) {
+                                                } else if (non0 < 200) {
                                                     quesPoint = quesPoint - 1;
                                                     Imgproc.rectangle(mRgbaCopy, p1, p2, wrongColor, 5);
                                                     stdAnswerString += current_answer;
@@ -405,7 +405,7 @@ public class MainActivity extends FlutterActivity {
                                                     correctAnwers += 1;
                                                 }
                                             } else {
-                                                if (non0 < 150) {
+                                                if (non0 < 200) {
                                                     Imgproc.rectangle(mRgbaCopy, p1, p2, wrongColor, 5);
                                                     stdAnswerString += current_answer;
                                                 }
