@@ -8,10 +8,9 @@ import 'base_controller.dart';
 //contact email: dotuankiet1403@gmail.com
 abstract class BaseScaffold<S extends StatefulWidget, C extends BaseController>
     extends BaseView<S, C> {
-  final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
-
   PreferredSizeWidget? appBar;
   Widget? floatingActionButton() => null;
+  Widget? drawer() => null;
 
   @override
   Widget build(BuildContext context) {
@@ -33,11 +32,12 @@ abstract class BaseScaffold<S extends StatefulWidget, C extends BaseController>
 
   _scaffold() {
     return Scaffold(
-      key: scaffoldKey,
+      key: controller.scaffoldKey,
       appBar: buildAppbar() ?? appBar,
       body: body(),
       backgroundColor: Colors.transparent,
       floatingActionButton: floatingActionButton(),
+      drawer: drawer(),
     );
   }
 

@@ -18,7 +18,9 @@ class DialogConfirm extends StatelessWidget {
   final String? fact;
   final Color? leftColor;
 
-  static show(
+  static const String CALLBACK_ONRIGHT = "onRight";
+
+  static Future show(
       {Function()? onLeft,
       Function()? onRight,
       String? title,
@@ -150,7 +152,7 @@ class DialogConfirm extends StatelessWidget {
               child: RectButton(
                 title: rightTitle,
                 onTap: () {
-                  Get.back();
+                  Get.back(result: CALLBACK_ONRIGHT);
                   if (onRight != null) onRight!();
                 },
               ),

@@ -6,7 +6,7 @@ import 'dart:math';
 import 'result.dart';
 import 'statistics.dart';
 
-enum AnswerValueEnum { A, B, C, D }
+enum AnswerValueEnum { A, B, C, D, E }
 
 class Answer {
   Answer({this.id, this.examCode, this.value});
@@ -205,6 +205,9 @@ class AnswerValue {
     if (existEnum(AnswerValueEnum.D)) {
       _temp += "D ";
     }
+    if (existEnum(AnswerValueEnum.E)) {
+      _temp += "E ";
+    }
     _temp = _temp.trim();
     return _temp;
   }
@@ -231,6 +234,9 @@ class AnswerValue {
     }
     if (valueString.contains("D")) {
       _temp.add(AnswerValueEnum.D);
+    }
+    if (valueString.contains("E")) {
+      _temp.add(AnswerValueEnum.E);
     }
 
     return _temp;

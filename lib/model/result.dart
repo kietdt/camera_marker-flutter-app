@@ -1,6 +1,9 @@
+import 'dart:io';
+
 import 'package:camera_marker/database/database_ctr.dart';
 
 import 'answer.dart';
+import 'exam.dart';
 
 //created by kietdt 06/09/2021
 //contact email: dotuankiet1403@gmail.com
@@ -14,7 +17,8 @@ class Result {
   String? image;
   int? question;
 
-  String get exportName => "$studentCode-$examCode.png";
+  String pngPath = "";
+  String get pngName => "$studentCode-$examCode.png";
 
   //Bài thì sẽ không chỉnh sửa được
   //Nên sẽ không có updated date

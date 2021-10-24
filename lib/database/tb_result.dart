@@ -1,3 +1,4 @@
+import 'package:camera_marker/base/utils.dart';
 import 'package:camera_marker/database/base_path.dart';
 import 'package:camera_marker/database/base_table.dart';
 import 'package:camera_marker/model/exam.dart';
@@ -35,12 +36,18 @@ class TbResult extends BaseTable<Result> {
 
   Future<void> deleteResult(Result? result, Exam? exam) async {
     int index = entities.indexWhere((element) => element.id == result?.id);
+    result = entities[index];
 
     // xóa id result trong bảng exam
     if (exam != null) {
       exam.resultIds!.removeWhere((element) => element == result?.id);
       await DataBaseCtr().tbExam.updateExam(exam);
     }
+
+    //xóa hình ảnh
+    await Utils.deletefile(result.pngPath);
+    await Utils.deletefile(result.image ?? "");
+
     await delete(index);
   }
 

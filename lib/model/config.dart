@@ -62,6 +62,7 @@ class Template {
   String? updateAt;
   TemplateType? templateType;
   bool? visible;
+  int? maxAnswer;
 
   bool get isMulti => templateType == TemplateType.Multi;
 
@@ -95,6 +96,7 @@ class Template {
     createAt = json['create_at'];
     updateAt = json['update_at'];
     visible = json['visible'];
+    maxAnswer = json['max_answer'];
   }
 
   Map<String, dynamic> toJson() {
@@ -111,6 +113,7 @@ class Template {
     data['create_at'] = this.createAt;
     data['update_at'] = this.updateAt;
     data['visible'] = this.visible;
+    data['max_answer'] = this.maxAnswer;
     return data;
   }
 

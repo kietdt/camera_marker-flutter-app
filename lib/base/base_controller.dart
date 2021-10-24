@@ -10,6 +10,7 @@ abstract class BaseController<S extends State> {
   S get state => _state;
 
   BuildContext get context => state.context;
+  final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
 
   //UI
   RxBool _loading = false.obs;
@@ -59,4 +60,8 @@ abstract class BaseController<S extends State> {
   }
 
   void onReady(Duration duration) {}
+
+  void openDrawer() {
+    scaffoldKey.currentState?.openDrawer();
+  }
 }

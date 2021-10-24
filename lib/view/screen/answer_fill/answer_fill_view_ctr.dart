@@ -13,7 +13,7 @@ class AnswerFillViewCtr extends BaseController<AnswerFillViewState> {
     initListAnswer(state.widget.value);
   }
 
-  int maxCol = 4;
+  int get maxCol => state.widget.exam?.template?.maxAnswer ?? 4;
   double sqSize = 50;
 
   late int answerLength = state.widget.exam?.question ?? 0;

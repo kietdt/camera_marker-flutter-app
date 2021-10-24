@@ -4,6 +4,7 @@ import 'package:camera_marker/database/database_ctr.dart';
 import 'package:camera_marker/manager/http_manager.dart';
 import 'package:camera_marker/manager/route_manager.dart';
 import 'package:camera_marker/model/config.dart';
+import 'package:camera_marker/view/dialog/dialog_noti.dart';
 import 'package:get/get.dart';
 
 import 'dash_board_page.dart';
@@ -19,8 +20,13 @@ class DashBoardCtr extends BaseController<DashBoardState> {
 
   ConfigRespo? configRespo;
 
-  void onExamPressed() {
-    Get.toNamed(RouteManager().routeName.exam);
+  void onExamPressed() async {
+    if (DataBaseCtr().tbClass.entities.length > 0) {
+      Get.toNamed(RouteManager().routeName.exam);
+    } else {
+      await DialogNoti.show(message: "Để chấm thi, trước tiên hãy tạo lớp học!");
+      Get.toNamed(RouteManager().routeName.classList);
+    }
   }
 
   void onClassPressed() {
@@ -40,10 +46,14 @@ class DashBoardCtr extends BaseController<DashBoardState> {
       configRespo = ConfigRespo.fromJson(json!["data"]);
       configRespo?.template
           ?.removeWhere((element) => !(element.visible ?? true));
-      Utils.statusPrint("CONFIG", "SUCCESS");
+      Utils.statusPrint("GET TEMPLATE", "SUCCESS");
       DataBaseCtr().tbTemplate.setList(configRespo?.template ?? []);
       Utils.statusPrint("SET",
           "thumbnail: ${DataBaseCtr().tbTemplate.entities.first.thumbnail}");
     }
+  }
+
+  void onClearSuccess() {
+    topSnackBar("Thông báo", "Toàn bộ dữ liệu đã được xóa");
   }
 }

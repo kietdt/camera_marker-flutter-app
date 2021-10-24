@@ -30,9 +30,7 @@ class Utils {
       print("$top\n");
       if (maxLength % perLine > 0) {
         int length = maxLength % perLine;
-        List.generate(length, (index) => {
-          
-        });
+        List.generate(length, (index) => {});
         print("$left$title$right\n");
       }
       print("$bot");
@@ -47,7 +45,6 @@ class Utils {
       right = strFromList(List.generate(
           horiRight, (index) => index == (horiRight - 1) ? "||" : " "));
 
-      print("$top\n");
       print("$left$content$right\n");
       print("$bot");
     }
@@ -85,5 +82,47 @@ class Utils {
         ? await getExternalStorageDirectory()
         : await getApplicationDocumentsDirectory();
     return directory!.path;
+  }
+
+  static Future<File?> copyFile(String newPath,
+      {String? rootPath, File? file}) async {
+    rootPath = (rootPath ?? await localPath()) + Platform.pathSeparator;
+    newPath = rootPath + newPath;
+    try {
+      File newFile = File(newPath);
+      await newFile.create(recursive: true);
+      file?.copy(newPath);
+      print("copy=====SUCCESS===${file?.path}===TO===>>>$newPath");
+    } catch (e) {
+      try {
+        File newFile = File(newPath);
+        await newFile.create(recursive: true);
+        file?.copy(newPath);
+        print("copy=====SUCCESS===${file?.path}===TO===>>>$newPath");
+      } catch (e) {
+        print(e);
+      }
+    }
+    return file;
+  }
+
+  static Future<void> deletefile(String path) async {
+    File file = File(path);
+    String fileName = path.split("/").last;
+    print("$fileName=======EXESIT===>${await file.exists()}");
+    try {
+      await file.delete();
+      print("delete====SUCCESS===>$path");
+    } catch (e) {
+      try {
+        Directory dir = Directory(path);
+        dir.deleteSync(recursive: true);
+        print("delete==directory==SUCCESS===>$path");
+      } catch (e) {
+        print(e);
+      }
+      print(e);
+    }
+    print("$fileName=======EXESIT===>${await file.exists()}");
   }
 }
