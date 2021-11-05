@@ -118,6 +118,7 @@ class YuvTransformScreenCtr extends BaseController<YuvTransformScreenState>
             'strides': strides,
             'type': isFill ? "answer" : "result",
             // 'type': "test",
+            'template_id': state.widget.payload?.exam?.templateId,
             'exam': {
               'title': state.widget.payload?.exam?.title ?? "",
               'class_code': state.widget.payload?.exam?.myClass?.code ?? "",
@@ -259,16 +260,16 @@ class YuvTransformScreenCtr extends BaseController<YuvTransformScreenState>
     }
 
     if (_history != null) {
-      await DialogConfirm.show(
+      var _callBack = await DialogConfirm.show(
           message:
               "Mã số sinh viên ${result?.studentCode} đã được chấm trước đó, bạn có muốn cập nhật kết quả mới?",
-          rightTitle: "Cập nhật",
-          onRight: () async {
-            _history!.value = result?.value;
-            _history.correct = result?.correct;
-            await DataBaseCtr().tbResult.updateResult(_history);
-            await navigateResult(result: _history, exam: exam);
-          });
+          rightTitle: "Cập nhật");
+      if (_callBack is String && _callBack == DialogConfirm.CALLBACK_ONRIGHT) {
+        _history.value = result?.value;
+        _history.correct = result?.correct;
+        await DataBaseCtr().tbResult.updateResult(_history);
+        await navigateResult(result: _history, exam: exam);
+      }
     } else {
       result?.id = await DataBaseCtr().tbResult.addNewResult(result);
       await DataBaseCtr().tbExam.addResult(exam: exam, result: result);
@@ -277,16 +278,15 @@ class YuvTransformScreenCtr extends BaseController<YuvTransformScreenState>
   }
 
   Future<void> navigateResult({Result? result, Exam? exam}) async {
-    await Get.toNamed(RouteManager().routeName.result,
-        arguments: ResultPagePayload(exam: exam, result: result));
-  }
-
-  Future<String> imagePath(String image) async {
-    String _path = "";
-
-    String exportFolder =
-        await Utils.localPath() + Platform.pathSeparator + "export";
-
-    return _path;
+    if (result != null) {
+      // if (!(result.image?.contains(result.pngName) ?? false)) {
+      //   //copy file ảnh từ native sang đường dẫn quản lý ở flutter
+      //   await Utils.copyFile(result.pngPath, file: File(result.image ?? ""));
+      //   // sau khi copy thì xóa file ở native để giải phóng bộ nhớ
+      //   // await Utils.deletefile(result.image ?? "");
+      // }
+      await Get.toNamed(RouteManager().routeName.result,
+          arguments: ResultPagePayload(exam: exam, result: result));
+    }
   }
 }

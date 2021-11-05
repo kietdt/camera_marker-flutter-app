@@ -1,4 +1,7 @@
+import 'dart:io';
+
 import 'package:camera_marker/database/database_ctr.dart';
+import 'package:camera_marker/manager/resource_manager.dart';
 import 'package:camera_marker/model/answer.dart';
 import 'package:camera_marker/model/class.dart';
 import 'package:camera_marker/model/config.dart';
@@ -39,6 +42,8 @@ class Exam {
   MyClass? get myClass => DataBaseCtr().tbClass.getById(myClassId);
 
   Template? get template => DataBaseCtr().tbTemplate.getById(templateId);
+
+  static String photoFolder = "export${Platform.pathSeparator}photo";
 
   List<Answer> get answer => List<Answer>.from(DataBaseCtr()
       .tbAnswer

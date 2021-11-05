@@ -16,16 +16,16 @@ mixin ExportMix {
       photoRoot = await getPhotoFolder(exam);
     }
 
-    String zipPath = await saveZip(
-      exam,
-      excelRoot,
-    );
-    // String zipPath = await saveZip(exam, excelRoot, photoRoot: photoRoot);
+    // String zipPath = await saveZip(
+    //   exam,
+    //   excelRoot,
+    // );
+    String zipPath = await saveZip(exam, excelRoot, photoRoot: photoRoot);
 
-    deletefile(excelRoot);
-    if (photoRoot != null) {
-      deletefile(photoRoot);
-    }
+    // Utils.deletefile(excelRoot);
+    // if (photoRoot != null) {
+    //   Utils.deletefile(photoRoot);
+    // }
 
     return zipPath;
     // return excelRoot;
@@ -56,13 +56,11 @@ mixin ExportMix {
     return "";
   }
 
-  //Lưu file excel và trả về đường dẫn chưa thư mục excel
+  //Lưu từng file ảnh và trả về đường dẫn chưa thư mục photo
   Future<String> getPhotoFolder(Exam? exam) async {
-    String photoFolder = await Utils.localPath() +
-        Platform.pathSeparator +
-        "export${Platform.pathSeparator}photo";
-
     List<Result> results = exam?.result ?? [];
+    String dir =
+        await Utils.localPath() + Platform.pathSeparator + Exam.photoFolder;
 
     for (int i = 0; i < results.length; i++) {
       String image = results[i].image ?? "";
@@ -76,19 +74,12 @@ mixin ExportMix {
         }
 
         if (file != null) {
-          String name =
-              photoFolder + Platform.pathSeparator + results[i].exportName;
-          File(name)..createSync(recursive: true);
-          file.copy(name);
-          // try {
-          //     await Directory(name).create();
-          //   } catch (e) {
-          //     print("=============phoyo====>$e");
-          //   }
+          String name = results[i].pngName;
+          Utils.copyFile(name, rootPath: dir, file: file);
         }
       }
     }
-    return photoFolder;
+    return dir;
   }
 
   Future<String> saveZip(Exam? exam, String excel, {String? photoRoot}) async {
@@ -110,30 +101,11 @@ mixin ExportMix {
         encoder.addDirectory(Directory(photoRoot));
       }
     } catch (e) {
-      print("=============phoyo====>$e");
+      print("=============photo====>$e");
     }
     encoder.close();
 
     return zipPath;
-  }
-
-  Future<void> deletefile(String path) async {
-    File file = File(path);
-    print("path=======EXESIT===>${await file.exists()}");
-    try {
-      await file.delete();
-      print("delete====SUCCESS===>$path");
-    } catch (e) {
-      try {
-        Directory dir = Directory(path);
-        dir.deleteSync(recursive: true);
-        print("delete==directory==SUCCESS===>$path");
-      } catch (e) {
-        print(e);
-      }
-      print(e);
-    }
-    print("path=======EXESIT===>${await file.exists()}");
   }
 
   //sử dụng 1 thư viện khác để border trang tính

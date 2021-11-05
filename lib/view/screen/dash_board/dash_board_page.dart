@@ -1,10 +1,10 @@
 import 'package:camera_marker/base/base_scaffold.dart';
 import 'package:camera_marker/base/base_image_view.dart';
 import 'package:camera_marker/manager/resource_manager.dart';
+import 'package:camera_marker/view/child/home_drawer.dart';
 import 'package:flutter/material.dart';
 
 import 'dash_board_ctr.dart';
-
 
 //created by kietdt 08/08/2021
 //contact email: dotuankiet1403@gmail.com
@@ -19,6 +19,11 @@ class DashBoardState extends BaseScaffold<DashBoardPage, DashBoardCtr> {
   @override
   DashBoardCtr initController() {
     return DashBoardCtr(this);
+  }
+
+  @override
+  Widget? drawer() {
+    return HomeDrawer(screen, controller.onClearSuccess);
   }
 
   @override

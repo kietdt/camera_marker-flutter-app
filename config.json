@@ -1,0 +1,37 @@
+{
+  "template": [
+    {
+      "desc": "Loại 60 câu",
+      "visible": true,
+      "type_desc": "Chọn một",
+      "create_at": "",
+      "original_image": "https://lh3.googleusercontent.com/pw/AM-JKLUADpZiP-3yxseVRLxpybOg8YGY7ievNfIriq2S_3YpCU4bsI7XuRIK9ghgZb-MVD4E4rxD87fm5CF5_OHkrpgCSr2WJTVUdItfng5q_--vtmwMypAkjBhBdBtabqkM1tNetsYbIerNOSJ6YZmeZNM=w884-h1248-no?authuser=0",
+      "question": 60,
+      "thumbnail": "https://lh3.googleusercontent.com/pw/AM-JKLXMcJmAc3l1vvBkiS1cT0f0gF27WaG_YLOixvzmTgggAeUAgF59Prv5RskuatgcKCk_N2iT-aShTkwDESojNF-AJxIOZGbvhDbUO--Oz998Yedp3tP4Sj3998syZq0-94Z8ozUQk3kSS4FSho5yITDY=w884-h1248-no?authuser=0",
+      "download_link": "https://drive.google.com/file/d/1qbn4r0kcf54JWserHBBaCjC749bezcLt/view?usp=sharing",
+      "update_at": "",
+      "id": 1,
+      "type": "single_choice",
+      "title": "Mẫu bảng trả lời 01",
+      "max_answer": 5
+    },
+    {
+      "desc": "Loại 100 câu",
+      "visible": true,
+      "type_desc": "Chọn một",
+      "create_at": "",
+      "original_image": "https://lh3.googleusercontent.com/pw/AM-JKLUbJc-EFBM-vci1rJxapNPj1ogqnEYXliRSU-hatph-ZBmFJ4AypUjKrWsvPldW9uz1Pqy2wScng0CmrKODgZCEUBU6uJ7lYDI9uWPabuzjNeYpwuN656eZPH-GeZawddzKoJpoaoGesPJzwBsU08Bz=w884-h1248-no?authuser=0",
+      "question": 100,
+      "thumbnail": "https://lh3.googleusercontent.com/pw/AM-JKLUCJ4vo-PsWnnLi-S-BHBDS7dorq5LR7oye60xvlGOxTTZ-Ft5QDuuT99PrUj3njfFvva4lo_SNlzc8bAA5XwEuZNlnxR5KUp7FMjHoniKl3Cs0rujJkj7gC--GF8iMH54F9N2-eBdy1sZ0S0COhfmX=w884-h1248-no?authuser=0",
+      "download_link": "https://drive.google.com/file/d/1iuX0tXiinTqCNdgyMx3g_6KutoI3b5s2/view?usp=sharing",
+      "update_at": "",
+      "id": 2,
+      "type": "single_choice",
+      "title": "Mẫu bảng trả lời 02",
+      "max_answer": 5
+    }
+  ],
+  "config": {
+    "version": "1.0.0"
+  }
+}

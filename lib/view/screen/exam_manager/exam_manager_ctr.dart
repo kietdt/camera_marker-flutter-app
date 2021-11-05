@@ -1,4 +1,5 @@
 import 'package:camera_marker/base/base_controller.dart';
+import 'package:camera_marker/base/utils.dart';
 import 'package:camera_marker/manager/route_manager.dart';
 import 'package:camera_marker/model/exam.dart';
 import 'package:camera_marker/view/dialog/dialog_noti.dart';
@@ -21,7 +22,7 @@ class ExamManagerCtr extends BaseController<ExamManagerState> {
         arguments: AnswerPayload(exam: state.widget.payload?.exam));
   }
 
-  void navigateScan() {
+  void navigateScan() async {
     //chấm thi
     Exam? exam = state.widget.payload?.exam;
     int index = (exam?.canResult() ?? -1);

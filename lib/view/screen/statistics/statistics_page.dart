@@ -1,6 +1,7 @@
 import 'package:camera_marker/base/base_appbar.dart';
 import 'package:camera_marker/base/base_image_view.dart';
 import 'package:camera_marker/base/base_scaffold.dart';
+import 'package:camera_marker/base/utils.dart';
 import 'package:camera_marker/manager/resource_manager.dart';
 import 'package:camera_marker/model/exam.dart';
 import 'package:flutter/material.dart';
@@ -36,7 +37,7 @@ class StatisticsState extends BaseScaffold<StatisticsPage, StatisticsCtr> {
     super.initState();
     appBar = BaseAppBar(
       back: true,
-      text: "Kết quả",
+      text: "Thống kê",
       action: [_export()],
     ).toAppBar();
   }
@@ -44,7 +45,7 @@ class StatisticsState extends BaseScaffold<StatisticsPage, StatisticsCtr> {
   @override
   Future onResumed() {
     if (controller.excelPath.isNotEmpty) {
-      controller.deletefile(controller.excelPath);
+      Utils.deletefile(controller.excelPath);
       controller.excelPath = "";
     }
     return super.onResumed();

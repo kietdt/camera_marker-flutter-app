@@ -56,8 +56,8 @@ class AnswerFillState extends BaseScaffold<AnswerFillPage, AnswerFillCtr>
   @override
   void initState() {
     super.initState();
-    appBar =
-        BaseAppBar(back: true, text: "đáp án", action: action()).toAppBar();
+    appBar = BaseAppBar(back: true, text: "Bảng trả lời", action: action())
+        .toAppBar();
   }
 
   @override
