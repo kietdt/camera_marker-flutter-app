@@ -117,8 +117,6 @@ class YuvTransformScreenCtr extends BaseController<YuvTransformScreenState>
             'width': image.width,
             'strides': strides,
             'type': isFill ? "answer" : "result",
-            // form = 60 or 100
-            'form': "100",
             // 'type': "test",
             'template_id': state.widget.payload?.exam?.templateId,
             'exam': {

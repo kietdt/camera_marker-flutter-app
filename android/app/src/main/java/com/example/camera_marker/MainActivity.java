@@ -80,6 +80,7 @@ public class MainActivity extends FlutterActivity {
 
                         List<byte[]> bytesList = call.argument("platforms");
                         int[] strides = call.argument("strides");
+                        int templateId = call.argument("template_id");
                         int width = call.argument("width");
                         int height = call.argument("height");
                         String form = call.argument("form");
@@ -285,7 +286,7 @@ public class MainActivity extends FlutterActivity {
 
                             Imgproc.adaptiveThreshold(mRgba, mRgba, 255, Imgproc.ADAPTIVE_THRESH_MEAN_C,
                                     Imgproc.THRESH_BINARY, 121, 2);
-                            if (Objects.equals(form, new String("60"))){
+                            if (templateId == 1){
                                 // config width and height of box choice
                                 int box_width = 41;
                                 int box_height = 60;
@@ -393,11 +394,11 @@ public class MainActivity extends FlutterActivity {
                                                 if (Objects.equals(AnswerTemp.get(row + i * 10),
                                                         new String(current_answer))) {
                                                     Imgproc.rectangle(mRgbaCopy, p1, p2, correctColor, 5);
-                                                    if (non0 < 150) {
+                                                    if (non0 < 200) {
                                                         stdAnswerString += current_answer;
                                                         quesPoint = quesPoint + 1;
                                                     }
-                                                } else if (non0 < 150) {
+                                                } else if (non0 < 200) {
                                                     quesPoint = quesPoint - 1;
                                                     Imgproc.rectangle(mRgbaCopy, p1, p2, wrongColor, 5);
                                                     stdAnswerString += current_answer;
@@ -406,7 +407,7 @@ public class MainActivity extends FlutterActivity {
                                                     correctAnwers += 1;
                                                 }
                                             } else {
-                                                if (non0 < 150) {
+                                                if (non0 < 200) {
                                                     Imgproc.rectangle(mRgbaCopy, p1, p2, wrongColor, 5);
                                                     stdAnswerString += current_answer;
                                                 }
@@ -460,7 +461,7 @@ public class MainActivity extends FlutterActivity {
                                 Utils.matToBitmap(mRgbaCopy, myBitmap);
                                 path = saveToInternalStorage(myBitmap, studentCode + "_" + timeMilli + ".png");
                             }
-                            if (Objects.equals(form, new String("100"))){
+                            if (templateId == 2){
                                 // config width and height of box choice
                                 int box_width = 36;
                                 int box_height = 52;
@@ -543,7 +544,7 @@ public class MainActivity extends FlutterActivity {
                                 // get answer
                                 Scalar wrongColor = new Scalar(255.0, 0.0, 0.0, 255.0);
                                 Scalar correctColor = new Scalar(0.0, 255.0, 0.0, 255.0);
-                                int[][] listBox = new int[][] { { 560, 360 }, { 775, 360 }, { 125, 935 }, { 345, 935 },
+                                int[][] listBox = new int[][] { { 560, 365 }, { 775, 365 }, { 125, 935 }, { 345, 935 },
                                         { 560, 935 }, { 775, 935 }, { 125, 1510 }, { 345, 1510 }, { 560, 1510 }, { 775, 1510 }, };
 
                                 boxLoop: for (int i = 0; i < listBox.length; i++) {
