@@ -1,3 +1,4 @@
+
 package uit.kltn.cttt2015.camera_marker;
 
 import java.util.*;
@@ -75,216 +76,216 @@ public class MainActivity extends FlutterActivity {
                 .setMethodCallHandler((call, result) -> {
                     //
                     switch (call.method) {
-                        case "yuv_transform": {
+                    case "yuv_transform": {
 
-                            List<byte[]> bytesList = call.argument("platforms");
-                            int[] strides = call.argument("strides");
-                            int width = call.argument("width");
-                            int height = call.argument("height");
-                            String type = call.argument("type");
+                        List<byte[]> bytesList = call.argument("platforms");
+                        int[] strides = call.argument("strides");
+                        int width = call.argument("width");
+                        int height = call.argument("height");
+                        String form = call.argument("form");
+                        if(form == null) {
+                            form = "60";
+                        }
+                        String type = call.argument("type");
 
-                            // example code
-                            byte[] data = YuvConverter.NV21toJPEG(
-                                    YuvConverter.YUVtoNV21(bytesList, strides, width, height), width, height, 100);
+                        // example code
+                        byte[] data = YuvConverter.NV21toJPEG(YuvConverter.YUVtoNV21(bytesList, strides, width, height),
+                                width, height, 100);
 
-                            Bitmap bitmapRaw = BitmapFactory.decodeByteArray(data, 0, data.length);
-                            Matrix matrix = new Matrix();
-                            matrix.postRotate(90);
-                            Bitmap finalbitmap = Bitmap.createBitmap(bitmapRaw, 0, 0, bitmapRaw.getWidth(),
-                                    bitmapRaw.getHeight(), matrix, true);
+                        Bitmap bitmapRaw = BitmapFactory.decodeByteArray(data, 0, data.length);
+                        Matrix matrix = new Matrix();
+                        matrix.postRotate(90);
+                        Bitmap finalbitmap = Bitmap.createBitmap(bitmapRaw, 0, 0, bitmapRaw.getWidth(),
+                                bitmapRaw.getHeight(), matrix, true);
 
-                            mRgba = bitmapToMat(finalbitmap);
-                            int max_height = mRgba.rows();
-                            int max_width = mRgba.cols();
-                            Mat mRgbaCopy = mRgba.clone();
+                        mRgba = bitmapToMat(finalbitmap);
+                        int max_height = mRgba.rows();
+                        int max_width = mRgba.cols();
+                        Mat mRgbaCopy = mRgba.clone();
 
-                            int numberRect = 0;
-                            Scalar s = new Scalar(255, 0, 0);
-                            if (Objects.equals(type, new String("test"))) {
-                                // compare with request data to get right answer for examcode
-                                ArrayList<HashMap> answerReq = call.argument("answer");
+                        int numberRect = 0;
+                        Scalar s = new Scalar(255, 0, 0);
+                        if (Objects.equals(type, new String("test"))) {
+                            // compare with request data to get right answer for examcode
+                            ArrayList<HashMap> answerReq = call.argument("answer");
 
-                                // array store right
-                                String examCodeReq = "";
-                                JSONArray stdAnswer = new JSONArray();
-
-                                try {
-                                    for (int i = 0; i < answerReq.size(); i++) {
-                                        examCodeReq = (String) answerReq.get(i).get("examCode");
-                                        
-
-                                        ArrayList<HashMap> value = (ArrayList) answerReq.get(i).get("value");
-                                        for (int j = 0; j < value.size(); j++) {
-                                            JSONObject stdAnswerJson = new JSONObject();
-                                            String temp = (String) value.get(j).get("valueString");
-                                            stdAnswerJson.put("valueString", temp);
-                                            stdAnswer.put(stdAnswerJson);
-                                        }
-                                        break;
-
-                                    }
-                                } catch (Exception e) {
-                                    Log.e("", e.getMessage());
-                                }
-                                
-                                // save file
-                                Bitmap myBitmap = null;
-                                // Getting the current date
-                                Date date = new Date();
-                                // This method returns the time in millis
-                                long timeMilli = date.getTime();
-
-                                myBitmap = Bitmap.createBitmap(mRgbaCopy.cols(), mRgbaCopy.rows(),
-                                        Bitmap.Config.ARGB_8888);
-                                Utils.matToBitmap(mRgbaCopy, myBitmap);
-                                String studentCode = "1234";
-                                String path = saveToInternalStorage(myBitmap, studentCode + "_" + timeMilli + ".png");
-                                
-                                JSONObject feedback = new JSONObject();
-                                try {
-                                    feedback.put("answer", true);
-                                    feedback.put("width", max_width);
-                                    feedback.put("height", max_height);
-                                    feedback.put("examCode", examCodeReq);
-                                    feedback.put("studentCode", studentCode);
-                                    feedback.put("image", path);
-                                    feedback.put("value", stdAnswer);
-                                } catch (JSONException e) {
-                                    e.printStackTrace();
-                                }
-                                mRgba.release();
-                                mRgbaCopy.release(); //
-                                result.success(feedback.toString());
-                                return;
-                            }
-                            int[][] pointsValue = new int[][] { { 0, 0, 100, 100, 1 },
-                                    { max_width - 100, 0, max_width, 100, 2 },
-                                    { 0, max_height - 100, 100, max_height, 3 },
-                                    { max_width - 100, max_height - 100, max_width, max_height, 4 }, };
-                            int numPoint = 0;
-
-                            Point ptr = null;
-                            Point ptl = null;
-                            Point pbl = null;
-                            Point pbr = null;
-                            Scalar ss = new Scalar(255, 0, 0, 255);
-
-                            for (int i = 0; i < 4; i++) {
-                                Point p1 = new Point(pointsValue[i][0], pointsValue[i][1]);
-                                Point p2 = new Point(pointsValue[i][2], pointsValue[i][3]);
-
-                                // cat ra ô vuông để sử lý
-                                Rect rectCrop = new Rect(p1, p2);
-                                Mat image_roi = new Mat(mRgba, rectCrop);
-                                Mat hierarchy = new Mat();
-                                Mat tmp = new Mat();
-                                List<MatOfPoint> contours = new ArrayList<MatOfPoint>();
-
-                                Imgproc.Canny(image_roi, tmp, 80, 100);
-                                Imgproc.findContours(tmp, contours, hierarchy, Imgproc.RETR_TREE,
-                                        Imgproc.CHAIN_APPROX_SIMPLE);
-
-                                innerLoop: for (MatOfPoint c : contours) {
-                                    double area = Imgproc.contourArea(c);
-                                    if (area > 150 && area < 2000) {
-                                        MatOfPoint2f c2f = new MatOfPoint2f(c.toArray());
-                                        double peri = Imgproc.arcLength(c2f, true);
-                                        MatOfPoint2f approx = new MatOfPoint2f();
-                                        Imgproc.approxPolyDP(c2f, approx, 0.02 * peri, true);
-
-                                        Point[] points = approx.toArray();
-
-                                        // select biggest 4 angles polygon
-                                        if (points.length == 4) {
-
-                                            // rectangle = x,y,w,h
-                                            Rect rectangle = Imgproc.boundingRect(c);
-                                            int x = (int) rectangle.tl().x;
-                                            int y = (int) rectangle.tl().y;
-                                            if (pointsValue[i][4] == 1) {
-                                                pointsValue[i][0] = x;
-                                                pointsValue[i][1] = y;
-                                                pointsValue[i][2] = rectangle.width;
-                                                pointsValue[i][3] = rectangle.height;
-                                                ptl = new Point(rectangle.tl().x + rectangle.width, rectangle.tl().y);
-                                            }
-                                            if (pointsValue[i][4] == 2) {
-                                                pointsValue[i][0] = pointsValue[i][0] + x;
-                                                pointsValue[i][1] = pointsValue[i][1] + y;
-                                                pointsValue[i][2] = rectangle.width;
-                                                pointsValue[i][3] = rectangle.height;
-                                                ptr = new Point(max_width - 100 + rectangle.tl().x, rectangle.tl().y);
-                                            }
-                                            if (pointsValue[i][4] == 3) {
-                                                pointsValue[i][0] = x;
-                                                pointsValue[i][1] = pointsValue[i][1] + y;
-                                                pointsValue[i][2] = rectangle.width;
-                                                pointsValue[i][3] = rectangle.height;
-                                                pbl = new Point(rectangle.tl().x + rectangle.width,
-                                                        max_height - 100 + rectangle.tl().y);
-                                            }
-                                            if (pointsValue[i][4] == 4) {
-                                                pointsValue[i][0] = pointsValue[i][0] + x;
-                                                pointsValue[i][1] = pointsValue[i][1] + y;
-                                                pointsValue[i][2] = rectangle.width;
-                                                pointsValue[i][3] = rectangle.height;
-                                                pbr = new Point(max_width - 100 + rectangle.tl().x,
-                                                        max_height - 100 + rectangle.tl().y);
-                                            }
-                                            numberRect = numberRect + 1;
-                                            MatOfPoint point = new MatOfPoint(approx.toArray());
-                                            Rect rect = Imgproc.boundingRect(point);
-                                            Imgproc.rectangle(image_roi, new Point(rect.x, rect.y),
-                                                    new Point(rect.x + rect.width, rect.y + rect.height),
-                                                    new Scalar(255, 0, 0, 255), 3);
-                                            break innerLoop;
-                                        }
-                                    }
-                                }
-                            }
-                            boolean isAnswer = false;
-                            JSONObject feedback = new JSONObject();
+                            // array store right
+                            String examCodeReq = "";
+                            JSONArray stdAnswer = new JSONArray();
 
                             try {
+                                for (int i = 0; i < answerReq.size(); i++) {
+                                    examCodeReq = (String) answerReq.get(i).get("examCode");
+
+                                    ArrayList<HashMap> value = (ArrayList) answerReq.get(i).get("value");
+                                    for (int j = 0; j < value.size(); j++) {
+                                        JSONObject stdAnswerJson = new JSONObject();
+                                        String temp = (String) value.get(j).get("valueString");
+                                        stdAnswerJson.put("valueString", temp);
+                                        stdAnswer.put(stdAnswerJson);
+                                    }
+                                    break;
+
+                                }
+                            } catch (Exception e) {
+                                Log.e("", e.getMessage());
+                            }
+
+                            // save file
+                            Bitmap myBitmap = null;
+                            // Getting the current date
+                            Date date = new Date();
+                            // This method returns the time in millis
+                            long timeMilli = date.getTime();
+
+                            myBitmap = Bitmap.createBitmap(mRgbaCopy.cols(), mRgbaCopy.rows(), Bitmap.Config.ARGB_8888);
+                            Utils.matToBitmap(mRgbaCopy, myBitmap);
+                            String studentCode = "1234";
+                            String path = saveToInternalStorage(myBitmap, studentCode + "_" + timeMilli + ".png");
+
+                            JSONObject feedback = new JSONObject();
+                            try {
+                                feedback.put("answer", true);
                                 feedback.put("width", max_width);
                                 feedback.put("height", max_height);
+                                feedback.put("examCode", examCodeReq);
+                                feedback.put("studentCode", studentCode);
+                                feedback.put("image", path);
+                                feedback.put("value", stdAnswer);
                             } catch (JSONException e) {
                                 e.printStackTrace();
                             }
-                            int correctAnwers = 0;
-                            String path = null;
-                            String error = "";
-                            String studentCode = "";
-                            String examCode = "";
-                            int non0;
-                            JSONArray stdAnswer = new JSONArray();
+                            mRgba.release();
+                            mRgbaCopy.release(); //
+                            result.success(feedback.toString());
+                            return;
+                        }
+                        int[][] pointsValue = new int[][] { { 0, 0, 100, 100, 1 },
+                                { max_width - 100, 0, max_width, 100, 2 }, { 0, max_height - 100, 100, max_height, 3 },
+                                { max_width - 100, max_height - 100, max_width, max_height, 4 }, };
+                        int numPoint = 0;
 
-                            if (numberRect == 4) {
-                                isAnswer = true;
+                        Point ptr = null;
+                        Point ptl = null;
+                        Point pbl = null;
+                        Point pbr = null;
+                        Scalar ss = new Scalar(255, 0, 0, 255);
 
-                                Size size = new Size(max_width, max_height);
-                                MatOfPoint2f dst = new MatOfPoint2f(new Point(0, 0), new Point(size.width, 0),
-                                        new Point(0, size.height), new Point(size.width, size.height));
-                                MatOfPoint2f src = new MatOfPoint2f(ptl, ptr, pbl, pbr);
+                        for (int i = 0; i < 4; i++) {
+                            Point p1 = new Point(pointsValue[i][0], pointsValue[i][1]);
+                            Point p2 = new Point(pointsValue[i][2], pointsValue[i][3]);
 
-                                Mat warpMat = Imgproc.getPerspectiveTransform(src, dst);
-                                Imgproc.warpPerspective(mRgba, mRgba, warpMat, size);
+                            // cat ra ô vuông để sử lý
+                            Rect rectCrop = new Rect(p1, p2);
+                            Mat image_roi = new Mat(mRgba, rectCrop);
+                            Mat hierarchy = new Mat();
+                            Mat tmp = new Mat();
+                            List<MatOfPoint> contours = new ArrayList<MatOfPoint>();
 
-                                // Photo.detailEnhance(mRgba, mRgba);
-                                Mat mRgbaRaw = mRgba.clone();
+                            Imgproc.Canny(image_roi, tmp, 80, 100);
+                            Imgproc.findContours(tmp, contours, hierarchy, Imgproc.RETR_TREE,
+                                    Imgproc.CHAIN_APPROX_SIMPLE);
 
-                                Imgproc.resize(mRgba, mRgba, new Size(1080, 2100));
+                            innerLoop: for (MatOfPoint c : contours) {
+                                double area = Imgproc.contourArea(c);
+                                if (area > 150 && area < 2000) {
+                                    MatOfPoint2f c2f = new MatOfPoint2f(c.toArray());
+                                    double peri = Imgproc.arcLength(c2f, true);
+                                    MatOfPoint2f approx = new MatOfPoint2f();
+                                    Imgproc.approxPolyDP(c2f, approx, 0.02 * peri, true);
 
-                                mRgbaCopy = mRgba.clone();
-                                Imgproc.blur(mRgba, mRgba, new Size(50, 50));
-                                Photo.detailEnhance(mRgba, mRgba, 10, 20);
-                                Imgproc.cvtColor(mRgba, mRgba, Imgproc.COLOR_BGR2GRAY);
-                                int width_c = 1080;
-                                int height_c = 2100;
+                                    Point[] points = approx.toArray();
 
-                                Imgproc.adaptiveThreshold(mRgba, mRgba, 255, Imgproc.ADAPTIVE_THRESH_MEAN_C,
-                                        Imgproc.THRESH_BINARY, 121, 2);
+                                    // select biggest 4 angles polygon
+                                    if (points.length == 4) {
 
+                                        // rectangle = x,y,w,h
+                                        Rect rectangle = Imgproc.boundingRect(c);
+                                        int x = (int) rectangle.tl().x;
+                                        int y = (int) rectangle.tl().y;
+                                        if (pointsValue[i][4] == 1) {
+                                            pointsValue[i][0] = x;
+                                            pointsValue[i][1] = y;
+                                            pointsValue[i][2] = rectangle.width;
+                                            pointsValue[i][3] = rectangle.height;
+                                            ptl = new Point(rectangle.tl().x + rectangle.width, rectangle.tl().y);
+                                        }
+                                        if (pointsValue[i][4] == 2) {
+                                            pointsValue[i][0] = pointsValue[i][0] + x;
+                                            pointsValue[i][1] = pointsValue[i][1] + y;
+                                            pointsValue[i][2] = rectangle.width;
+                                            pointsValue[i][3] = rectangle.height;
+                                            ptr = new Point(max_width - 100 + rectangle.tl().x, rectangle.tl().y);
+                                        }
+                                        if (pointsValue[i][4] == 3) {
+                                            pointsValue[i][0] = x;
+                                            pointsValue[i][1] = pointsValue[i][1] + y;
+                                            pointsValue[i][2] = rectangle.width;
+                                            pointsValue[i][3] = rectangle.height;
+                                            pbl = new Point(rectangle.tl().x + rectangle.width,
+                                                    max_height - 100 + rectangle.tl().y);
+                                        }
+                                        if (pointsValue[i][4] == 4) {
+                                            pointsValue[i][0] = pointsValue[i][0] + x;
+                                            pointsValue[i][1] = pointsValue[i][1] + y;
+                                            pointsValue[i][2] = rectangle.width;
+                                            pointsValue[i][3] = rectangle.height;
+                                            pbr = new Point(max_width - 100 + rectangle.tl().x,
+                                                    max_height - 100 + rectangle.tl().y);
+                                        }
+                                        numberRect = numberRect + 1;
+                                        MatOfPoint point = new MatOfPoint(approx.toArray());
+                                        Rect rect = Imgproc.boundingRect(point);
+                                        Imgproc.rectangle(image_roi, new Point(rect.x, rect.y),
+                                                new Point(rect.x + rect.width, rect.y + rect.height),
+                                                new Scalar(255, 0, 0, 255), 3);
+                                        break innerLoop;
+                                    }
+                                }
+                            }
+                        }
+                        boolean isAnswer = false;
+                        JSONObject feedback = new JSONObject();
+
+                        try {
+                            feedback.put("width", max_width);
+                            feedback.put("height", max_height);
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                        int correctAnwers = 0;
+                        String path = null;
+                        String error = "";
+                        String studentCode = "";
+                        String examCode = "";
+                        int non0;
+                        JSONArray stdAnswer = new JSONArray();
+
+                        if (numberRect == 4) {
+                            isAnswer = true;
+
+                            Size size = new Size(max_width, max_height);
+                            MatOfPoint2f dst = new MatOfPoint2f(new Point(0, 0), new Point(size.width, 0),
+                                    new Point(0, size.height), new Point(size.width, size.height));
+                            MatOfPoint2f src = new MatOfPoint2f(ptl, ptr, pbl, pbr);
+
+                            Mat warpMat = Imgproc.getPerspectiveTransform(src, dst);
+                            Imgproc.warpPerspective(mRgba, mRgba, warpMat, size);
+
+                            // Photo.detailEnhance(mRgba, mRgba);
+                            Mat mRgbaRaw = mRgba.clone();
+
+                            Imgproc.resize(mRgba, mRgba, new Size(1080, 2100));
+
+                            mRgbaCopy = mRgba.clone();
+
+                            Imgproc.cvtColor(mRgba, mRgba, Imgproc.COLOR_BGR2GRAY);
+                            int width_c = 1080;
+                            int height_c = 2100;
+
+                            Imgproc.adaptiveThreshold(mRgba, mRgba, 255, Imgproc.ADAPTIVE_THRESH_MEAN_C,
+                                    Imgproc.THRESH_BINARY, 121, 2);
+                            if (Objects.equals(form, new String("60"))){
                                 // config width and height of box choice
                                 int box_width = 41;
                                 int box_height = 60;
@@ -392,11 +393,11 @@ public class MainActivity extends FlutterActivity {
                                                 if (Objects.equals(AnswerTemp.get(row + i * 10),
                                                         new String(current_answer))) {
                                                     Imgproc.rectangle(mRgbaCopy, p1, p2, correctColor, 5);
-                                                    if (non0 < 200) {
+                                                    if (non0 < 150) {
                                                         stdAnswerString += current_answer;
                                                         quesPoint = quesPoint + 1;
                                                     }
-                                                } else if (non0 < 200) {
+                                                } else if (non0 < 150) {
                                                     quesPoint = quesPoint - 1;
                                                     Imgproc.rectangle(mRgbaCopy, p1, p2, wrongColor, 5);
                                                     stdAnswerString += current_answer;
@@ -405,7 +406,7 @@ public class MainActivity extends FlutterActivity {
                                                     correctAnwers += 1;
                                                 }
                                             } else {
-                                                if (non0 < 200) {
+                                                if (non0 < 150) {
                                                     Imgproc.rectangle(mRgbaCopy, p1, p2, wrongColor, 5);
                                                     stdAnswerString += current_answer;
                                                 }
@@ -445,10 +446,183 @@ public class MainActivity extends FlutterActivity {
                                 // This method returns the time in millis
                                 long timeMilli = date.getTime();
 
+                                myBitmap = Bitmap.createBitmap(mRgba.cols(), mRgba.rows(), Bitmap.Config.ARGB_8888);
+                                Utils.matToBitmap(mRgba, myBitmap);
+                                path = saveToInternalStorage(myBitmap, "resultT.png");
+
+                                myBitmap = Bitmap.createBitmap(mRgbaRaw.cols(), mRgbaRaw.rows(),
+                                        Bitmap.Config.ARGB_8888);
+                                Utils.matToBitmap(mRgbaRaw, myBitmap);
+                                path = saveToInternalStorage(myBitmap, "mRgbaRaw.png");
+
                                 myBitmap = Bitmap.createBitmap(mRgbaCopy.cols(), mRgbaCopy.rows(),
                                         Bitmap.Config.ARGB_8888);
                                 Utils.matToBitmap(mRgbaCopy, myBitmap);
                                 path = saveToInternalStorage(myBitmap, studentCode + "_" + timeMilli + ".png");
+                            }
+                            if (Objects.equals(form, new String("100"))){
+                                // config width and height of box choice
+                                int box_width = 36;
+                                int box_height = 52;
+
+                                // start get student id
+                                Point p1 = new Point();
+                                Point p2 = new Point();
+                                for (int i = 0; i < 6; i++) {
+                                    int count = 0;
+                                    for (int j = 0; j < 10; j++) {
+                                        p1.x = i * box_width + 90 + 10;
+                                        p1.y = j * box_height + 360 + 10;
+                                        p2.x = p1.x + box_width - 10 - 10;
+                                        p2.y = p1.y + box_height - 10 - 10;
+
+                                        //
+                                        Rect rectCrop = new Rect(p1, p2);
+                                        Mat image_roi = new Mat(mRgba, rectCrop);
+                                        non0 = Core.countNonZero(image_roi);
+//                                        Imgproc.rectangle(mRgbaCopy, p1, p2, s, 3);
+                                        if (non0 < 200) {
+                                            count++;
+                                            Imgproc.rectangle(mRgbaCopy, p1, p2, s, 3);
+                                            studentCode = studentCode + Integer.toString(j);
+                                        }
+                                        image_roi.release();
+
+                                    }
+                                    if (count != 1) {
+                                        error = "stuId invalid";
+                                    }
+                                }
+
+                                // get exam code
+                                for (int i = 0; i < 3; i++) {
+                                    int count = 0;
+                                    for (int j = 0; j < 10; j++) {
+                                        p1.x = i * box_width + 345 + 10;
+                                        p1.y = j * box_height + 360 + 10;
+                                        p2.x = p1.x + box_width - 10 - 10;
+                                        p2.y = p1.y + box_height - 10 - 10;
+                                        Rect rectCrop = new Rect(p1, p2);
+                                        Mat image_roi = new Mat(mRgba, rectCrop);
+                                        non0 = Core.countNonZero(image_roi);
+                                        if (non0 < 200) {
+                                            count = count + 1;
+                                            Imgproc.rectangle(mRgbaCopy, p1, p2, s, 3);
+                                            examCode = examCode + Integer.toString(j);
+                                        }
+                                        image_roi.release();
+                                    }
+                                    if (count != 1) {
+                                        error = "Exam code invalid";
+                                    }
+                                }
+                                // compare with request data to get right answer for examcode
+                                ArrayList<HashMap> answerReq = call.argument("answer");
+
+                                // array store right
+                                ArrayList AnswerTemp = new ArrayList();
+                                String examCodeReq = "";
+                                try {
+                                    for (int i = 0; i < answerReq.size(); i++) {
+                                        examCodeReq = (String) answerReq.get(i).get("examCode");
+                                        if (Objects.equals(examCodeReq, new String(examCode))) {
+                                            Log.d("=============", "get answer");
+                                            ArrayList<HashMap> value = (ArrayList) answerReq.get(i).get("value");
+                                            for (int j = 0; j < value.size(); j++) {
+                                                String temp = (String) value.get(j).get("valueString");
+                                                AnswerTemp.add(temp);
+                                            }
+                                            break;
+                                        }
+
+                                    }
+                                } catch (Exception e) {
+                                    Log.e("", e.getMessage());
+                                }
+
+                                // get answer
+                                Scalar wrongColor = new Scalar(255.0, 0.0, 0.0, 255.0);
+                                Scalar correctColor = new Scalar(0.0, 255.0, 0.0, 255.0);
+                                int[][] listBox = new int[][] { { 560, 360 }, { 775, 360 }, { 125, 935 }, { 345, 935 },
+                                        { 560, 935 }, { 775, 935 }, { 125, 1510 }, { 345, 1510 }, { 560, 1510 }, { 775, 1510 }, };
+
+                                boxLoop: for (int i = 0; i < listBox.length; i++) {
+                                    for (int row = 0; row < 10; row++) {
+                                        int quesPoint = 0;
+                                        String stdAnswerString = "";
+                                        if (Objects.equals(type, new String("result"))
+                                                && (row + i * 10) > AnswerTemp.size() - 1) {
+                                            break boxLoop;
+                                        }
+                                        answerCol: for (int col = 0; col < 5; col++) {
+                                            p1.x = col * box_width + listBox[i][0] + 10;
+                                            p1.y = row * box_height + listBox[i][1] + 10;
+                                            p2.x = p1.x + box_width - 10 - 10;
+                                            p2.y = p1.y + box_height - 10 - 10;
+                                            Rect rectCrop = new Rect(p1, p2);
+
+                                            Mat image_roi = new Mat(mRgba, rectCrop);
+                                            non0 = Core.countNonZero(image_roi);
+                                            image_roi.release();
+                                            String current_answer = numberToAnswer(col);
+//                                            Imgproc.rectangle(mRgbaCopy, p1, p2, wrongColor, 5);
+
+                                            if (Objects.equals(type, new String("result"))) {
+                                                if (Objects.equals(AnswerTemp.get(row + i * 10),
+                                                        new String(current_answer))) {
+                                                    Imgproc.rectangle(mRgbaCopy, p1, p2, correctColor, 5);
+                                                    if (non0 < 200) {
+                                                        stdAnswerString += current_answer;
+                                                        quesPoint = quesPoint + 1;
+                                                    }
+                                                } else if (non0 < 200) {
+                                                    quesPoint = quesPoint - 1;
+                                                    Imgproc.rectangle(mRgbaCopy, p1, p2, wrongColor, 5);
+                                                    stdAnswerString += current_answer;
+                                                }
+                                                if (quesPoint > 0) {
+                                                    correctAnwers += 1;
+                                                }
+                                            } else {
+                                                if (non0 < 150) {
+                                                    Imgproc.rectangle(mRgbaCopy, p1, p2, wrongColor, 5);
+                                                    stdAnswerString += current_answer;
+                                                }
+                                            }
+
+                                        }
+
+                                        JSONObject stdAnswerJson = new JSONObject();
+                                        try {
+                                            stdAnswerJson.put("valueString", stdAnswerString);
+                                            stdAnswer.put(stdAnswerJson);
+                                        } catch (JSONException e) {
+                                            e.printStackTrace();
+                                        }
+                                    }
+
+                                }
+                                if (Objects.equals(type, new String("result"))) {
+                                    Imgproc.putText(mRgbaCopy, "studentCode: " + studentCode, new Point(611, 370),
+                                            Core.FONT_HERSHEY_COMPLEX, 1, correctColor, 3);
+                                    Imgproc.putText(mRgbaCopy, "examCode: " + examCode, new Point(611, 270),
+                                            Core.FONT_HERSHEY_COMPLEX, 1, correctColor, 3);
+                                    // Imgproc.putText(mRgbaCopy, correctAnwers + "/" + AnswerTemp.size(), new
+                                    // Point(611, 570),
+                                    // Core.FONT_HERSHEY_COMPLEX, 1, correctColor, 3);
+                                    if (error.length() > 0) {
+                                        Imgproc.putText(mRgbaCopy, error, new Point(611, 670),
+                                                Core.FONT_HERSHEY_COMPLEX, 1, correctColor, 3);
+                                    }
+
+                                }
+                                Imgproc.resize(mRgbaCopy, mRgbaCopy, new Size(480, 640));
+                                // save file
+                                Bitmap myBitmap = null;
+                                // Getting the current date
+                                Date date = new Date();
+                                // This method returns the time in millis
+                                long timeMilli = date.getTime();
 
                                 myBitmap = Bitmap.createBitmap(mRgba.cols(), mRgba.rows(), Bitmap.Config.ARGB_8888);
                                 Utils.matToBitmap(mRgba, myBitmap);
@@ -459,7 +633,10 @@ public class MainActivity extends FlutterActivity {
                                 Utils.matToBitmap(mRgbaRaw, myBitmap);
                                 path = saveToInternalStorage(myBitmap, "mRgbaRaw.png");
 
-                                mRgbaCopy.release();
+                                myBitmap = Bitmap.createBitmap(mRgbaCopy.cols(), mRgbaCopy.rows(),
+                                        Bitmap.Config.ARGB_8888);
+                                Utils.matToBitmap(mRgbaCopy, myBitmap);
+                                path = saveToInternalStorage(myBitmap, studentCode + "_" + timeMilli + ".png");
                             }
                             try {
                                 feedback.put("answer", isAnswer);
@@ -467,16 +644,26 @@ public class MainActivity extends FlutterActivity {
                                 feedback.put("studentCode", studentCode);
                                 feedback.put("image", path);
                                 feedback.put("error", error);
+                                feedback.put("e1rror", form == "100");
                                 feedback.put("value", stdAnswer);
-                                feedback.put("points", new JSONArray(pointsValue));
+
                             } catch (JSONException e) {
                                 e.printStackTrace();
                             }
-                            mRgba.release();
-                            mRgbaCopy.release(); //
-                            result.success(feedback.toString());
-
+                            mRgbaCopy.release();
                         }
+                        try {
+                            feedback.put("points", new JSONArray(pointsValue));
+
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+
+                        mRgba.release();
+                        mRgbaCopy.release(); //
+                        result.success(feedback.toString());
+
+                    }
                     }
                 });
 
@@ -522,7 +709,7 @@ public class MainActivity extends FlutterActivity {
         if (number == 3) {
             return "D";
         }
-        return "null";
+        return "E";
     }
 
 }

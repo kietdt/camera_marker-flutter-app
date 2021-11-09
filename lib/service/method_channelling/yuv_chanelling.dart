@@ -28,7 +28,8 @@ class YuvChannelling {
       'platforms': data,
       'height': image.height,
       'width': image.width,
-      'strides': strides
+      'strides': strides,
+      'form': "100"
     });
     print(image.height);
     print(image.width);
@@ -37,7 +38,8 @@ class YuvChannelling {
       'platforms': data,
       'height': image.height,
       'width': image.width,
-      'strides': strides
+      'strides': strides,
+      'form': "100"
     });
 
     return image_jpeg;
