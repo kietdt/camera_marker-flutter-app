@@ -73,10 +73,11 @@ class DashBoardState extends BaseScaffold<DashBoardPage, DashBoardCtr> {
             child: Container(
                 color: bgColor,
                 child: Row(children: [
+                  SizedBox(width: 15),
                   Expanded(
                       flex: 4,
                       child: Align(
-                          alignment: Alignment.centerRight,
+                          alignment: Alignment.centerLeft,
                           child: Container(
                               padding: EdgeInsets.all(padding),
                               decoration: BoxDecoration(
@@ -92,10 +93,11 @@ class DashBoardState extends BaseScaffold<DashBoardPage, DashBoardCtr> {
                   Expanded(
                       flex: 5,
                       child: Text(text,
+                          textAlign: TextAlign.left,
                           style: ResourceManager().text.boldStyle.copyWith(
                               color: ResourceManager().color.white,
                               fontSize: textSize))),
-                  next()
+                  next(),
                 ]))));
   }
 
@@ -105,6 +107,7 @@ class DashBoardState extends BaseScaffold<DashBoardPage, DashBoardCtr> {
 
   Widget next() {
     return Container(
+        alignment: Alignment.centerRight,
         child: Icon(Icons.navigate_next,
             color: ResourceManager().color.white, size: 40));
   }
