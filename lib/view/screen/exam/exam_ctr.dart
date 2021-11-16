@@ -59,7 +59,7 @@ class ExamPageCtr extends ListSelectCtr<ExamPageState, Exam> {
         rightTitle: "Quản lý",
         barrierDismissible: true,
         hasImage: false,
-        fact: "Fact: bạn cũng có thể nhấn 2 lần để vào trang quản lý kì thi",
+        fact: "Gợi ý: bạn có thể nhấn 2 lần để vào trang quản lý kì thi",
         onRight: () => navigateManage(item),
         onLeft: () => showDialogUpdate(item),
         leftColor: ResourceManager().color.primary);
