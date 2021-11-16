@@ -16,7 +16,7 @@ class ResourceManager {
   late BaseTextStyle text;
   late PackageInfo deviceVersion;
 
-  String appName = "For Teacher";
+  String appName = "MMCQ";
 
   factory ResourceManager() {
     if (_internal == null) _internal = ResourceManager._();
