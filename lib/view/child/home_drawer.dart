@@ -22,7 +22,7 @@ class HomeDrawer extends StatelessWidget with ClearMix {
         children: [
           SizedBox(height: 75),
           _logo(),
-          SizedBox(height: 50),
+          SizedBox(height: 25),
           _team(),
           Spacer(),
           _clearData(),
@@ -34,10 +34,22 @@ class HomeDrawer extends StatelessWidget with ClearMix {
   }
 
   Widget _logo() {
-    return Container(
-      width: 50,
-      height: 50,
-      child: CustomImageView("lib/asset/ic_app.png"),
+    return Column(
+      children: [
+        Container(
+          width: 50,
+          height: 50,
+          child: CustomImageView("lib/asset/ic_app.png"),
+        ),
+        SizedBox(height: 7),
+        Text(
+          ResourceManager().appName,
+          style: ResourceManager()
+              .text
+              .boldStyle
+              .copyWith(color: ResourceManager().color.primary),
+        ),
+      ],
     );
   }
 
@@ -61,7 +73,7 @@ class HomeDrawer extends StatelessWidget with ClearMix {
         ),
         SizedBox(height: 7),
         Text(
-          "Mai Thanh Bình".toUpperCase(),
+          "Mai Văn Bình".toUpperCase(),
           style: ResourceManager()
               .text
               .boldStyle
@@ -124,6 +136,26 @@ class HomeDrawer extends StatelessWidget with ClearMix {
               ),
             ],
           ),
+          SizedBox(height: 7),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text(
+                "Liên hệ",
+                style: ResourceManager()
+                    .text
+                    .boldStyle
+                    .copyWith(color: ResourceManager().color.white),
+              ),
+              Text(
+                "dev.s3lab@gmail.com",
+                style: ResourceManager()
+                    .text
+                    .boldStyle
+                    .copyWith(color: ResourceManager().color.white),
+              ),
+            ],
+          ),
         ],
       ),
     );
@@ -141,7 +173,7 @@ class HomeDrawer extends StatelessWidget with ClearMix {
       ]),
       margin: EdgeInsets.symmetric(horizontal: screen.width * 0.1),
       child: RectButton(
-        title: "Xóa toàn bộ dữ liệu",
+        title: "Reset ứng dụng",
         onTap: () => onTap(onClearSuccess),
       ),
     );
