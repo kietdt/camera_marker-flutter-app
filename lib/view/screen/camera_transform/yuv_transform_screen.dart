@@ -1,8 +1,9 @@
 import 'dart:async';
-import 'dart:math';
 
 import 'package:camera_marker/base/base_appbar.dart';
 import 'package:camera_marker/base/base_scaffold.dart';
+import 'package:camera_marker/base/utils.dart';
+import 'package:camera_marker/manager/resource_manager.dart';
 import 'package:camera_marker/model/exam.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -49,7 +50,11 @@ class YuvTransformScreenState
   @override
   void initState() {
     super.initState();
-    appBar = BaseAppBar(text: "Quét", back: true).toAppBar();
+    appBar = BaseAppBar(
+            title: Obx(() => Text(Utils.upperAllFirst(controller.title.value),
+                style: ResourceManager().text.boldStyle)),
+            back: true)
+        .toAppBar();
   }
 
   @override
@@ -93,7 +98,7 @@ class YuvTransformScreenState
   @override
   Widget body() {
     return SafeArea(
-        child: Stack(children: <Widget>[
+        child: Stack(alignment: Alignment.bottomLeft, children: <Widget>[
       Column(children: <Widget>[
         Expanded(
             child: Obx(() => CameraScreenWidget(

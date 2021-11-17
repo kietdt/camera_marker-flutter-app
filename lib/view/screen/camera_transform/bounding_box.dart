@@ -1,7 +1,6 @@
 import 'package:camera_marker/model/recognition.dart';
 import 'package:flutter/material.dart';
 
-
 //created by kietdt 08/08/2021
 //contact email: dotuankiet1403@gmail.com
 class BoundingBox extends StatelessWidget {
@@ -13,6 +12,8 @@ class BoundingBox extends StatelessWidget {
 
   double get scaleW => (previewW ?? 1) / (screenW ?? 1);
   double get scaleH => (previewH ?? 1) / (screenH ?? 1);
+
+  static double lineWidth = 3;
 
   BoundingBox(
     this.results,
@@ -49,23 +50,24 @@ class BoundingBox extends StatelessWidget {
             decoration: BoxDecoration(
               border: Border.all(
                 color: Color.fromRGBO(37, 213, 253, 1.0),
-                width: 3.0,
+                width: lineWidth,
               ),
             ),
-            child: Text(
-              "${re.detectedClass} ${((re.confidenceInClass ?? 0.0) * 100).toStringAsFixed(0)}%",
-              style: TextStyle(
-                color: Color.fromRGBO(37, 213, 253, 1.0),
-                fontSize: 14.0,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
+            // child: Text(
+            //   "${re.detectedClass} ${((re.confidenceInClass ?? 0.0) * 100).toStringAsFixed(0)}%",
+            //   style: TextStyle(
+            //     color: Color.fromRGBO(37, 213, 253, 1.0),
+            //     fontSize: 14.0,
+            //     fontWeight: FontWeight.bold,
+            //   ),
+            // ),
           ),
         );
       }).toList();
     }
 
     return Stack(
+      clipBehavior: Clip.none,
       children: _renderBox(),
     );
   }

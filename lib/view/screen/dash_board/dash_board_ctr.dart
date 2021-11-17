@@ -24,7 +24,8 @@ class DashBoardCtr extends BaseController<DashBoardState> {
     if (DataBaseCtr().tbClass.entities.length > 0) {
       Get.toNamed(RouteManager().routeName.exam);
     } else {
-      await DialogNoti.show(message: "Để chấm thi, trước tiên hãy tạo lớp học!");
+      await DialogNoti.show(
+          message: "Để chấm thi, trước tiên hãy tạo lớp học!");
       Get.toNamed(RouteManager().routeName.classList);
     }
   }

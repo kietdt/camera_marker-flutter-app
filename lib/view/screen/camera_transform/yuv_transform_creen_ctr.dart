@@ -1,12 +1,10 @@
 import 'dart:async';
 import 'dart:convert';
-import 'dart:io';
 import 'dart:math';
 import 'dart:typed_data';
 
 import 'package:camera/camera.dart';
 import 'package:camera_marker/base/base_controller.dart';
-import 'package:camera_marker/base/utils.dart';
 import 'package:camera_marker/database/database_ctr.dart';
 import 'package:camera_marker/manager/route_manager.dart';
 import 'package:camera_marker/mix/camera_handler.dart';
@@ -63,6 +61,8 @@ class YuvTransformScreenCtr extends BaseController<YuvTransformScreenState>
   var recognitions = List<Recognition>.empty(growable: true).obs;
   RxDouble originHeight = 0.0.obs;
   RxDouble originWidth = 0.0.obs;
+  late RxString title =
+      (isFill ? "Tự động quét đáp án" : "Tự động quét bài làm").obs;
   RxString isAvailable = Uuid().v4().obs; // camera available
 
   bool get isFill => state.widget.payload?.type == YuvTransformScreenType.Fill;

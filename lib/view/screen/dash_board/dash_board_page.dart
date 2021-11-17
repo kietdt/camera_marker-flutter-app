@@ -1,3 +1,4 @@
+import 'package:camera_marker/base/base_appbar.dart';
 import 'package:camera_marker/base/base_scaffold.dart';
 import 'package:camera_marker/base/base_image_view.dart';
 import 'package:camera_marker/manager/resource_manager.dart';
@@ -19,6 +20,17 @@ class DashBoardState extends BaseScaffold<DashBoardPage, DashBoardCtr> {
   @override
   DashBoardCtr initController() {
     return DashBoardCtr(this);
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    appBar = BaseAppBar(
+            back: false,
+            leading:
+                InkWell(child: Icon(Icons.menu), onTap: controller.openDrawer),
+            text: "trang chủ")
+        .toAppBar();
   }
 
   @override
