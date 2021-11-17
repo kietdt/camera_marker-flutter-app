@@ -68,6 +68,9 @@ class Template {
 
   String get titleDisplay => (title ?? "") + " - " + (typeDecs ?? "");
 
+  List<int> get questionsSelect =>
+      List<int>.generate(question ?? 0, (index) => index + 1);
+
   Template(
       {this.id,
       this.title,

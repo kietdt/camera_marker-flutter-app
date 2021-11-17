@@ -25,13 +25,14 @@ class DialogExam extends StatelessWidget {
     titleCtr.text = this.exam?.title ?? "";
     questionValue = this.exam?.question;
     myClassSeletected = this.exam?.myClass;
-    pointCtr.text = this.exam?.maxPoint?.toString() ?? "";
+    pointSelected = this.exam?.maxPoint;
     templateSelected = this.exam?.template;
     dateStartCtr.text = Utils.dateToStr(this.exam?.startAt);
     timeStartCtr.text = Utils.dateToStr(this.exam?.startAt, pattern: Utils.HM);
-    timeCtr.text = this.exam?.minutes?.toString() ?? "";
+    // timeCtr.text = this.exam?.minutes?.toString() ?? "";
     dtStart = this.exam?.startAt;
-    validate();
+    durationSelected = this.exam?.minutes;
+    // validate();
   }
 
   final Exam? exam;
@@ -39,19 +40,22 @@ class DialogExam extends StatelessWidget {
   final Function(Exam exam) onConfirm;
 
   final TextEditingController titleCtr = TextEditingController();
-  final TextEditingController pointCtr = TextEditingController();
-  final TextEditingController timeCtr = TextEditingController();
+  // final TextEditingController pointCtr = TextEditingController();
+  // final TextEditingController timeCtr = TextEditingController();
   final TextEditingController dateStartCtr = TextEditingController();
   final TextEditingController timeStartCtr = TextEditingController();
 
   final FocusNode titleFcn = FocusNode();
-  final FocusNode pointFcn = FocusNode();
-  final FocusNode timeFcn = FocusNode();
+  // final FocusNode pointFcn = FocusNode();
+  // final FocusNode timeFcn = FocusNode();
 
   late int? questionValue;
-  DropdownGenList<int> get myQuestions =>
-      DropdownGenList(List<DropdownGen<int>>.from(Exam.questionsSelect
-          .map((e) => DropdownGen<int>(title: e.toString(), value: e, id: e))));
+  late Rx<DropdownGenList<int>> myQuestions = DropdownGenList(
+          List<DropdownGen<int>>.from(templateSelected?.questionsSelect.map(
+                  (e) =>
+                      DropdownGen<int>(title: e.toString(), value: e, id: e)) ??
+              [DropdownGen<int>(title: 0.toString(), value: 0, id: 0)]))
+      .obs;
 
   late MyClass? myClassSeletected;
   DropdownGenList<MyClass> get myClass => DropdownGenList(
@@ -62,6 +66,16 @@ class DialogExam extends StatelessWidget {
   DropdownGenList<Template> get myTemplate => DropdownGenList(
       List<DropdownGen<Template>>.from(DataBaseCtr().tbTemplate.entities.map(
           (e) => DropdownGen<Template>(title: e.title, value: e, id: e.id))));
+
+  late int? durationSelected;
+  DropdownGenList<int> duration = DropdownGenList(List<DropdownGen<int>>.from(
+      List.generate(171, (index) => index + 10)
+          .map((e) => DropdownGen<int>(title: e.toString(), value: e, id: e))));
+
+  late double? pointSelected;
+  DropdownGenList<int> points = DropdownGenList(List<DropdownGen<int>>.from(
+      List.generate(100, (index) => index + 1)
+          .map((e) => DropdownGen<int>(title: e.toString(), value: e, id: e))));
 
   DateTime? dtStart;
 
@@ -117,17 +131,35 @@ class DialogExam extends StatelessWidget {
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          _item("Kì thi*", titleFcn, titleCtr),
+          _item("Kì thi*", titleFcn, titleCtr, context, unFocus: false),
           SizedBox(height: 7),
-          _itemDropdown<int>(
-              title: "Câu trả lời*",
+          _itemDropdown<Template>(
+              title: "Mẫu đề thi*",
+              defaultValue: DropdownGen<Template>(id: templateSelected?.id),
+              items: myTemplate,
+              onChanged: (Template? value) {
+                if ((questionValue ?? 0) > (value?.question ?? 0)) {
+                  questionValue = null;
+                }
+                templateSelected = value;
+                myQuestions.value = DropdownGenList(List<DropdownGen<int>>.from(
+                    templateSelected?.questionsSelect.map((e) =>
+                            DropdownGen<int>(
+                                title: e.toString(), value: e, id: e)) ??
+                        []));
+                print("CHỌN CÂU TRẢ LỜI ====================>$questionValue");
+                validate(context);
+              }),
+          SizedBox(height: 7),
+          Obx(() => _itemDropdown<int>(
+              title: "Số câu hỏi*",
               defaultValue: DropdownGen<int>(id: questionValue),
-              items: myQuestions,
+              items: myQuestions.value,
               onChanged: (int? value) {
                 questionValue = value;
                 print("CHỌN CÂU TRẢ LỜI ====================>$questionValue");
-                validate();
-              }),
+                validate(context);
+              })),
           _itemDropdown<MyClass>(
               title: "Lớp*",
               defaultValue: DropdownGen<MyClass>(id: myClassSeletected?.id),
@@ -135,34 +167,44 @@ class DialogExam extends StatelessWidget {
               onChanged: (MyClass? value) {
                 myClassSeletected = value;
                 print("CHỌN CÂU TRẢ LỜI ====================>$questionValue");
-                validate();
+                validate(context);
               }),
           SizedBox(height: 7),
-          _item("Thang điểm*", pointFcn, pointCtr,
-              textInputType: TextInputType.number),
+          _itemDropdown<int>(
+              title: "Thang điểm*",
+              defaultValue: DropdownGen<int>(id: pointSelected?.toInt()),
+              items: points,
+              onChanged: (int? value) {
+                pointSelected = (value ?? 0) + 0.0;
+                print(
+                    "CHỌN THỜI GIAN THI ====================>$durationSelected");
+                validate(context);
+              },
+              suffixText: ""),
           SizedBox(height: 7),
-          _itemDropdown<Template>(
-              title: "Mẫu đề thi*",
-              defaultValue: DropdownGen<Template>(id: templateSelected?.id),
-              items: myTemplate,
-              onChanged: (Template? value) {
-                templateSelected = value;
-                print("CHỌN CÂU TRẢ LỜI ====================>$questionValue");
-                validate();
-              }),
-          SizedBox(height: 7),
-          _item("Ngày bắt đầu*", null, dateStartCtr,
+          _item("Ngày bắt đầu*", null, dateStartCtr, context,
               readonly: true, textInputType: TextInputType.number, onTap: () {
             showDate(context);
           }),
           SizedBox(height: 7),
-          _item("Giờ bắt đầu*", null, timeStartCtr,
+          _item("Giờ bắt đầu*", null, timeStartCtr, context,
               readonly: true, textInputType: TextInputType.number, onTap: () {
             showTime(context);
           }),
           SizedBox(height: 7),
-          _itemTime("Thời gian thi*", timeFcn, timeCtr,
-              textInputType: TextInputType.number, suffixText: "Phút"),
+          // _itemTime("Thời gian thi*", timeFcn, timeCtr,
+          //     textInputType: TextInputType.number, suffixText: "Phút"),
+          _itemDropdown<int>(
+              title: "Thời gian thi*",
+              defaultValue: DropdownGen<int>(id: durationSelected),
+              items: duration,
+              onChanged: (int? value) {
+                durationSelected = value;
+                print(
+                    "CHỌN THỜI GIAN THI ====================>$durationSelected");
+                validate(context);
+              },
+              suffixText: "Phút"),
           SizedBox(height: 15),
           Text(
             "Điền những phần có dấu * để tạo kì thi",
@@ -176,11 +218,13 @@ class DialogExam extends StatelessWidget {
   }
 
   Widget _item(String title, FocusNode? fcn, TextEditingController ctr,
+      BuildContext context,
       {TextInputType? textInputType,
       bool readonly = false,
       Function(String)? onChanged,
       String? suffixText,
-      Function()? onTap}) {
+      Function()? onTap,
+      bool unFocus = true}) {
     return Row(
       children: [
         Container(
@@ -205,7 +249,7 @@ class DialogExam extends StatelessWidget {
                 if (onChanged != null) {
                   onChanged(text);
                 }
-                validate();
+                validate(context, unFocus: unFocus);
               },
               style: ResourceManager()
                   .text
@@ -218,48 +262,49 @@ class DialogExam extends StatelessWidget {
     );
   }
 
-  Widget _itemTime(String title, FocusNode? fcn, TextEditingController ctr,
-      {TextInputType? textInputType,
-      bool readonly = false,
-      String? suffixText,
-      Function()? onTap}) {
-    return Row(children: [
-      Container(
-        width: 100,
-        child: Text(
-          title,
-          style: ResourceManager().text.boldStyle.copyWith(fontSize: inputSize),
-        ),
-      ),
-      Container(
-        width: 50,
-        height: inputHeight,
-        child: TextFieldView(
-          keyboardType: textInputType,
-          controller: ctr,
-          focusNode: fcn,
-          readOnly: readonly,
-          maxLength: 4,
-          onTap: onTap,
-          onChanged: (text) {
-            validate();
-          },
-          style:
-              ResourceManager().text.normalStyle.copyWith(fontSize: inputSize),
-        ),
-      ),
-      SizedBox(width: 7),
-      Text(suffixText ?? "",
-          style: ResourceManager().text.normalStyle.copyWith(
-              fontSize: inputSize, color: ResourceManager().color.des))
-    ]);
-  }
+  // Widget _itemTime(String title, FocusNode? fcn, TextEditingController ctr,
+  //     {TextInputType? textInputType,
+  //     bool readonly = false,
+  //     String? suffixText,
+  //     Function()? onTap}) {
+  //   return Row(children: [
+  //     Container(
+  //       width: 100,
+  //       child: Text(
+  //         title,
+  //         style: ResourceManager().text.boldStyle.copyWith(fontSize: inputSize),
+  //       ),
+  //     ),
+  //     Container(
+  //       width: 50,
+  //       height: inputHeight,
+  //       child: TextFieldView(
+  //         keyboardType: textInputType,
+  //         controller: ctr,
+  //         focusNode: fcn,
+  //         readOnly: readonly,
+  //         maxLength: 4,
+  //         onTap: onTap,
+  //         onChanged: (text) {
+  //           validate();
+  //         },
+  //         style:
+  //             ResourceManager().text.normalStyle.copyWith(fontSize: inputSize),
+  //       ),
+  //     ),
+  //     SizedBox(width: 7),
+  //     Text(suffixText ?? "",
+  //         style: ResourceManager().text.normalStyle.copyWith(
+  //             fontSize: inputSize, color: ResourceManager().color.des))
+  //   ]);
+  // }
 
   Widget _itemDropdown<T>(
       {required String title,
       required DropdownGenList<T> items,
       required void Function(T? dropdownGen)? onChanged,
-      required DropdownGen<T>? defaultValue}) {
+      required DropdownGen<T>? defaultValue,
+      String? suffixText}) {
     return Row(
       children: [
         Container(
@@ -270,7 +315,11 @@ class DialogExam extends StatelessWidget {
                 fontSize: inputSize, color: ResourceManager().color.black),
           ),
         ),
-        Expanded(child: _dropdown<T>(items, onChanged, defaultValue))
+        Expanded(child: _dropdown<T>(items, onChanged, defaultValue)),
+        if (suffixText != null) ...[
+          SizedBox(width: 7),
+          Expanded(flex: 1, child: Text(suffixText))
+        ]
       ],
     );
   }
@@ -352,12 +401,12 @@ class DialogExam extends StatelessWidget {
         title: titleCtr.text.trim(),
         question: questionValue,
         myClassId: myClassSeletected?.id,
-        maxPoint: double.parse(pointCtr.text.trim()),
+        maxPoint: pointSelected,
         templateId: templateSelected?.id,
         startAt: dtStart,
         resultIds: this.exam?.resultIds,
         answerIds: this.exam?.answerIds,
-        minutes: int.tryParse(timeCtr.text.trim()));
+        minutes: durationSelected);
     if (this.exam?.templateId != null &&
         this.exam?.templateId != templateSelected?.id &&
         (exam.answer.length > 0 || exam.result.length > 0)) {
@@ -384,17 +433,20 @@ class DialogExam extends StatelessWidget {
     onConfirm(exam);
   }
 
-  void validate() {
+  void validate(BuildContext context, {bool unFocus = true}) {
     bool valid = true;
+    if (unFocus) {
+      FocusScope.of(context).requestFocus(new FocusNode());
+    }
     if (titleCtr.text.isEmpty) {
       valid = false;
-    } else if (pointCtr.text.isEmpty) {
+    } else if (pointSelected == null) {
       valid = false;
     } else if (timeStartCtr.text.isEmpty) {
       valid = false;
     } else if (dateStartCtr.text.isEmpty) {
       valid = false;
-    } else if (timeCtr.text.isEmpty) {
+    } else if (durationSelected == null) {
       valid = false;
     } else if (questionValue == null) {
       valid = false;

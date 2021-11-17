@@ -55,9 +55,6 @@ class Exam {
       .entities
       .where((element) => (resultIds ?? []).contains(element.id)));
 
-  static List<int> questionsSelect =
-      List<int>.generate(200, (index) => index + 1);
-
   Exam.fromJson(Map json) {
     this.id = json["id"];
     this.title = json["title"];
