@@ -14,6 +14,9 @@ class DialogNoti extends StatelessWidget {
   final String? image;
   final Color? imageColor;
   final Widget? child;
+  final EdgeInsets? imagePadding;
+  final double? imageSize;
+  final String? continuteMessage;
 
   static show(
       {String? title,
@@ -23,7 +26,10 @@ class DialogNoti extends StatelessWidget {
       bool? barrierDismissible,
       Color? imageColor,
       String? image,
-      Widget? child}) async {
+      Widget? child,
+      EdgeInsets? imagePadding,
+      double? imageSize,
+      String? continuteMessage}) async {
     return Get.dialog(
         DialogNoti(
             message: message,
@@ -32,7 +38,10 @@ class DialogNoti extends StatelessWidget {
             hasImage: hasImage,
             imageColor: imageColor,
             child: child,
-            image: image),
+            image: image,
+            imagePadding: imagePadding,
+            continuteMessage: continuteMessage,
+            imageSize: imageSize),
         barrierDismissible: barrierDismissible ?? false);
   }
 
@@ -44,6 +53,9 @@ class DialogNoti extends StatelessWidget {
     this.imageColor,
     this.image,
     this.child,
+    this.imagePadding,
+    this.imageSize,
+    this.continuteMessage,
     required this.message,
   }) : super(key: key);
 
@@ -110,11 +122,14 @@ class DialogNoti extends StatelessWidget {
             border: Border.all(
                 width: 3,
                 color: imageColor ?? ResourceManager().color.primary)),
-        child: CustomImageView(
-          image ?? "lib/asset/ic_confirm.png",
-          width: 50,
-          height: 50,
-          color: imageColor ?? ResourceManager().color.primary,
+        child: Padding(
+          padding: imagePadding ?? EdgeInsets.all(7),
+          child: CustomImageView(
+            image ?? "lib/asset/ic_confirm.png",
+            width: imageSize ?? 50,
+            height: imageSize ?? 50,
+            color: imageColor ?? ResourceManager().color.primary,
+          ),
         ),
       ),
     );
@@ -128,7 +143,7 @@ class DialogNoti extends StatelessWidget {
         borderColor: ResourceManager().color.primary,
         textColor: ResourceManager().color.primary,
         color: ResourceManager().color.white,
-        title: "Tiếp tục",
+        title: continuteMessage ?? "Tiếp tục",
         onTap: () {
           Get.back(result: "true");
         },

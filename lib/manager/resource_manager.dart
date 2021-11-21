@@ -18,6 +18,9 @@ class ResourceManager {
 
   String appName = "MMCQ";
 
+  String get linkUpdate =>
+      "https://play.google.com/store/apps/details?id=uit.kltn.cttt2015.camera_marker";
+
   factory ResourceManager() {
     if (_internal == null) _internal = ResourceManager._();
     return _internal!;

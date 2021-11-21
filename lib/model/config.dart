@@ -32,16 +32,25 @@ class ConfigRespo {
 
 class Config {
   String? version;
+  bool? forceUpdate;
+  String? versionInTest;
+  String? linkUpdate;
 
   Config({this.version});
 
   Config.fromJson(Map<String, dynamic> json) {
     version = json['version'];
+    forceUpdate = json['force_update'];
+    versionInTest = json['version_in_test'];
+    linkUpdate = json['link_update'];
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     data['version'] = this.version;
+    data['force_update'] = this.forceUpdate;
+    data['version_in_test'] = this.versionInTest;
+    data['link_update'] = this.linkUpdate;
     return data;
   }
 }
