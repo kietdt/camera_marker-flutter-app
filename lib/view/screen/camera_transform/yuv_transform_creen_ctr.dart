@@ -131,10 +131,14 @@ class YuvTransformScreenCtr extends BaseController<YuvTransformScreenState>
 
             Map<String, dynamic> _json = json.decode(value);
             if ((_json["answer"] ?? false)) {
-              if (isFill) {
-                await onScanFill(_json);
+              if (validate(_json)) {
+                if (isFill) {
+                  await onScanFill(_json);
+                } else {
+                  await onScanResult(_json);
+                }
               } else {
-                await onScanResult(_json);
+                await showError();
               }
             } else {
               onResult(_json, image);
@@ -288,5 +292,24 @@ class YuvTransformScreenCtr extends BaseController<YuvTransformScreenState>
       await Get.toNamed(RouteManager().routeName.result,
           arguments: ResultPagePayload(exam: exam, result: result));
     }
+  }
+
+  bool validate(Map json) {
+    String error = json["error"] is String ? json["error"] : "";
+    String examCode = json["examCode"] ?? "";
+    if (error.isNotEmpty) {
+      return false;
+    }
+    if (examCode.isEmpty) {
+      return false;
+    }
+    return true;
+  }
+
+  Future<void> showError() async {
+    String message =
+        "Vui lòng kiểm tra lại nếu mẫu bảng trả lời đang quét không phải mẫu ${state.widget.payload?.exam?.template?.question} câu";
+    String title = "Đã có lỗi";
+    await DialogNoti.show(title: title, message: message);
   }
 }
