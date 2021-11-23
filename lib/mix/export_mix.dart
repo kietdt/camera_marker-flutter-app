@@ -116,7 +116,7 @@ mixin ExportMix {
     syncfusion.Worksheet sheet = workbook.worksheets[0];
 
     syncfusion.Style globalStyle = workbook.styles.add('style');
-    globalStyle.borders.all.lineStyle = syncfusion.LineStyle.thin;
+    // globalStyle.borders.all.lineStyle = syncfusion.LineStyle.thin;
 
     syncfusion.Style descStyle = workbook.styles.add('descStyle');
     descStyle.borders.all.lineStyle = syncfusion.LineStyle.thin;

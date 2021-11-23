@@ -43,7 +43,7 @@ class Exam {
 
   Template? get template => DataBaseCtr().tbTemplate.getById(templateId);
 
-  static String photoFolder = "export${Platform.pathSeparator}photo";
+  static String photoFolder = "photo";
 
   List<Answer> get answer => List<Answer>.from(DataBaseCtr()
       .tbAnswer
