@@ -44,7 +44,7 @@ class HistoryCtr extends ListSelectCtr<HistoryState, Result> {
             topSnackBar("Thông báo", "Đã xóa ${temp.length} bài đã chấm");
           });
     } else {
-      if (!(Get.isSnackbarOpen ?? false)) {
+      if (!(Get.isSnackbarOpen)) {
         topSnackBar("Thông báo", "Bạn hãy chọn một bài đã chấm để xóa");
       }
     }

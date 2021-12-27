@@ -40,7 +40,7 @@ class ExamPageCtr extends ListSelectCtr<ExamPageState, Exam> {
             topSnackBar("Thông báo", "Đã xóa ${temp.length} Kì thi");
           });
     } else {
-      if (!(Get.isSnackbarOpen ?? false)) {
+      if (!(Get.isSnackbarOpen)) {
         topSnackBar("Thông báo", "Bạn hãy chọn một kì thi để xóa");
       }
     }

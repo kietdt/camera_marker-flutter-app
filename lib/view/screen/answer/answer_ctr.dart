@@ -48,7 +48,7 @@ class AnswerCtr extends ListSelectCtr<AnswerState, Answer> {
             topSnackBar("Thông báo", "Đã xóa ${temp.length} đáp án");
           });
     } else {
-      if (!(Get.isSnackbarOpen ?? false)) {
+      if (!(Get.isSnackbarOpen)) {
         topSnackBar("Thông báo", "Bạn hãy chọn một đáp án để xóa");
       }
     }

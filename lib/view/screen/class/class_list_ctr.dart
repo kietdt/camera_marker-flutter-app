@@ -47,7 +47,7 @@ class ClassListCtr extends ListSelectCtr<ClassListState, MyClass> {
             topSnackBar("Thông báo", "Đã xóa ${temp.length} lớp");
           });
     } else {
-      if (!(Get.isSnackbarOpen ?? false)) {
+      if (!(Get.isSnackbarOpen)) {
         topSnackBar("Thông báo", "Bạn hãy chọn một lớp để xóa");
       }
     }
