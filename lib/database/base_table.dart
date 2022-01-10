@@ -15,7 +15,7 @@ abstract class BaseTable<T> {
 
   Future<void> loadTable() async {
     var _pref = await SharedPreferences.getInstance();
-    List _jsons = json.decode(_pref.getString(path) ?? "[]");
+    List? _jsons = json.decode(_pref.getString(path) ?? "[]");
     if (_jsons is List) {
       entities = fromJson(_jsons);
     } else {

@@ -5,6 +5,7 @@ import 'package:camera_marker/base/utils.dart';
 import 'package:camera_marker/model/exam.dart';
 import 'package:camera_marker/model/result.dart';
 import 'package:excel/excel.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:syncfusion_flutter_xlsio/xlsio.dart' as syncfusion;
 
 mixin ExportMix {
@@ -26,9 +27,23 @@ mixin ExportMix {
     // if (photoRoot != null) {
     //   Utils.deletefile(photoRoot);
     // }
-
+    savePathPref(excelPath: excelRoot, photoPath: photoRoot, zipPath: zipPath);
     return zipPath;
     // return excelRoot;
+  }
+
+  void savePathPref(
+      {String? excelPath, String? photoPath, String? zipPath}) async {
+    var _pref = await SharedPreferences.getInstance();
+    if (excelPath != null) {
+      _pref.setString("excel_path", excelPath);
+    }
+    if (photoPath != null) {
+      _pref.setString("photo_path", photoPath);
+    }
+    if (zipPath != null) {
+      _pref.setString("zip_path", zipPath);
+    }
   }
 
   //Lưu file excel và trả về đường dẫn chưa thư mục excel
@@ -38,7 +53,7 @@ mixin ExportMix {
     String excelName = "$classCode-$examName.xlsx";
 
     String excelFolder =
-        await Utils.localPath() + Platform.pathSeparator + "export";
+        await Utils.localPath() + Platform.pathSeparator + "excel";
     String excelPath = excelFolder + Platform.pathSeparator + excelName;
 
     initBorder(exam, excelPath);
@@ -75,7 +90,7 @@ mixin ExportMix {
 
         if (file != null) {
           String name = results[i].pngName;
-          Utils.copyFile(name, rootPath: dir, file: file);
+          await Utils.copyFile(name, rootPath: dir, file: file);
         }
       }
     }

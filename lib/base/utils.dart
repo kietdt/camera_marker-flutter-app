@@ -84,10 +84,10 @@ class Utils {
     return directory!.path;
   }
 
-  static Future<File?> copyFile(String newPath,
+  static Future<File?> copyFile(String name,
       {String? rootPath, File? file}) async {
     rootPath = (rootPath ?? await localPath()) + Platform.pathSeparator;
-    newPath = rootPath + newPath;
+    String newPath = rootPath + name;
     try {
       File newFile = File(newPath);
       await newFile.create(recursive: true);
