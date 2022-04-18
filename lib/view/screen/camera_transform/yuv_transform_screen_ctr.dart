@@ -64,6 +64,7 @@ class YuvTransformScreenCtr extends BaseController<YuvTransformScreenState>
   late RxString title =
       (isFill ? "Tự động quét đáp án" : "Tự động quét bài làm").obs;
   RxString isAvailable = Uuid().v4().obs; // camera available
+  RxBool isDetected = false.obs;
 
   bool get isFill => state.widget.payload?.type == YuvTransformScreenType.Fill;
 
@@ -131,6 +132,7 @@ class YuvTransformScreenCtr extends BaseController<YuvTransformScreenState>
 
             Map<String, dynamic> _json = json.decode(value);
             if ((_json["answer"] ?? false)) {
+              isDetected = true.obs;
               if (validate(_json)) {
                 if (isFill) {
                   await onScanFill(_json);
@@ -141,6 +143,7 @@ class YuvTransformScreenCtr extends BaseController<YuvTransformScreenState>
                 await showError();
               }
             } else {
+              isDetected = false.obs;
               onResult(_json, image);
             }
             _isProcessing = false;

@@ -11,7 +11,7 @@ import 'package:get/get.dart';
 
 import 'bounding_box.dart';
 import 'camera_screen.dart';
-import 'yuv_transform_creen_ctr.dart';
+import 'yuv_transform_screen_ctr.dart';
 
 // typedef void Callback(List<dynamic> list, int h, int w);
 
@@ -107,11 +107,12 @@ class YuvTransformScreenState
       ]),
       Obx(() => BoundingBox(
           // ignore: invalid_use_of_protected_member
-          controller.recognitions.value,
+          [],
           controller.originHeight.value,
           controller.originWidth.value,
           screen.height - (statusBar + navigateBar + BaseAppBar.height),
-          screen.width))
+          screen.width,
+          controller.isDetected.value))
     ]));
   }
 }
