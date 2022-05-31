@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:flutter_ringtone_player/flutter_ringtone_player.dart';
 import 'package:intl/intl.dart';
 import 'package:path_provider/path_provider.dart';
 
@@ -124,5 +125,18 @@ class Utils {
       print(e);
     }
     print("$fileName=======EXESIT===>${await file.exists()}");
+  }
+
+  Future warningSoundWithMethod(Future func) async {
+    FlutterRingtonePlayer.play(
+      android: AndroidSounds.notification,
+      ios: IosSounds.glass,
+      looping: true, // Android only - API >= 28
+      volume: 0.1, // Android only - API >= 28
+      asAlarm: true, // Android only - all APIs
+    );
+    var _result = await func;
+    FlutterRingtonePlayer.stop();
+    return _result;
   }
 }

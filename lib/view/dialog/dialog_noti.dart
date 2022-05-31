@@ -17,6 +17,8 @@ class DialogNoti extends StatelessWidget {
   final EdgeInsets? imagePadding;
   final double? imageSize;
   final String? continuteMessage;
+  final Widget? childUnderMessage;
+  final double messageFontSize;
 
   static show(
       {String? title,
@@ -29,19 +31,24 @@ class DialogNoti extends StatelessWidget {
       Widget? child,
       EdgeInsets? imagePadding,
       double? imageSize,
-      String? continuteMessage}) async {
+      String? continuteMessage,
+      Widget? childUnderMessage,
+      double messageFontSize = 20}) async {
     return Get.dialog(
         DialogNoti(
-            message: message,
-            title: title,
-            fact: fact,
-            hasImage: hasImage,
-            imageColor: imageColor,
-            child: child,
-            image: image,
-            imagePadding: imagePadding,
-            continuteMessage: continuteMessage,
-            imageSize: imageSize),
+          message: message,
+          title: title,
+          fact: fact,
+          hasImage: hasImage,
+          imageColor: imageColor,
+          child: child,
+          image: image,
+          imagePadding: imagePadding,
+          continuteMessage: continuteMessage,
+          imageSize: imageSize,
+          childUnderMessage: childUnderMessage,
+          messageFontSize: messageFontSize,
+        ),
         barrierDismissible: barrierDismissible ?? false);
   }
 
@@ -57,6 +64,8 @@ class DialogNoti extends StatelessWidget {
     this.imageSize,
     this.continuteMessage,
     required this.message,
+    this.childUnderMessage,
+    this.messageFontSize = 20,
   }) : super(key: key);
 
   @override
@@ -88,8 +97,10 @@ class DialogNoti extends StatelessWidget {
                   message ?? "",
                   textAlign: TextAlign.center,
                   style: ResourceManager().text.normalStyle.copyWith(
-                      color: ResourceManager().color.black, fontSize: 20),
+                      color: ResourceManager().color.black,
+                      fontSize: messageFontSize),
                 )),
+            if (childUnderMessage != null) ...[childUnderMessage!],
             Visibility(
                 visible: fact != null,
                 child: Column(

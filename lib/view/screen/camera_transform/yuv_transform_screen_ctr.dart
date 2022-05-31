@@ -24,8 +24,12 @@ import 'package:camera_marker/view/screen/result/result_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:uuid/uuid.dart';
 
+import '../../../base/check_box.dart';
+import '../../../base/utils.dart';
+import '../../../manager/resource_manager.dart';
 import 'yuv_transform_screen.dart';
 
 class YuvTransformScreenCtr extends BaseController<YuvTransformScreenState>
@@ -48,7 +52,10 @@ class YuvTransformScreenCtr extends BaseController<YuvTransformScreenState>
     //     onScanResult(Result.result4);
     //   });
     // }
+    initSharedPreferences();
   }
+
+  late SharedPreferences _preferences;
 
   List<StreamSubscription> subscription = [];
   late ImageResultProcessorService imageResultProcessorService;
@@ -65,6 +72,7 @@ class YuvTransformScreenCtr extends BaseController<YuvTransformScreenState>
       (isFill ? "Tự động quét đáp án" : "Tự động quét bài làm").obs;
   RxString isAvailable = Uuid().v4().obs; // camera available
   RxBool isDetected = false.obs;
+  RxBool isAutoScan = false.obs;
 
   bool get isFill => state.widget.payload?.type == YuvTransformScreenType.Fill;
 
@@ -248,7 +256,8 @@ class YuvTransformScreenCtr extends BaseController<YuvTransformScreenState>
     result.examId = exam?.id;
 
     if ((result.correct ?? -1) <= -1) {
-      await DialogNoti.show(message: "Không tồn tại mã đề ${result.examCode}");
+      await Utils().warningSoundWithMethod(
+          DialogNoti.show(message: "Không tồn tại mã đề ${result.examCode}"));
     } else {
       await resultProcess(result: result, exam: exam);
     }
@@ -267,10 +276,10 @@ class YuvTransformScreenCtr extends BaseController<YuvTransformScreenState>
     }
 
     if (_history != null) {
-      var _callBack = await DialogConfirm.show(
+      var _callBack = await Utils().warningSoundWithMethod(DialogConfirm.show(
           message:
               "Mã số sinh viên ${result?.studentCode} đã được chấm trước đó, bạn có muốn cập nhật kết quả mới?",
-          rightTitle: "Cập nhật");
+          rightTitle: "Cập nhật"));
       if (_callBack is String && _callBack == DialogConfirm.CALLBACK_ONRIGHT) {
         _history.value = result?.value;
         _history.correct = result?.correct;
@@ -285,7 +294,7 @@ class YuvTransformScreenCtr extends BaseController<YuvTransformScreenState>
   }
 
   Future<void> navigateResult({Result? result, Exam? exam}) async {
-    if (result != null) {
+    if (result != null && !isAutoScan.value) {
       // if (!(result.image?.contains(result.pngName) ?? false)) {
       //   //copy file ảnh từ native sang đường dẫn quản lý ở flutter
       //   await Utils.copyFile(result.pngPath, file: File(result.image ?? ""));
@@ -313,6 +322,51 @@ class YuvTransformScreenCtr extends BaseController<YuvTransformScreenState>
     String message =
         "Vui lòng kiểm tra lại nếu mẫu bảng trả lời đang quét không phải mẫu ${state.widget.payload?.exam?.template?.question} câu";
     String title = "Đã có lỗi";
-    await DialogNoti.show(title: title, message: message);
+    await Utils().warningSoundWithMethod(
+        DialogNoti.show(title: title, message: message));
+  }
+
+  void onAutoChange(bool value) {
+    isAutoScan.value = value;
+    bool? isNeverShowAgain = _preferences.getBool(isNeverShowAgainKey);
+    if (!(isNeverShowAgain ?? false) && value) {
+      showAutoNoti();
+    }
+  }
+
+  final String isNeverShowAgainKey = 'is_never_show_again';
+  void showAutoNoti() async {
+    RxBool isNeverShowAgain = false.obs;
+    await DialogNoti.show(
+        message:
+            'Bạn đã bật tính năng chấm LIÊN TỤC\nĐiều này giúp bạn bỏ qua phần xem trước kết quả chấm',
+        messageFontSize: 13,
+        childUnderMessage: Row(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Obx(() => CustomCheckbox(
+                value: isNeverShowAgain.value,
+                shape: CircleBorder(),
+                activeColor: ResourceManager().color.primary,
+                width: 18,
+                checkColor: ResourceManager().color.white,
+                onChanged: (value) => isNeverShowAgain.value = value ?? false)),
+            Text(
+              'Không hiển thị lại',
+              style: ResourceManager()
+                  .text
+                  .normalStyle
+                  .copyWith(color: ResourceManager().color.error, fontSize: 13),
+            )
+          ],
+        ));
+    if (isNeverShowAgain.value) {
+      _preferences.setBool(isNeverShowAgainKey, isNeverShowAgain.value);
+    }
+  }
+
+  void initSharedPreferences() async {
+    _preferences = await SharedPreferences.getInstance();
   }
 }

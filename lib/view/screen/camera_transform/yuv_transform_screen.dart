@@ -53,7 +53,8 @@ class YuvTransformScreenState
     appBar = BaseAppBar(
             title: Obx(() => Text(Utils.upperAllFirst(controller.title.value),
                 style: ResourceManager().text.boldStyle)),
-            back: true)
+            back: true,
+            action: _action())
         .toAppBar();
   }
 
@@ -114,5 +115,15 @@ class YuvTransformScreenState
           screen.width,
           controller.isDetected.value))
     ]));
+  }
+
+  List<Widget> _action() {
+    return [controller.isFill ? SizedBox() : _buildSwitchBoxAuto()];
+  }
+
+  Widget _buildSwitchBoxAuto() {
+    return Obx(() => Switch(
+        value: controller.isAutoScan.value,
+        onChanged: controller.onAutoChange));
   }
 }
